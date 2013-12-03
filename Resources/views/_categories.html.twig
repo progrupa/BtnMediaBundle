@@ -1,0 +1,10 @@
+{% block categories %}
+    <ul class="media-category-list" >
+    {% for category in categories %}
+        <li>
+            <a href="{{ path('cp_media_category', { 'id' : category.id }) }}" class="btn{{ category_active.id == category.id ? ' active' }}">{{category.name}}</a>
+            <a href="{{ path('cp_media_category_delete', { 'id' : category.id }) }}" class="btn btn-small btn-danger delete" title="{% trans %}Delete category{% endtrans %} '{{ category.name }}'">&#10008;</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

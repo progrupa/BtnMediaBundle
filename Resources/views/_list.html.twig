@@ -1,0 +1,70 @@
+{% block mediaList %}
+    {% if isModal is not defined %}
+    {% set isModal = false %}
+    {% endif %}
+
+    {% if isCategory is not defined %}
+    {% set isCategory = false %}
+    {% endif %}
+
+    {% if isPagination is not defined %}
+    {% set isPagination = false %}
+    {% endif %}
+
+    {% if not (isModal) %}
+        <link rel="stylesheet" href="{{ asset('bundles/btnmedia/js/fineUploader/fineuploader.css') }}">
+    {% endif %}
+    {% if isPagination == false %}
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    {% endif %}
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/btnmedia/css/admin.css') }}?v2">
+    {% endblock %}
+
+    <div class="clearfix {% if isModal and not expanded %}span5{% else %}span12{% endif %} {% if isCategory %}categories{% endif %}" id="bitnoise-media-list" data-remove-url="{{ url('cp_media_delete') }}" data-edit-url="{{ url('cp_media_edit') }}" data-pagination-url="{{url('cp_media_list_modal_content')}}">
+        {% for entity in pagination %}
+            <div class="item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}" data-id="{{ entity.id }}"  data-toggle="{{ entity.name }}" >
+                <img
+                        src="{{ ( ( entity.fileExt == 'pdf' ) ? entity.defaultFilePath : entity.file ) | imagine_filter('btn_media_thumb') }}"
+                        class="img-polaroid"
+                        data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}"
+                        />
+                {% if not (isModal) %}
+                <img class="hidden original" src="{{ asset(entity.file) }}" />
+                <a href="#" class="btn btn-small btn-danger delete">&#10008;</a>
+                <div class="input-group">
+                    <input type="text" class="form-control" data-type="name" placeholder="Media name" value="{{ entity.name }}">
+                    <span class="input-group-btn">
+                      <a href="#" class="btn btn-success submit">&#10004;</a>
+                    </span>
+                </div>
+                <div class="input-group">
+                    <input type="text" class="form-control" data-type="description" placeholder="Media description" value="{{ entity.description }}">
+                    <span class="input-group-btn">
+                      <a href="#" class="btn btn-success submit">&#10004;</a>
+                    </span>
+                </div>
+                <div class="input-group">
+                    <select class="set-category">
+                      <option value="0">choose category</option>
+                      {% for category in categories %}
+                      <option {% if category == entity.category %}selected="selected"{% endif %} value="{{category.id}}">{{category.name}}</option>
+                      {% endfor %}
+                    </select>
+                </div>
+                {% else %}
+                    <p class="media-file-name {{ entity.fileExt }}" title="{{ entity.name }}" >{{ entity.file }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    {{ knp_pagination_render(pagination) }}
+
+    {% if isPagination == false %}
+                <script>window.jQuery || document.write('<script src="{{ asset('js/jquery.js') }}"><\/script>')</script>
+                <script src="{{ asset('js/bootstrap.js') }}"></script>
+                <script data-remote-url="{{url('cp_media_list_modal')}}" src="{{ asset('bundles/btnmedia/js/modal.js') }}"></script>
+    {% endif %}
+
+{% endblock %}

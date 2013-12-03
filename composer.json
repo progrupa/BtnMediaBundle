@@ -1,0 +1,31 @@
+{
+    "name": "bitnoise/media-bundle",
+    "type": "symfony-bundle",
+    "description": "",
+    "keywords": [ "bitnoise", "cms", "media"],
+    "homepage": "https://github.com/Bitnoise/BtnMediaBundle",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Bitnoise Team",
+            "homepage": "http://www.bitnoi.se/",
+            "email": "labs@bitnoi.se"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.*",
+        "bitnoise/base-bundle": "dev-sf23"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "https://github.com/Bitnoise/BtnBaseBundle.git"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Btn\\MediaBundle": "" }
+    },
+    "target-dir": "Btn/MediaBundle"
+}

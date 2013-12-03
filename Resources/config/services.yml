@@ -1,0 +1,22 @@
+services:
+    liip_imagine.data.loader.stream.btn_media:
+        class: "%liip_imagine.data.loader.stream.class%"
+        arguments:
+            - "@liip_imagine"
+            - 'gaufrette://btn_media/'
+        tags:
+            - { name: 'liip_imagine.data.loader', loader: 'stream.btn_media' }
+    manager.mediafile:
+        class: Btn\MediaBundle\Model\MediaFileManager
+        arguments:
+            em:          '@doctrine.orm.entity_manager'
+            paginator:   '@knp_paginator'
+            twig:        '@twig'
+            formFactory: '@form.factory'
+            container:   '@service_container'
+            gaufrette:   '@knp_gaufrette.filesystem_map'
+    extension.mediafile:
+        class: Btn\MediaBundle\Twig\MediaFileExtension
+        arguments: [ @manager.mediafile ]
+        tags:
+            - { name: twig.extension }
