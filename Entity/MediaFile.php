@@ -77,7 +77,7 @@ class MediaFile extends File
      * Set name
      *
      * @param string $name
-     * @return RestaurantFile
+     * @return MediaFile
      */
     public function setName($name)
     {
@@ -142,7 +142,7 @@ class MediaFile extends File
     }
 
     /**
-     * 
+     *
      */
     public function getFileExt()
     {
@@ -152,34 +152,11 @@ class MediaFile extends File
     }
 
     /**
-     * 
+     *
      */
     public function getDefaultFilePath()
     {
         return 'no_preview.jpg';
-    }
-
-    /**
-     * Set restaurant
-     *
-     * @param \Bostons\ControlBundle\Entity\Restaurant $restaurant
-     * @return RestaurantFile
-     */
-    public function setRestaurant(\Bostons\ControlBundle\Entity\Restaurant $restaurant = null)
-    {
-        $this->restaurant = $restaurant;
-
-        return $this;
-    }
-
-    /**
-     * Get restaurant
-     *
-     * @return \Bostons\ControlBundle\Entity\Restaurant
-     */
-    public function getRestaurant()
-    {
-        return $this->restaurant;
     }
 
     /**
