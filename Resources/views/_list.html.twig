@@ -22,9 +22,9 @@
         <link rel="stylesheet" href="{{ asset('bundles/btnmedia/css/admin.css') }}?v2">
     {% endblock %}
 
-    <div class="clearfix {% if isModal and not expanded %}span5{% else %}span12{% endif %} {% if isCategory %}categories{% endif %}" id="bitnoise-media-list" data-remove-url="{{ url('cp_media_delete') }}" data-edit-url="{{ url('cp_media_edit') }}" data-pagination-url="{{url('cp_media_list_modal_content')}}">
+    <div class="clearfix {% if isModal and not expanded %}col-md-5{% else %}col-md-12{% endif %} {% if isCategory %}categories{% endif %}" id="bitnoise-media-list" data-remove-url="{{ url('cp_media_delete') }}" data-edit-url="{{ url('cp_media_edit') }}" data-pagination-url="{{url('cp_media_list_modal_content')}}">
         {% for entity in pagination %}
-            <div class="item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}" data-id="{{ entity.id }}"  data-toggle="{{ entity.name }}" >
+            <div class="col-md-3 item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}" data-id="{{ entity.id }}"  data-toggle="{{ entity.name }}" >
                 <img
                         src="{{ ( ( entity.fileExt == 'pdf' ) ? entity.defaultFilePath : entity.file ) | imagine_filter('btn_media_thumb') }}"
                         class="img-polaroid"
@@ -46,7 +46,7 @@
                     </span>
                 </div>
                 <div class="input-group">
-                    <select class="set-category">
+                    <select class="set-category form-control">
                       <option value="0">choose category</option>
                       {% for category in categories %}
                       <option {% if category == entity.category %}selected="selected"{% endif %} value="{{category.id}}">{{category.name}}</option>

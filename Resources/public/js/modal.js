@@ -1,5 +1,4 @@
 (function ($) {
-
 	if(typeof window.btnMedia === 'object') {
 		return false;
 	}
@@ -12,7 +11,7 @@
 		var openedFrom 		= null;
 		var paginationUrl 	= '';
 		var modalUrl 		= $('script[data-remote-url]').attr('data-remote-url');
-		var mediaSelects 	= $('select.btn-media');
+		var mediaSelects 	= $('input.btn-media');
 
 		if(typeof modalUrl === 'undefined') {
 			console.log('No modal url specified');
@@ -76,7 +75,7 @@
 		};
 
 		var callback = function(id) {
-			var select 	= $(openedFrom).prev('select.btn-media');
+			var select 	= $(openedFrom).prev('input.btn-media');
 
 			select.val(id);
 			updateButton(openedFrom, select);

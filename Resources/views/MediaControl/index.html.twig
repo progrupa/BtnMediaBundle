@@ -2,39 +2,41 @@
 {% extends '::control.html.twig' %}
 
 {% block content %}
-
-    <div class="row-fluid">
-        <div class="span3" >
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3" >
             {% include 'BtnMediaBundle::_categories.html.twig' with {pagination: pagination, category_active: category|default({id:0})}  %}
             {% include 'BtnMediaBundle::_addCategoryBtn.html.twig' %}
         </div>
-        <div class="span9" >
+        <div class="col-md-9" >
             {% include 'BtnMediaBundle::_list.html.twig' with {pagination: pagination}  %}
             {% if category is defined and category is not null %}
                 {% include 'BtnMediaBundle::_mediaFileUploadBtn.html.twig' %}
             {% endif %}
         </div>
     </div>
+</div>
+{% endblock %}
 
-    <script>window.jQuery || document.write('<script src="{{ asset('js/jquery.js') }}"><\/script>')</script>
-
+{% block javascripts %}
+    {{ parent() }}
     {% javascripts
-    'bundles/btnmedia/js/fineUploader/js/header.js'
-    'bundles/btnmedia/js/fineUploader/js/util.js'
-    'bundles/btnmedia/js/fineUploader/js/button.js'
-    'bundles/btnmedia/js/fineUploader/js/handler.base.js'
-    'bundles/btnmedia/js/fineUploader/js/handler.form.js'
-    'bundles/btnmedia/js/fineUploader/js/handler.xhr.js'
-    'bundles/btnmedia/js/fineUploader/js/uploader.basic.js'
-    'bundles/btnmedia/js/fineUploader/js/dnd.js'
-    'bundles/btnmedia/js/fineUploader/js/uploader.js'
-    'bundles/btnmedia/js/fineUploader/js/jquery-plugin.js'
+        'bundles/btnmedia/js/fineUploader/js/header.js'
+        'bundles/btnmedia/js/fineUploader/js/util.js'
+        'bundles/btnmedia/js/fineUploader/js/button.js'
+        'bundles/btnmedia/js/fineUploader/js/handler.base.js'
+        'bundles/btnmedia/js/fineUploader/js/handler.form.js'
+        'bundles/btnmedia/js/fineUploader/js/handler.xhr.js'
+        'bundles/btnmedia/js/fineUploader/js/uploader.basic.js'
+        'bundles/btnmedia/js/fineUploader/js/dnd.js'
+        'bundles/btnmedia/js/fineUploader/js/uploader.js'
+        'bundles/btnmedia/js/fineUploader/js/jquery-plugin.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
     <script src="{{ asset('bundles/btnmedia/js/jq.mediaUploader.js') }}"></script>
-    <script src="{{ asset('bundles/btnmedia/js/default.admin.js') }}"></script>
+        <script src="{{ asset('bundles/btnmedia/js/default.admin.js') }}"></script>
 {% endblock %}
 
 {% block breadcrumb %}

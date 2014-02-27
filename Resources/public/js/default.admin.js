@@ -75,7 +75,7 @@
 	}
 
 	var onAddNewCategoryClick = function() {
-		$(this).siblings('span').removeClass('hidden');
+		$(this).siblings('div').removeClass('hidden');
 		return false;
 	};
 
