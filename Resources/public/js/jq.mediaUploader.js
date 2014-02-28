@@ -1,4 +1,5 @@
-;(function ( $, window, document, undefined ) {
+;
+(function ($, window, document, undefined) {
 
     // Create the defaults once
     var pluginName = 'mediaUploader',
@@ -7,13 +8,13 @@
         };
 
     // The actual plugin constructor
-    function Plugin( element, options ) {
+    function Plugin (element, options) {
         this.element = element;
 
-        this.options = $.extend( {}, defaults, options) ;
+        this.options = $.extend({}, defaults, options);
 
-        this._defaults    = defaults;
-        this._name        = pluginName;
+        this._defaults = defaults;
+        this._name = pluginName;
 
         this.init();              //initialize
     }
@@ -27,41 +28,41 @@
         this.attachUploader();
     };
 
-    Plugin.prototype.attachUploader = function() {
+    Plugin.prototype.attachUploader = function () {
 
-        var self        = this;
+        var self = this;
 
-        //attach uploadr
+        //attach uploader
         $(self.element).fineUploader({
-            // debug:    true,
-            multiple: $(self.element).attr('data-multiple') == 'true' ? true : false,
-            text: {
-                uploadButton: 'Upload media'
+            debug : $(self.element).attr('data-debug') == 'true',
+            multiple : $(self.element).attr('data-multiple') == 'true',
+            text : {
+                uploadButton : $(self.element).attr('data-button-upload-text') || 'Upload media'
             },
-            validation: {
-                sizeLimit: 0,
-                allowedExtensions: ['pdf', 'jpeg', 'jpg', 'png']
+            validation : {
+                sizeLimit : 0,
+                allowedExtensions : ['pdf', 'jpeg', 'jpg', 'png']
             },
-            request: {
-                endpoint: $(self.element).attr('data-href'),
-                params:   {categoryId:  $(self.element).attr('data-category-id')}
+            request : {
+                endpoint : $(self.element).attr('data-href'),
+                params : {
+                    categoryId : $(self.element).attr('data-category-id')
+                }
             }
-        }).on('complete', function(event, id, filename, responseJSON){
-            // console.log(responseJSON);
-            //update view? reload?
+        }).on('allComplete', function (e, succeeded, failed) {
             window.location.reload();
         });
-
     };
 
     // A plugin wrapper around the constructor,
-    $.fn[pluginName] = function ( options ) {
+    $.fn[pluginName] = function (options) {
         return this.each(function () {
             if (!$.data(this, 'plugin_' + pluginName)) {
                 $.data(this, 'plugin_' + pluginName,
-                new Plugin( this, options ));
+                    new Plugin(this, options));
             }
         });
     };
 
-})( jQuery, window, document );
+})(jQuery, window, document);
+

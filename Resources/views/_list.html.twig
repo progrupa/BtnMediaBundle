@@ -24,14 +24,15 @@
 
     <div class="clearfix {% if isModal and not expanded %}col-md-5{% else %}col-md-12{% endif %} {% if isCategory %}categories{% endif %}" id="bitnoise-media-list" data-remove-url="{{ url('cp_media_delete') }}" data-edit-url="{{ url('cp_media_edit') }}" data-pagination-url="{{url('cp_media_list_modal_content')}}">
         {% for entity in pagination %}
-            <div class="col-md-3 item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}" data-id="{{ entity.id }}"  data-toggle="{{ entity.name }}" >
-                <img
-                        src="{{ ( ( entity.fileExt == 'pdf' ) ? entity.defaultFilePath : entity.file ) | imagine_filter('btn_media_thumb') }}"
-                        class="img-polaroid"
-                        data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}"
-                        />
+            <div class="col-md-3 item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}">
+                <img src="{{ ( ( entity.fileExt == 'pdf' ) ? entity.defaultFilePath : entity.file ) | imagine_filter('btn_media_thumb') }}"
+                     class="img-polaroid"
+                     data-id="{{ entity.id }}"
+                     data-filename="{{ entity.name }}"
+                     data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}"
+                />
                 {% if not (isModal) %}
-                <img class="hidden original" src="{{ asset(entity.file) }}" />
+                <img class="hidden original" src="{{ asset(entity.path) }}" />
                 <a href="#" class="btn btn-small btn-danger delete">&#10008;</a>
                 <div class="input-group">
                     <input type="text" class="form-control" data-type="name" placeholder="Media name" value="{{ entity.name }}">
@@ -54,7 +55,7 @@
                     </select>
                 </div>
                 {% else %}
-                    <p class="media-file-name {{ entity.fileExt }}" title="{{ entity.name }}" >{{ entity.file }}</p>
+                <p class="media-file-name {{ entity.fileExt }}" title="{{ entity.name }}" >{{ entity.file }}</p>
                 {% endif %}
             </div>
         {% endfor %}
@@ -62,9 +63,9 @@
     {{ knp_pagination_render(pagination) }}
 
     {% if isPagination == false %}
-                <script>window.jQuery || document.write('<script src="{{ asset('js/jquery.js') }}"><\/script>')</script>
-                <script src="{{ asset('js/bootstrap.js') }}"></script>
-                <script data-remote-url="{{url('cp_media_list_modal')}}" src="{{ asset('bundles/btnmedia/js/modal.js') }}"></script>
+        <script>window.jQuery || document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"><\/script>')</script>
+        <script src="{{ asset('js/bootstrap.js') }}"></script>
+        <script data-remote-url="{{url('cp_media_list_modal')}}" src="{{ asset('bundles/btnmedia/js/modal.js') }}"></script>
     {% endif %}
 
 {% endblock %}

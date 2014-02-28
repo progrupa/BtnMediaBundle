@@ -1,6 +1,7 @@
 {% block mediaFileUploadBtn %}
-    <a data-category-id="{{ category is defined and category is not null ? category.id : 0 }}"
-        class="btn btn-primary bitnoise-media-uploader"
-        data-multiple="false"
-        data-href="{{ path('cp_media_upload') }}">Upload media</a>
+    <div class="bitnoise-media-uploader"
+       data-category-id="{{ category is defined and category is not null ? category.id : 0 }}"
+       data-multiple="true"
+       data-href="{{ path('cp_media_upload') }}"
+    ></div>
 {% endblock %}

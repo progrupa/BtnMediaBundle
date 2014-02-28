@@ -1,54 +1,28 @@
-/*globals qq, document, setTimeout*/
-/*jslint white: true*/
-qq.UploadHandlerForm = function(o, uploadCompleteCallback, logCallback) {
+/*globals qq*/
+/**
+ * Upload handler used that assumes the current user agent does not have any support for the
+ * File API, and, therefore, makes use of iframes and forms to submit the files directly to
+ * a generic server.
+ *
+ * @param options Options passed from the base handler
+ * @param proxy Callbacks & methods used to query for or push out data/changes
+ */
+qq.UploadHandlerForm = function(options, proxy) {
     "use strict";
 
-    var options = o,
-        inputs = [],
-        uuids = [],
-        detachLoadEvents = {},
+    var handler = this,
+        uploadCompleteCallback = proxy.onUploadComplete,
+        onUuidChanged = proxy.onUuidChanged,
+        getName = proxy.getName,
+        getUuid = proxy.getUuid,
         uploadComplete = uploadCompleteCallback,
-        log = logCallback,
-        api;
+        log = proxy.log;
 
-    function attachLoadEvent(iframe, callback) {
-        /*jslint eqeq: true*/
-
-        detachLoadEvents[iframe.id] = qq(iframe).attach('load', function(){
-            log('Received response for ' + iframe.id);
-
-            // when we remove iframe from dom
-            // the request stops, but in IE load
-            // event fires
-            if (!iframe.parentNode){
-                return;
-            }
-
-            try {
-                // fixing Opera 10.53
-                if (iframe.contentDocument &&
-                    iframe.contentDocument.body &&
-                    iframe.contentDocument.body.innerHTML == "false"){
-                    // In Opera event is fired second time
-                    // when body.innerHTML changed from false
-                    // to server response approx. after 1 sec
-                    // when we upload file with iframe
-                    return;
-                }
-            }
-            catch (error) {
-                //IE may throw an "access is denied" error when attempting to access contentDocument on the iframe in some cases
-                log('Error when attempting to access iframe during handling of upload response (' + error + ")", 'error');
-            }
-
-            callback();
-        });
-    }
 
     /**
      * Returns json object received by iframe from server.
      */
-    function getIframeContentJson(iframe) {
+    function getIframeContentJson(id, iframe) {
         /*jshint evil: true*/
 
         var response;
@@ -57,17 +31,19 @@ qq.UploadHandlerForm = function(o, uploadCompleteCallback, logCallback) {
         try {
             // iframe.contentWindow.document - for IE<7
             var doc = iframe.contentDocument || iframe.contentWindow.document,
-                innerHTML = doc.body.innerHTML;
+                innerHtml = doc.body.innerHTML;
 
             log("converting iframe's innerHTML to JSON");
-            log("innerHTML = " + innerHTML);
+            log("innerHTML = " + innerHtml);
             //plain text response may be wrapped in <pre> tag
-            if (innerHTML && innerHTML.match(/^<pre/i)) {
-                innerHTML = doc.body.firstChild.firstChild.nodeValue;
+            if (innerHtml && innerHtml.match(/^<pre/i)) {
+                innerHtml = doc.body.firstChild.firstChild.nodeValue;
             }
-            response = eval("(" + innerHTML + ")");
-        } catch(error){
-            log('Error when attempting to parse form upload response (' + error + ")", 'error');
+
+            response = handler._parseJsonResponse(id, innerHtml);
+        }
+        catch(error) {
+            log("Error when attempting to parse form upload response (" + error.message + ")", "error");
             response = {success: false};
         }
 
@@ -75,128 +51,69 @@ qq.UploadHandlerForm = function(o, uploadCompleteCallback, logCallback) {
     }
 
     /**
-     * Creates iframe with unique name
-     */
-    function createIframe(id){
-        // We can't use following code as the name attribute
-        // won't be properly registered in IE6, and new window
-        // on form submit will open
-        // var iframe = document.createElement('iframe');
-        // iframe.setAttribute('name', id);
-
-        var iframe = qq.toElement('<iframe src="javascript:false;" name="' + id + '" />');
-        // src="javascript:false;" removes ie6 prompt on https
-
-        iframe.setAttribute('id', id);
-
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-
-        return iframe;
-    }
-
-    /**
      * Creates form, that will be submitted to iframe
      */
     function createForm(id, iframe){
-        var params = options.paramsStore.getParams(id),
-            protocol = options.demoMode ? "GET" : "POST",
-            form = qq.toElement('<form method="' + protocol + '" enctype="multipart/form-data"></form>'),
-            endpoint = options.endpointStore.getEndpoint(id),
-            url = endpoint;
+        var params = options.paramsStore.get(id),
+            method = options.demoMode ? "GET" : "POST",
+            endpoint = options.endpointStore.get(id),
+            name = getName(id);
 
-        params[options.uuidParamName] = uuids[id];
+        params[options.uuidName] = getUuid(id);
+        params[options.filenameParam] = name;
 
-        if (!options.paramsInBody) {
-            url = qq.obj2url(params, endpoint);
-        }
-        else {
-            qq.obj2Inputs(params, form);
-        }
-
-        form.setAttribute('action', url);
-        form.setAttribute('target', iframe.name);
-        form.style.display = 'none';
-        document.body.appendChild(form);
-
-        return form;
+        return handler._initFormForUpload({
+            method: method,
+            endpoint: endpoint,
+            params: params,
+            paramsInBody: options.paramsInBody,
+            targetName: iframe.name
+        });
     }
 
-
-    api = {
-        add: function(fileInput) {
-            fileInput.setAttribute('name', options.inputName);
-
-            var id = inputs.push(fileInput) - 1;
-            uuids[id] = qq.getUniqueId();
-
-            // remove file input from DOM
-            if (fileInput.parentNode){
-                qq(fileInput).remove();
+    qq.extend(this, new qq.AbstractUploadHandlerForm({
+            options: {
+                isCors: options.cors.expected,
+                inputName: options.inputName
+            },
+        
+            proxy: {
+                onCancel: options.onCancel,
+                onUuidChanged: onUuidChanged,
+                getName: getName,
+                getUuid: getUuid,
+                log: log
             }
+        }
+    ));
 
-            return id;
-        },
-        getName: function(id) {
-            /*jslint regexp: true*/
-
-            // get input value and remove path to normalize
-            return inputs[id].value.replace(/.*(\/|\\)/, "");
-        },
-        isValid: function(id) {
-            return inputs[id] !== undefined;
-        },
-        reset: function() {
-            qq.UploadHandler.prototype.reset.apply(this, arguments);
-            inputs = [];
-            uuids = [];
-            detachLoadEvents = {};
-        },
-        getUuid: function(id) {
-            return uuids[id];
-        },
-        cancel: function(id) {
-            options.onCancel(id, this.getName(id));
-
-            delete inputs[id];
-            delete uuids[id];
-            delete detachLoadEvents[id];
-
-            var iframe = document.getElementById(id);
-            if (iframe) {
-                // to cancel request set src to something else
-                // we use src="javascript:false;" because it doesn't
-                // trigger ie6 prompt on https
-                iframe.setAttribute('src', 'java' + String.fromCharCode(115) + 'cript:false;'); //deal with "JSLint: javascript URL" warning, which apparently cannot be turned off
-
-                qq(iframe).remove();
-            }
-        },
-        upload: function(id){
-            var input = inputs[id],
-                fileName = api.getName(id),
-                iframe = createIframe(id),
-                form = createForm(id, iframe);
+    qq.extend(this, {
+        upload: function(id) {
+            var input = handler._getFileState(id).input,
+                fileName = getName(id),
+                iframe = handler._createIframe(id),
+                form;
 
             if (!input){
-                throw new Error('file with passed id was not added, or already uploaded or cancelled');
+                throw new Error("file with passed id was not added, or already uploaded or canceled");
             }
 
-            options.onUpload(id, this.getName(id));
+            options.onUpload(id, getName(id));
 
+            form = createForm(id, iframe);
             form.appendChild(input);
 
-            attachLoadEvent(iframe, function(){
-                log('iframe loaded');
+            handler._attachLoadEvent(iframe, function(responseFromMessage){
+                log("iframe loaded");
 
-                var response = getIframeContentJson(iframe);
+                var response = responseFromMessage ? responseFromMessage : getIframeContentJson(id, iframe);
 
-                // timeout added to fix busy state in FF3.6
-                setTimeout(function(){
-                    detachLoadEvents[id]();
-                    delete detachLoadEvents[id];
+                handler._detachLoadEvent(id);
+
+                //we can't remove an iframe if the iframe doesn't belong to the same domain
+                if (!options.cors.expected) {
                     qq(iframe).remove();
-                }, 1);
+                }
 
                 if (!response.success) {
                     if (options.onAutoRetry(id, fileName, response)) {
@@ -207,13 +124,9 @@ qq.UploadHandlerForm = function(o, uploadCompleteCallback, logCallback) {
                 uploadComplete(id);
             });
 
-            log('Sending upload request for ' + id);
+            log("Sending upload request for " + id);
             form.submit();
             qq(form).remove();
-
-            return id;
         }
-    };
-
-    return api;
+    });
 };
