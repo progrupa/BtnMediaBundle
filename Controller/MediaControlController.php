@@ -31,8 +31,8 @@ class MediaControlController extends BaseController
      */
     public function indexAction(Request $request)
     {
-        $data                   = $this->getListData($request);
-        $data['isPagination']   = TRUE;
+        $data                 = $this->getListData($request);
+        $data['isPagination'] = TRUE;
 
         return $data;
     }
@@ -43,12 +43,12 @@ class MediaControlController extends BaseController
      **/
     public function listModalAction(Request $request)
     {
-        $separated          = $request->get('separated');
-        $data               = $this->getListData($request, TRUE);
+        $expanded = $request->get('expanded');
+        $data     = $this->getListData($request, TRUE);
 
-        $data['isModal']            = TRUE;
-        $data['isPagination']       = ($separated != NULL) ? !$separated : TRUE;
-        $data['expanded']           = ($separated != NULL) ? $separated : FALSE;
+        $data['isModal']      = TRUE;
+        $data['isPagination'] = !$expanded;
+        $data['expanded']     = $expanded;
 
         return $data;
     }
@@ -59,11 +59,11 @@ class MediaControlController extends BaseController
      **/
     public function listModalContentAction(Request $request)
     {
-        $category               = $request->get('category');
-        $data                   = $this->getListData($request, ($category == NULL));
-        $data['isModal']        = TRUE;
-        $data['isPagination']   = TRUE;
-        $data['expanded']       = FALSE;
+        $category             = $request->get('category');
+        $data                 = $this->getListData($request, ($category == NULL));
+        $data['isModal']      = TRUE;
+        $data['isPagination'] = TRUE;
+        $data['expanded']     = FALSE;
 
         return $data;
     }
@@ -76,13 +76,13 @@ class MediaControlController extends BaseController
     {
         $result = TRUE;
 
-        try{
+        try {
             $type   = $request->get('type');
             $method = 'set' . ucfirst($type);
             $value  = $request->get('value');
             $entity = $this->getRepository('BtnMediaBundle:MediaFile')->findOneById($request->get('id'));
 
-            if($type == 'category') {
+            if ($type == 'category') {
                 $value = ($value > 0) ?
                     $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($value) : NULL;
             }
@@ -92,8 +92,7 @@ class MediaControlController extends BaseController
             $em = $this->getManager();
             $em->persist($entity);
             $em->flush();
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             $result = $e->getMessage();
         }
 
@@ -112,8 +111,7 @@ class MediaControlController extends BaseController
             $em = $this->getManager();
             $em->remove($entity);
             $em->flush();
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             $result = $e->getMessage();
         }
 
@@ -128,7 +126,7 @@ class MediaControlController extends BaseController
         $categoryId = $request->get('categoryId');
         $category   = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($categoryId);
 
-        $mediaFile  = new MediaFile();
+        $mediaFile = new MediaFile();
 
         //upload using upload manager
         $uploader            = new qqFileUploader();
@@ -136,7 +134,7 @@ class MediaControlController extends BaseController
         $result              = $uploader->handleUpload($mediaFile->getUploadRootDir());
 
         // To return a name used for uploaded file you can use the following line.
-        $result['uploadName']   = $uploader->getUploadName();
+        $result['uploadName'] = $uploader->getUploadName();
 
         /*
         * 0. remove file when remove entity?
@@ -172,7 +170,7 @@ class MediaControlController extends BaseController
 
             $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
 
-            if(!file_exists($mediaFile->getMediaPath())) {
+            if (!file_exists($mediaFile->getMediaPath())) {
                 die($mediaFile->getMediaPath());
             }
 
@@ -204,10 +202,10 @@ class MediaControlController extends BaseController
         $categoryId = $request->get('id');
         $category   = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($categoryId);
 
-        $data                   = $this->getListData($request, FALSE, $category);
-        $data['isPagination']   = TRUE;
-        $data['isCategory']     = TRUE;
-        $data['category']       = $category;
+        $data                 = $this->getListData($request, FALSE, $category);
+        $data['isPagination'] = TRUE;
+        $data['isCategory']   = TRUE;
+        $data['category']     = $category;
 
         return $data;
     }
@@ -225,8 +223,7 @@ class MediaControlController extends BaseController
             $em = $this->getManager();
             $em->persist($mediaFileCategory);
             $em->flush();
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             $result = $e->getMassage();
         }
 
@@ -250,7 +247,7 @@ class MediaControlController extends BaseController
 
     private function getListData($request, $all = FALSE, $category = NULL)
     {
-        if($category == NULL) {
+        if ($category == NULL) {
             $category = $request->get('category');
         }
 

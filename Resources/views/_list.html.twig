@@ -22,9 +22,9 @@
         <link rel="stylesheet" href="{{ asset('bundles/btnmedia/css/admin.css') }}?v2">
     {% endblock %}
 
-    <div class="clearfix {% if isModal and not expanded %}col-md-5{% else %}col-md-12{% endif %} {% if isCategory %}categories{% endif %}" id="bitnoise-media-list" data-remove-url="{{ url('cp_media_delete') }}" data-edit-url="{{ url('cp_media_edit') }}" data-pagination-url="{{url('cp_media_list_modal_content')}}">
+    <div class="col-md-12 {% if isCategory %}categories{% endif %}" id="bitnoise-media-list" data-remove-url="{{ url('cp_media_delete') }}" data-edit-url="{{ url('cp_media_edit') }}" data-pagination-url="{{url('cp_media_list_modal_content')}}">
         {% for entity in pagination %}
-            <div class="col-md-3 item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}">
+            <div class="col-md-3 item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}" data-id="{{ entity.id }}">
                 <img src="{{ ( ( entity.fileExt == 'pdf' ) ? entity.defaultFilePath : entity.file ) | imagine_filter('btn_media_thumb') }}"
                      class="img-polaroid"
                      data-id="{{ entity.id }}"
@@ -61,7 +61,7 @@
         {% endfor %}
     </div>
     {{ knp_pagination_render(pagination) }}
-
+    <div class="clearfix"></div>
     {% if isPagination == false %}
         <script>window.jQuery || document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"><\/script>')</script>
         <script src="{{ asset('js/bootstrap.js') }}"></script>

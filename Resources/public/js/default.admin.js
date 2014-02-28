@@ -1,8 +1,7 @@
 jQuery(function ($) {
     var mediaList = $('#bitnoise-media-list');
 
-    var newCategory = $('.btn-media-add-new-category');
-    var newCategoryInput = newCategory.find('.input');
+    var newCategory = $('.btn-media-add-category');
 
     var removeUrl = mediaList.attr('data-remove-url');
     var editUrl = mediaList.attr('data-edit-url');
@@ -25,9 +24,8 @@ jQuery(function ($) {
     }
 
     var onAddNewCategoryBtnClick = function () {
-        var addCategoryEl = $('.btn-media-add-category');
         var val = $(this).parent().find('input').val();
-        var url = addCategoryEl.attr('data-url');
+        var url = newCategory.attr('data-url');
 
         $.getJSON(url + '?name=' + val, function (response) {
             if (response.result) {
@@ -76,7 +74,7 @@ jQuery(function ($) {
     }
 
     var onAddNewCategoryClick = function () {
-        $(this).siblings('div').removeClass('hidden');
+        $(this).siblings('.hidden').removeClass('hidden');
         return false;
     };
 
@@ -98,7 +96,9 @@ jQuery(function ($) {
             url : removeUrl,
             type : 'GET',
             dataType : 'json',
-            data : {id : itemId},
+            data : {
+                id : itemId
+            },
             success : function (data, textStatus, xhr) {
                 if (data.result === true) {
                     $(item).fadeOut().remove();
