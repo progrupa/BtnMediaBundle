@@ -51,6 +51,11 @@ class MediaFileUploader
     private $uploadedFiles;
 
     /**
+     * @var string
+     */
+    private $cacheDirectory;
+
+    /**
      * @param EntityManager $em
      */
     public function __construct(EntityManager $em, $cacheDirectory)
