@@ -6,7 +6,7 @@ services:
             - 'gaufrette://btn_media/'
         tags:
             - { name: 'liip_imagine.data.loader', loader: 'stream.btn_media' }
-    manager.mediafile:
+    mediafile.manager:
         class: Btn\MediaBundle\Model\MediaFileManager
         arguments:
             em:          '@doctrine.orm.entity_manager'
@@ -17,6 +17,11 @@ services:
             gaufrette:   '@knp_gaufrette.filesystem_map'
     extension.mediafile:
         class: Btn\MediaBundle\Twig\MediaFileExtension
-        arguments: [ @manager.mediafile ]
+        arguments: [ '@mediafile.manager' ]
         tags:
             - { name: twig.extension }
+
+    mediafile.uploader:
+        class: Btn\MediaBundle\Model\MediaFileUploader
+        arguments: [ '@doctrine.orm.entity_manager', '%kernel.cache_dir%' ]
+

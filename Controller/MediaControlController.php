@@ -2,6 +2,7 @@
 
 namespace Btn\MediaBundle\Controller;
 
+use Btn\MediaBundle\Model\MediaFileUploader;
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local as LocalAdapter;
 
@@ -14,7 +15,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-use Btn\MediaBundle\Util\qqFileUploader;
 use Btn\MediaBundle\Entity\MediaFile;
 use Btn\MediaBundle\Entity\MediaFileCategory;
 
@@ -124,61 +124,18 @@ class MediaControlController extends BaseController
     public function uploadAction(Request $request)
     {
         $categoryId = $request->get('categoryId');
-        $category   = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($categoryId);
+        $category   = $this->getRepository('BtnMediaBundle:MediaFileCategory')->find($categoryId);
+        $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
 
-        $mediaFile = new MediaFile();
+        /** @var MediaFileUploader $uploader */
+        $uploader = $this->get('mediafile.uploader');
+        $uploader->setCategory($category);
+        $uploader->setFilesystem($filesystem);
+        $uploader->handleUpload($request->files->get('qqfile'));
 
-        //upload using upload manager
-        $uploader            = new qqFileUploader();
-        $uploader->sizeLimit = 1024 * 1024 * 1024;
-        $result              = $uploader->handleUpload($mediaFile->getUploadRootDir());
-
-        // To return a name used for uploaded file you can use the following line.
-        $result['uploadName'] = $uploader->getUploadName();
-
-        /*
-        * 0. remove file when remove entity?
-        * 1. remove file when uploading to s3?
-        * 2. getUploadRootDir for
-        *
-        * 3. use this if prod:
-                $adapter = new InMemoryAdapter(array('hello.txt' => 'Hello World!'));
-                $filesystem = new Filesystem($adapter);
-
-                $map = StreamWrapper::getFilesystemMap();
-                $map->set('foo', $filesystem);
-
-                StreamWrapper::register();
-
-                echo file_get_contents('gaufrette://foo/hello.txt'); // Says "Hello World!"
-
-        */
-
-        if (isset($result['success'])) {
-            $mediaFile->setName($result['uploadName']);
-            $mediaFile->setFile($result['uploadName']);
-
-            //add category if not null
-            if ($category) {
-                $mediaFile->setCategory($category);
-            }
-
-            /* @todo: add type detecting here */
-            $em = $this->getManager();
-            $em->persist($mediaFile);
-            $em->flush();
-
-            $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
-
-            if (!file_exists($mediaFile->getMediaPath())) {
-                die($mediaFile->getMediaPath());
-            }
-
-            $file = new \Gaufrette\File($result['uploadName'], $filesystem);
-            $file->setContent(file_get_contents($mediaFile->getMediaPath()));
-        }
-
-        return $this->json($result);
+        return $this->json(array(
+            'success' => $uploader->isSuccess()
+        ));
     }
 
     /**

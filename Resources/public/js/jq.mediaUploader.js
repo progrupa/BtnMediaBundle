@@ -41,7 +41,7 @@
             },
             validation : {
                 sizeLimit : 0,
-                allowedExtensions : ['pdf', 'jpeg', 'jpg', 'png']
+                allowedExtensions : ['pdf', 'jpeg', 'jpg', 'png', 'zip']
             },
             request : {
                 endpoint : $(self.element).attr('data-href'),
