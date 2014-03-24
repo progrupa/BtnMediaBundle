@@ -62,6 +62,11 @@ jQuery(function ($) {
     var bindModalNavigation = function () {
         bindPagination();
         bindCategoryFilter();
+
+        $('.close').bind('click', function(e) {
+            window.top.close();
+            window.top.opener.focus();
+        });
     };
 
     var bindModalBehaviors = function () {
