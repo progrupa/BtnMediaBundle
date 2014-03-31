@@ -18,6 +18,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Btn\MediaBundle\Entity\MediaFile;
 use Btn\MediaBundle\Entity\MediaFileCategory;
 
+use Exception;
+
 /**
  * News controller.
  *
@@ -80,11 +82,10 @@ class MediaControlController extends BaseController
             $type   = $request->get('type');
             $method = 'set' . ucfirst($type);
             $value  = $request->get('value');
-            $entity = $this->getRepository('BtnMediaBundle:MediaFile')->findOneById($request->get('id'));
+            $entity = $this->getRepository('BtnMediaBundle:MediaFile')->find($request->get('id'));
 
             if ($type == 'category') {
-                $value = ($value > 0) ?
-                    $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($value) : NULL;
+                $value = $this->getRepository('BtnMediaBundle:MediaFileCategory')->find($value);
             }
 
             $entity->$method($value);

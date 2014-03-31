@@ -266,14 +266,20 @@ class MediaFileUploader
     private function saveUpload(UploadedFile $file)
     {
         $media     = new MediaFile();
-        $directory = $media->getUploadRootDir();
-        $basename  = $file->getClientOriginalName();
         $extension = $file->guessExtension();
-        $filename  = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), pathinfo($basename, PATHINFO_FILENAME));
+        $filename  = $basename = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
 
         if ($this->getReplaceOldFiles() == false) {
-            while (file_exists($directory . DIRECTORY_SEPARATOR . $filename . '.' . $extension)) {
-                $filename .= rand(0, 9);
+            $counter = 0;
+            if ($this->filesystem) {
+                while ($this->filesystem->has($filename . '.' . $extension)) {
+                    $filename = $basename . $counter++;
+                }
+            } else {
+                $directory = $media->getUploadRootDir();
+                while (file_exists($directory . DIRECTORY_SEPARATOR . $filename . '.' . $extension)) {
+                    $filename = $basename . $counter++;
+                }
             }
         }
 
@@ -285,7 +291,7 @@ class MediaFileUploader
         $media->setType($file->getMimeType());
 
         if ($this->filesystem) {
-            $gaufrette = new \Gaufrette\File($filename, $this->filesystem);
+            $gaufrette = $this->filesystem->get($filename, true);
             $gaufrette->setContent(file_get_contents($file->getRealPath()));
         } else {
             $file->move($media->getUploadRootDir(), $filename);
