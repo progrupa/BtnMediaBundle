@@ -1,6 +1,6 @@
 services:
     liip_imagine.data.loader.stream.btn_media:
-        class: "%liip_imagine.data.loader.stream.class%"
+        class: "%liip_imagine.binary.loader.stream.class%"
         arguments:
             - 'gaufrette://btn_media/'
         tags:
