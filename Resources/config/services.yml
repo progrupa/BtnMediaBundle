@@ -4,7 +4,7 @@ services:
         arguments:
             - 'gaufrette://btn_media/'
         tags:
-            - { name: 'liip_imagine.data.loader', loader: 'stream.btn_media' }
+            - { name: 'liip_imagine.binary.loader', loader: 'stream.btn_media' }
     mediafile.manager:
         class: Btn\MediaBundle\Model\MediaFileManager
         arguments:
