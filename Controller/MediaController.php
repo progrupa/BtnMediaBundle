@@ -42,7 +42,7 @@ class MediaController extends BaseController
         return $this->render($params['template'], $data);
     }
 
-    private function getListData($request, $all = FALSE, $category = NULL)
+    protected function getListData($request, $all = FALSE, $category = NULL)
     {
         $method     = ($all) ? 'findAll' : 'findByCategory';
         $categories = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findAll();
