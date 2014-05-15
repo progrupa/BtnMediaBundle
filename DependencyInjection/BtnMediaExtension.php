@@ -25,6 +25,12 @@ class BtnMediaExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('BtnMediaBundle', $config);
+        $config['template'] = isset($config['template']) ? $config['template'] : 'BtnMediaBundle:Media:category.html.twig';
+
+        $container->setParameter('btn_media', $config);
+
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
+        $loader->load('services.yml');
     }
 }

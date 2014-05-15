@@ -58,3 +58,18 @@ assetic:
         #...
         - BtnMediaBundle
 ```
+### Step 6: For NodesBundle
+
+``` yml
+# services.yml
+    btn.media.content_provider:
+        class: Btn\MediaBundle\Service\MediaContentProvider
+        arguments:
+            router: '@router'
+            em:     '@doctrine.orm.entity_manager'
+```
+### Step 6: custom config
+``` yml
+    btn_newsletter:
+        template:        "BtnAppBundle::_newsletter.html.twig"
+```
