@@ -21,7 +21,7 @@ use Btn\MediaBundle\Entity\MediaFileCategory;
 use Exception;
 
 /**
- * News controller.
+ * Media controller.
  *
  * @Route("/control/media")
  */
