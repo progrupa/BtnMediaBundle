@@ -72,7 +72,7 @@ class MediaController extends BaseController
             // Set headers
             $response->headers->set('Cache-Control', 'private');
             $response->headers->set('Content-type', mime_content_type($filename));
-            $response->headers->set('Content-Disposition', 'attachment; filename="' . basename($entity->getName()) . '"');
+            $response->headers->set('Content-Disposition', 'attachment; filename="' . basename($entity->getName()) . ';"');
             $response->headers->set('Content-length', filesize($filename));
 
             // Send headers before outputting anything
