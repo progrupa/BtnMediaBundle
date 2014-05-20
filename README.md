@@ -69,11 +69,6 @@ assetic:
             router: '@router'
             em:     '@doctrine.orm.entity_manager'
 ```
-### Step 6: custom config
-``` yml
-    btn_newsletter:
-        template:        "BtnAppBundle::_newsletter.html.twig"
-```
 
 ### Step 7: add Gaufrette Configuration
 ``` yml
