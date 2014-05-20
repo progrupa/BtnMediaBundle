@@ -28,6 +28,7 @@ public function registerBundles()
     $bundles = array(
         // ...
         new Btn\MediaBundle\BtnMediaBundle(),
+        new Liip\ImagineBundle\LiipImagineBundle(),
         new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
     );
 }
