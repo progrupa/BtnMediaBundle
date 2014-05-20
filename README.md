@@ -28,6 +28,7 @@ public function registerBundles()
     $bundles = array(
         // ...
         new Btn\MediaBundle\BtnMediaBundle(),
+        new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
     );
 }
 ```
@@ -72,4 +73,21 @@ assetic:
 ``` yml
     btn_newsletter:
         template:        "BtnAppBundle::_newsletter.html.twig"
+```
+
+### Step 7: add Gaufrette Configuration
+``` yml
+# app/config/config.yml
+# Gaufrette Configuration
+knp_gaufrette:
+    adapters:
+        btn_media:
+            local:
+                directory: uploads/media
+                create: true
+    filesystems:
+        btn_media:
+            adapter: btn_media
+    stream_wrapper: ~
+
 ```
