@@ -28,6 +28,8 @@ public function registerBundles()
     $bundles = array(
         // ...
         new Btn\MediaBundle\BtnMediaBundle(),
+        new Liip\ImagineBundle\LiipImagineBundle(),
+        new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
     );
 }
 ```
@@ -57,4 +59,32 @@ assetic:
     bundles:
         #...
         - BtnMediaBundle
+```
+
+### Step 6: For NodesBundle
+
+``` yml
+# services.yml
+    btn.media.content_provider:
+        class: Btn\MediaBundle\Service\MediaContentProvider
+        arguments:
+            router: '@router'
+            em:     '@doctrine.orm.entity_manager'
+```
+
+### Step 7: add Gaufrette Configuration
+``` yml
+# app/config/config.yml
+# Gaufrette Configuration
+knp_gaufrette:
+    adapters:
+        btn_media:
+            local:
+                directory: uploads/media
+                create: true
+    filesystems:
+        btn_media:
+            adapter: btn_media
+    stream_wrapper: ~
+
 ```

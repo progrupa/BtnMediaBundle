@@ -16,7 +16,9 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.*",
-        "bitnoise/base-bundle": "dev-sf23"
+        "bitnoise/base-bundle": "dev-sf23",
+        "liip/imagine-bundle" : "dev-master#ea3395eb",
+        "knplabs/knp-gaufrette-bundle" : "0.2.*@dev"
     },
     "repositories": [
         {
