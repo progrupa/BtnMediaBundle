@@ -51,6 +51,11 @@ class MediaFileUploader
     private $uploadedFiles;
 
     /**
+     * @var array
+     */
+    private $uploadedMedias;
+
+    /**
      * @var string
      */
     private $cacheDirectory;
@@ -76,6 +81,7 @@ class MediaFileUploader
         $this->file              = null;
         $this->errors            = array();
         $this->uploadedFiles     = array();
+        $this->uploadedMedias    = array();
     }
 
     /**
@@ -298,6 +304,7 @@ class MediaFileUploader
         }
 
         $this->uploadedFiles[] = $filename;
+        $this->uploadedMedias[] = $media;
 
         $this->em->persist($media);
     }
@@ -391,5 +398,13 @@ class MediaFileUploader
         $this->em->flush();
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUploadedMedias()
+    {
+        return $this->uploadedMedias;
     }
 }
