@@ -105,4 +105,12 @@ class MediaFileCategory
     {
         return $this->files;
     }
+
+    /**
+     *
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
