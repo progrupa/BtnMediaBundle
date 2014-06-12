@@ -234,6 +234,14 @@ class MediaFile extends File
     }
 
     /**
+     * Get category name
+     */
+    public function getCategoryName()
+    {
+        return $this->category->getName();
+    }
+
+    /**
      * @ORM\PostRemove()
      */
     public function removeFile()
