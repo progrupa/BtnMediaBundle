@@ -24,11 +24,10 @@
 
     <div class="clearfix {% if isModal and not expanded %}span5{% else %}span12{% endif %} {% if isCategory %}categories{% endif %}" id="bitnoise-media-list" data-remove-url="{{ url('cp_media_delete') }}" data-edit-url="{{ url('cp_media_edit') }}" data-pagination-url="{{url('cp_media_list_modal_content')}}">
         {% for entity in pagination %}
-            <div class="item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}" data-id="{{ entity.id }}"  data-toggle="{{ entity.name }}" >
+            <div class="item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}" data-id="{{ entity.id }}"  data-toggle="{{ entity.name }}" data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}" >
                 <img
                         src="{{ ( ( entity.fileExt == 'pdf' ) ? entity.defaultFilePath : entity.file ) | imagine_filter('btn_media_thumb') }}"
                         class="img-polaroid"
-                        data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}"
                         />
                 {% if not (isModal) %}
                 <img class="hidden original" src="{{ asset(entity.file) }}" />
