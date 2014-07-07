@@ -91,22 +91,24 @@ jQuery(function ($) {
     var onDeleteButtonClick = function (event) {
         var item = $(this).parent('.item');
         var itemId = item.attr('data-id');
-
-        $.ajax({
-            url : removeUrl,
-            type : 'GET',
-            dataType : 'json',
-            data : {
-                id : itemId
-            },
-            success : function (data, textStatus, xhr) {
-                if (data.result === true) {
-                    $(item).fadeOut().remove();
-                } else {
-                    console.log(data.result);
+        var confirmation = confirm("Are you sure?");
+        if (confirmation === true) {
+            $.ajax({
+                url : removeUrl,
+                type : 'GET',
+                dataType : 'json',
+                data : {
+                    id : itemId
+                },
+                success : function (data, textStatus, xhr) {
+                    if (data.result === true) {
+                        $(item).fadeOut().remove();
+                    } else {
+                        console.log(data.result);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         return false;
     };
