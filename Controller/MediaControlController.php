@@ -45,12 +45,12 @@ class MediaControlController extends BaseController
      **/
     public function listModalAction(Request $request)
     {
-        $expanded = $request->get('expanded');
+        $separated = $request->get('separated');
         $data     = $this->getListData($request, TRUE);
 
         $data['isModal']      = TRUE;
-        $data['isPagination'] = !$expanded;
-        $data['expanded']     = $expanded;
+        $data['isPagination'] = !$separated;
+        $data['separated']    = $separated;
 
         return $data;
     }
@@ -65,7 +65,7 @@ class MediaControlController extends BaseController
         $data                 = $this->getListData($request, ($category == NULL));
         $data['isModal']      = TRUE;
         $data['isPagination'] = TRUE;
-        $data['expanded']     = FALSE;
+        $data['separated']    = FALSE;
 
         return $data;
     }

@@ -1,7 +1,7 @@
 {% block listModal %}
-<div {% if expanded == true %}class="expanded"{% endif %}>
-  <div  class="modal fade hide btn-media-modal" tabindex="-1" role="dialog" 
-        style="display: none; {% if expanded == true %}width: 100%; height: 100%; left: 0; top: 0; margin-left: 0;{% endif %}">
+<div {% if separated == true %}class="expanded"{% endif %}>
+  <div  class="modal fade hide btn-media-modal" tabindex="-1" role="dialog"
+        style="display: none; {% if separated == true %}width: 100%; height: 100%; left: 0; top: 0; margin-left: 0;{% endif %}">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -14,7 +14,7 @@
               {% endfor %}
             </select>
         </div>
-        <div class="modal-body" style="{% if expanded == true %}height: 70%;{% endif %}">
+        <div class="modal-body" style="{% if separated == true %}height: 70%;{% endif %}">
           {% include 'BtnMediaBundle::_list.html.twig' %}
         </div>
         <div class="modal-footer">
