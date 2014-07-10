@@ -135,7 +135,7 @@ class MediaFile extends File
         $extension = explode('.', $this->file);
         if ((is_array($extension) && isset($extension[1]) && strtolower($extension[1]) === 'pdf') || !file_exists($path)) {
             //TODO should be constants or from params ?
-            $path = 'images/no_preview.jpg';
+            $path = 'images/no_preview.jpeg';
         }
 
         return $path;
@@ -156,7 +156,7 @@ class MediaFile extends File
      */
     public function getDefaultFilePath()
     {
-        return 'no_preview.jpg';
+        return 'no_preview.jpeg';
     }
 
     /**
