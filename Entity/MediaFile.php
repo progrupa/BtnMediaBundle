@@ -86,16 +86,21 @@ class MediaFile extends File
         return $this;
     }
 
+    /**
+     *
+     */
     protected function getUploadDir()
     {
         return 'uploads/media';
     }
 
+    /**
+     *
+     */
     public function getMediaPath()
     {
         return $this->getUploadRootDir() . '/' . $this->file;
     }
-
 
     /**
      * Get name
@@ -205,6 +210,9 @@ class MediaFile extends File
         return $this->type;
     }
 
+    /**
+     *
+     */
     public function __toString()
     {
         return $this->getName();
@@ -253,6 +261,9 @@ class MediaFile extends File
         }
     }
 
+    /**
+     *
+     */
     public function getPath()
     {
         return $path = $this->getUploadDir() . DIRECTORY_SEPARATOR . $this->file;
