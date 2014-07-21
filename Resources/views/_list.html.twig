@@ -26,7 +26,7 @@
         {% for entity in pagination %}
             <div class="item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}" data-id="{{ entity.id }}"  data-toggle="{{ entity.name }}" data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}" >
                 <img
-                        src="{{ ( ( entity.fileExt == 'pdf' ) ? entity.defaultFilePath : entity.file ) | imagine_filter('btn_media_thumb') }}"
+                        src="{{ entity.previewFilePath|imagine_filter('btn_media_thumb') }}"
                         class="img-polaroid"
                         />
                 {% if not (isModal) %}

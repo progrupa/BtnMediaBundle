@@ -133,17 +133,6 @@ class MediaFile extends File
     public function getFile()
     {
         return $this->file;
-
-        //DEPRACATED
-        $path = $this->getPath();
-        //if file is PDF or is not accesible, render 'no preview'
-        $extension = substr($this->file, strrpos($this->file, '.')+1);
-        if (($extension && in_array(strtolower($extension), array('pdf', 'zip'))) || !file_exists($path)) {
-            //TODO should be constants or from params ?
-            $path = 'images/no_preview.jpg';
-        }
-
-        return $path;
     }
 
     /**
@@ -162,6 +151,19 @@ class MediaFile extends File
     public function getDefaultFilePath()
     {
         return 'no_preview.jpg';
+    }
+
+    /**
+     *
+     */
+    public function getPreviewFilePath()
+    {
+        $extension = $this->getFileExt();
+        if (($extension && in_array(strtolower($extension), array('pdf', 'zip')))) {
+            return $this->getDefaultFilePath();
+        }
+
+        return $this->getFile();
     }
 
     /**
