@@ -24,7 +24,7 @@
     margin: 5px;
 }
 
-#bitnoise-media-list .item img.selected {
+#bitnoise-media-list .item.selected img {
     border: 5px solid #006dcc;
     margin: 1px;
 }
