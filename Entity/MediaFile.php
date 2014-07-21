@@ -137,8 +137,8 @@ class MediaFile extends File
         //DEPRACATED
         $path = $this->getPath();
         //if file is PDF or is not accesible, render 'no preview'
-        $extension = explode('.', $this->file);
-        if ((is_array($extension) && isset($extension[1]) && strtolower($extension[1]) === 'pdf') || !file_exists($path)) {
+        $extension = substr($this->file, strrpos($this->file, '.')+1);
+        if (($extension && in_array(strtolower($extension), array('pdf', 'zip'))) || !file_exists($path)) {
             //TODO should be constants or from params ?
             $path = 'images/no_preview.jpg';
         }
