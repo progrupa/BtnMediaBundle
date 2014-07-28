@@ -24,7 +24,6 @@ services:
         class: Btn\MediaBundle\Model\MediaFileUploader
         arguments: [ '@doctrine.orm.entity_manager', '%kernel.cache_dir%' ]
 
-
     btn_mediabundle.form.type.medie:
         class: Btn\MediaBundle\Form\Type\MediaType
         tags:
