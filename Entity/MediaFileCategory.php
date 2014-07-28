@@ -72,7 +72,7 @@ class MediaFileCategory
     {
         $this->files = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Add files
      *
