@@ -64,6 +64,11 @@ class MediaFile extends File
     private $file;
 
     /**
+     *
+     */
+    private $previewExtensions = array('jpeg', 'jpg', 'png', 'gif');
+
+    /**
      * Get id
      *
      * @return integer
@@ -133,17 +138,6 @@ class MediaFile extends File
     public function getFile()
     {
         return $this->file;
-
-        //DEPRACATED
-        $path = $this->getPath();
-        //if file is PDF or is not accesible, render 'no preview'
-        $extension = explode('.', $this->file);
-        if ((is_array($extension) && isset($extension[1]) && strtolower($extension[1]) === 'pdf') || !file_exists($path)) {
-            //TODO should be constants or from params ?
-            $path = 'images/no_preview.jpeg';
-        }
-
-        return $path;
     }
 
     /**
@@ -162,6 +156,19 @@ class MediaFile extends File
     public function getDefaultFilePath()
     {
         return 'no_preview.jpeg';
+    }
+
+    /**
+     *
+     */
+    public function getPreviewFilePath()
+    {
+        $extension = $this->getFileExt();
+        if (($extension && !in_array(strtolower($extension), $this->previewExtensions))) {
+            return $this->getDefaultFilePath();
+        }
+
+        return $this->getFile();
     }
 
     /**
@@ -267,5 +274,21 @@ class MediaFile extends File
     public function getPath()
     {
         return $path = $this->getUploadDir() . DIRECTORY_SEPARATOR . $this->file;
+    }
+
+    /**
+     *
+     */
+    public function setPreviewExtensions(array $previewExtensions)
+    {
+        $this->previewExtensions = $previewExtensions;
+    }
+
+    /**
+     *
+     */
+    public function getPreviewExtensions()
+    {
+        return $this->previewExtensions;
     }
 }
