@@ -26,7 +26,7 @@ class Configuration implements ConfigurationInterface
         //
         $rootNode
             ->children()
-                ->scalarNode('template')->end()
+                ->scalarNode('template')->defaultValue('BtnMediaBundle:Media:category.html.twig')->end()
             ->end()
         ;
 
