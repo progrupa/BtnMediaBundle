@@ -27,6 +27,10 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('template')->defaultValue('BtnMediaBundle:Media:category.html.twig')->end()
+                ->arrayNode('allowed_extensions')
+                    ->defaultValue(array('jpeg', 'jpg', 'png', 'zip', 'pdf'))
+                    ->prototype('scalar')
+                ->end()
             ->end()
         ;
 

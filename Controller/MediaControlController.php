@@ -217,6 +217,8 @@ class MediaControlController extends BaseController
         $pagination = $this->get('knp_paginator')->paginate($entities, $request->get('page', 1), 6);
         $pagination->setTemplate('BtnCrudBundle:Pagination:default.html.twig');
 
-        return array('categories' => $categories, 'pagination' => $pagination);
+        $allowedExtensions = $this->container->getParameter('btn_media.allowed_extensions');
+
+        return array('categories' => $categories, 'pagination' => $pagination, 'allowed_extensions' => $allowedExtensions);
     }
 }

@@ -23,6 +23,8 @@ services:
     mediafile.uploader:
         class: Btn\MediaBundle\Model\MediaFileUploader
         arguments: [ '@doctrine.orm.entity_manager', '%kernel.cache_dir%' ]
+        calls:
+            - [setAllowedExtensions, ['%btn_media.allowed_extensions%']]
 
     btn_mediabundle.form.type.medie:
         class: Btn\MediaBundle\Form\Type\MediaType

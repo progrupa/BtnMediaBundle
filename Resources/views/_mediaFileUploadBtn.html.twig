@@ -3,5 +3,6 @@
        data-category-id="{{ category is defined and category is not null ? category.id : 0 }}"
        data-multiple="true"
        data-href="{{ path('cp_media_upload') }}"
+       data-allowed-extensions="{{ allowed_extensions|join(',') }}"
     ></div>
 {% endblock %}

@@ -23,6 +23,7 @@ class BtnMediaExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('btn_media', $config);
+        $container->setParameter('btn_media.allowed_extensions', $config['allowed_extensions']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
