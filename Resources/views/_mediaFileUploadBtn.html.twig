@@ -2,5 +2,7 @@
     <a data-category-id="{{ category is defined and category is not null ? category.id : 0 }}"
         class="btn btn-primary bitnoise-media-uploader"
         data-multiple="false"
-        data-href="{{ path('cp_media_upload') }}">Upload media</a>
+        data-href="{{ path('cp_media_upload') }}"
+        data-allowed-extensions="{{ allowed_extensions|join(',') }}"
+    >Upload media</a>
 {% endblock %}

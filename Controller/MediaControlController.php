@@ -131,7 +131,7 @@ class MediaControlController extends BaseController
         $mediaFile  = new MediaFile();
 
         //upload using upload manager
-        $uploader            = new qqFileUploader();
+        $uploader            = new qqFileUploader($this->container->getParameter('btn_media.allowed_extensions'));
         $uploader->sizeLimit = 1024 * 1024 * 1024;
         $result              = $uploader->handleUpload($mediaFile->getUploadRootDir());
 
@@ -262,6 +262,8 @@ class MediaControlController extends BaseController
         $pagination = $this->get('knp_paginator')->paginate($entities, $request->get('page', 1), 6);
         $pagination->setTemplate('BtnCrudBundle:Pagination:default.html.twig');
 
-        return array('categories' => $categories, 'pagination' => $pagination);
+        $allowedExtensions = $this->container->getParameter('btn_media.allowed_extensions');
+
+        return array('categories' => $categories, 'pagination' => $pagination, 'allowed_extensions' => $allowedExtensions);
     }
 }

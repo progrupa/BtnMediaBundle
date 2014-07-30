@@ -40,7 +40,7 @@
             },
             validation: {
                 sizeLimit: 0,
-                allowedExtensions: ['zip', 'pdf', 'jpeg', 'jpg', 'png']
+                allowedExtensions: $(self.element).attr('data-allowed-extensions').split(',')
             },
             request: {
                 endpoint: $(self.element).attr('data-href'),

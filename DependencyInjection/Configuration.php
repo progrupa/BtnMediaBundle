@@ -18,11 +18,20 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('bitnoise_media');
+        $rootNode = $treeBuilder->root('btn_media');
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
+        //
+        $rootNode
+            ->children()
+                ->arrayNode('allowed_extensions')
+                    ->defaultValue(array('jpeg', 'jpg', 'png', 'zip', 'pdf'))
+                    ->prototype('scalar')
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }
