@@ -226,7 +226,7 @@ class MediaFile extends File
      * @param string $category
      * @return MediaFile
      */
-    public function setCategory(\Btn\MediaBundle\Entity\MediaFileCategory  $category)
+    public function setCategory(\Btn\MediaBundle\Entity\MediaFileCategory $category = null)
     {
         $this->category = $category;
 
