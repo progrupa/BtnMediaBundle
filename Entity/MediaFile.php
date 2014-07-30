@@ -275,4 +275,20 @@ class MediaFile extends File
     {
         return $path = $this->getUploadDir() . DIRECTORY_SEPARATOR . $this->file;
     }
+
+    /**
+     *
+     */
+    public function setPreviewExtensions(array $previewExtensions)
+    {
+        $this->previewExtensions = $previewExtensions;
+    }
+
+    /**
+     *
+     */
+    public function getPreviewExtensions()
+    {
+        return $this->previewExtensions;
+    }
 }
