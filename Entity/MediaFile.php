@@ -64,6 +64,11 @@ class MediaFile extends File
     private $file;
 
     /**
+     *
+     */
+    private $previewExtensions = array('jpeg', 'jpg', 'png', 'gif');
+
+    /**
      * Get id
      *
      * @return integer
@@ -159,7 +164,7 @@ class MediaFile extends File
     public function getPreviewFilePath()
     {
         $extension = $this->getFileExt();
-        if (($extension && in_array(strtolower($extension), array('pdf', 'zip')))) {
+        if (($extension && !in_array(strtolower($extension), $this->previewExtensions))) {
             return $this->getDefaultFilePath();
         }
 
