@@ -8,7 +8,7 @@ jQuery(function ($) {
         modalWrapper,
         selectMediaBtnText = 'Select media',
         selectMediaBtnTemplate = '<div class="btn btn-primary">' + selectMediaBtnText + '</div>',
-        deleteMediaBtnTemplate = '<div class="btn btn-danger">Delete</div>',
+        deleteMediaBtnTemplate = '<div class="btn btn-danger" style="margin:0 0 0 5px;">Delete</div>',
         paginationUrl = '',
         modalUrl = $('script[data-remote-url]').attr('data-remote-url'),
         mediaInputs = $('.btn-media'),
