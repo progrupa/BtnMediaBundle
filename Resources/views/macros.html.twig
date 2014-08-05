@@ -9,7 +9,7 @@
                 {% for attrname, attrvalue in attr %}
                     {{ " " }}
                     {% if attrname in ['placeholder', 'title'] %}
-                        {{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}"
+                        {{ attrname }}="{{ attrvalue|trans }}"
                     {% elseif attrvalue is sameas(true) %}
                         {{ attrname }}="{{ attrname }}"
                     {% elseif attrvalue is not sameas(false) %}
