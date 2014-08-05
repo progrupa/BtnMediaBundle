@@ -36,7 +36,7 @@ class MediaFileCategory
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -52,19 +52,20 @@ class MediaFileCategory
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
     }
+
     /**
      * Constructor
      */
@@ -82,7 +83,7 @@ class MediaFileCategory
     public function addFile(\Btn\MediaBundle\Entity\MediaFile $files)
     {
         $this->files[] = $files;
-    
+
         return $this;
     }
 
@@ -99,7 +100,7 @@ class MediaFileCategory
     /**
      * Get files
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getFiles()
     {
