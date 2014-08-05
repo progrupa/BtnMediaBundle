@@ -1,10 +1,10 @@
-{% macro img(image, attr = {}) %}
+{% macro img(image, attr = {}, imagine_filter = false) %}
 {% spaceless %}
     {% if image.path|default('') %}
         {% if not attr.alt|default('') and image.description|default('') %}
             {% set attr = attr|merge({alt: image.description}) %}
         {% endif %}
-        <img src="{{ asset(image.path) }}"
+        <img src="{{ imagine_filter ? image.path|imagine_filter(imagine_filter) : asset(image.path) }}"
             {% if attr is iterable %}
                 {% for attrname, attrvalue in attr %}
                     {{ " " }}
