@@ -36,9 +36,13 @@ class MediaControlController extends BaseController
         $data                 = $this->getListData($request);
         $data['isPagination'] = TRUE;
 
+        $entity = new MediaFile();
+        $form   = $this->createForm('btn_media_form_mediafile', $entity);
+
+        $data['form'] = $form->createView();
+
         return $data;
     }
-
     /**
      * @Route("/list-modal", name="cp_media_list_modal")
      * @Template()
@@ -215,7 +219,7 @@ class MediaControlController extends BaseController
 
         /* @todo: number of mediafiles per page - to bundle config */
         $pagination = $this->get('knp_paginator')->paginate($entities, $request->get('page', 1), 6);
-        $pagination->setTemplate('BtnCrudBundle:Pagination:default.html.twig');
+        // $pagination->setTemplate('BtnCrudBundle:Pagination:default.html.twig');
 
         $allowedExtensions = $this->container->getParameter('btn_media.allowed_extensions');
 

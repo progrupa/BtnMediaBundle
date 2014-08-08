@@ -25,7 +25,7 @@
     <div class="col-md-12 {% if isCategory %}categories{% endif %}" id="bitnoise-media-list" data-remove-url="{{ url('cp_media_delete') }}" data-edit-url="{{ url('cp_media_edit') }}" data-pagination-url="{{url('cp_media_list_modal_content')}}">
         {% for entity in pagination %}
             <div class="col-md-3 item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}" data-id="{{ entity.id }}">
-                <img src="{{ entity.previewFilePath|imagine_filter('btn_media_thumb') }}"
+                <img src="{{ entity.path|imagine_filter('btn_media_thumb') }}"
                      class="img-polaroid"
                      data-id="{{ entity.id }}"
                      data-filename="{{ entity.name }}"

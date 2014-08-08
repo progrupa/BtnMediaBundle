@@ -6,7 +6,7 @@ use Btn\NodesBundle\Service\NodeContentProviderInterface;
 use Btn\MediaBundle\Form\NodeContentType;
 
 /**
-*
+* MediaContentProvider
 *
 */
 class MediaContentProvider implements NodeContentProviderInterface

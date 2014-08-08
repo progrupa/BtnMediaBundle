@@ -10,11 +10,11 @@ class MediaType extends AbstractType
 {
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::setDefaultOptions($resolver);
+        // parent::setDefaultOptions($resolver);
 
         $resolver->setDefaults(array(
-            'empty_value'   => 'btn_mediabundle.type.media.empty_value',
-            'label'         => 'btn_mediabundle.type.media.label',
+            'empty_value'   => 'btn_media.type.media.empty_value',
+            'label'         => 'btn_media.type.media.label',
             'class'         => 'BtnMediaBundle:MediaFile',
             'attr'          => array('class' => 'btn-media'),
             'query_builder' => function (EntityRepository $em) {

@@ -50,7 +50,7 @@
                 }
             }
         }).on('allComplete', function (e, succeeded, failed) {
-            window.location.reload();
+            // window.location.reload();
         });
     };
 

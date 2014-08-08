@@ -1,5 +1,7 @@
-{% from 'BtnCrudBundle::breadcrumb.html.twig' import breadcrumb %}
-{% extends '::control.html.twig' %}
+{% from 'BtnAdminBundle:Utils:breadcrumb.html.twig' import breadcrumb %}
+{% form_theme form 'BtnAdminBundle:Form:fields.html.twig' %}
+{# {% extends '::control.html.twig' %} #}
+{% extends 'BtnAdminBundle:Default:layout.html.twig' %}
 
 {% block content %}
 <div class="container-fluid">
@@ -11,16 +13,17 @@
         <div class="col-md-9" >
             {% include 'BtnMediaBundle::_list.html.twig' with {pagination: pagination}  %}
             <div class="clearfix"></div>
-            {% if category is defined and category is not null %}
+            {# {% if category is defined and category is not null %} #}
                 {% include 'BtnMediaBundle::_mediaFileUploadBtn.html.twig' %}
                 {% include 'BtnMediaBundle::_mediaFileUploadTemplate.html.twig' %}
-            {% endif %}
+            {# {% endif %} #}
+            {{ form(form) }}
         </div>
     </div>
 </div>
 {% endblock %}
 
-{% block javascripts %}
+{# {% block javascripts %}
     {{ parent() }}
     {% javascripts
         'bundles/btnmedia/js/fineUploader/js/util.js'
@@ -49,7 +52,7 @@
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-{% endblock %}
+{% endblock %} #}
 
 {% block breadcrumb %}
     {% if category is defined and category is not null %}

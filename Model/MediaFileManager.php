@@ -5,14 +5,14 @@ namespace Btn\MediaBundle\Model;
 use Doctrine\ORM\EntityManager;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\HttpFoundation\Request;
-use Btn\BaseBundle\Model\Manager;
+// use Btn\BaseBundle\Model\Manager;
 use Btn\MediaBundle\Entity\MediaFile;
 
 /**
  * Hero manager
  *
  **/
-class MediaFileManager extends Manager
+class MediaFileManager
 {
     /**
      * Constructor.
@@ -25,11 +25,12 @@ class MediaFileManager extends Manager
      */
     public function __construct(EntityManager $em, Paginator $paginator, \Twig_Environment $twig, $formFactory, $container, $gaufretteMap)
     {
-        parent::__construct($em, $paginator, $twig, $formFactory);
+        // parent::__construct($em, $paginator, $twig, $formFactory);
 
-        $this->container        = $container;
-        $this->gaufretteMap     = $gaufretteMap;
-        $this->repo             = $this->em->getRepository('BtnMediaBundle:MediaFile');
+        $this->em    = $em;
+        $this->container    = $container;
+        $this->gaufretteMap = $gaufretteMap;
+        $this->repo         = $this->em->getRepository('BtnMediaBundle:MediaFile');
     }
 
 

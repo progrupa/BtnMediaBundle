@@ -179,7 +179,7 @@ class MediaFileUploader
      *
      * @return MediaFileUploader
      */
-    public function setCategory(MediaFileCategory $category)
+    public function setCategory(MediaFileCategory $category = null)
     {
         $this->category = $category;
 

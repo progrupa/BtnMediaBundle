@@ -1,10 +1,11 @@
 services:
     liip_imagine.data.loader.stream.btn_media:
-        class: "%liip_imagine.binary.loader.stream.class%"
+        class: "%liip_imagine.data.loader.stream.class%"
         arguments:
             - 'gaufrette://btn_media/'
         tags:
             - { name: 'liip_imagine.binary.loader', loader: 'stream.btn_media' }
+
     mediafile.manager:
         class: Btn\MediaBundle\Model\MediaFileManager
         arguments:
@@ -14,6 +15,7 @@ services:
             formFactory: '@form.factory'
             container:   '@service_container'
             gaufrette:   '@knp_gaufrette.filesystem_map'
+
     extension.mediafile:
         class: Btn\MediaBundle\Twig\MediaFileExtension
         arguments: [ '@mediafile.manager' ]
@@ -25,8 +27,36 @@ services:
         arguments: [ '@doctrine.orm.entity_manager', '%kernel.cache_dir%' ]
         calls:
             - [setAllowedExtensions, ['%btn_media.allowed_extensions%']]
+    #add link to the CP top menu
+    btn_media.btn_admin_menu_top_item:
+        class: Knp\Menu\MenuItem
+        factory_service: btn_admin.menu_builder
+        factory_method: createMenu
+        arguments: ["@request", "btn_media.route.index", "cp_media", [], []]
+        scope: request
+        tags:
+            - { name: btn_admin_menu_item , parent: btn_admin.menu_top }
 
-    btn_mediabundle.form.type.medie:
+    #base MediaFile form
+    btn_media.form.mediafile:
+        class: Btn\MediaBundle\Form\MediaFileForm
+        arguments: [ '@router' ]
+        tags:
+            - { name: form.type, alias: btn_media_form_mediafile }
+
+    btn_media.form.type.media:
         class: Btn\MediaBundle\Form\Type\MediaType
         tags:
-            - { name: form.type, alias: btn_mediabundle_media }
+            - { name: form.type, alias: btn_media_type_media }
+
+    btn_media.form.type.file:
+        class: Btn\MediaBundle\Form\Type\FileType
+        tags:
+            - { name: form.type, alias: btn_media_type_file }
+
+    # btn_media.content_provider:
+    #     class: Btn\NodesBundle\Service\RouteContentProvider
+    #     arguments:
+    #         availableRoutes: %btn.nodes.availableRoutes%
+    #     tags:
+    #         - { name: btn_nodes.content_provider }
