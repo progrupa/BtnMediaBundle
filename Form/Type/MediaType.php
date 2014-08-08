@@ -10,7 +10,7 @@ class MediaType extends AbstractType
 {
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        // parent::setDefaultOptions($resolver);
+        parent::setDefaultOptions($resolver);
 
         $resolver->setDefaults(array(
             'empty_value'   => 'btn_media.type.media.empty_value',

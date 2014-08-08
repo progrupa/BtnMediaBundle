@@ -128,19 +128,30 @@ class MediaControlController extends BaseController
      **/
     public function uploadAction(Request $request)
     {
-        $categoryId = $request->get('categoryId');
-        $category   = $this->getRepository('BtnMediaBundle:MediaFileCategory')->find($categoryId);
+        $entity = new MediaFile();
+        $form   = $this->createForm('btn_media_form_mediafile', $entity);
+        $form->handleRequest($request);
+        $uploadedFile = $form->getData()->getFile() ? $form->getData()->getFile() : $request->files->get('file');//was qqfile
+        // ldd($form->getData());
+        $categoryId = $request->get('categoryId', null);
+        $category   = $categoryId ? $this->getRepository('BtnMediaBundle:MediaFileCategory')->find($categoryId) : null;
         $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
 
         /** @var MediaFileUploader $uploader */
         $uploader = $this->get('mediafile.uploader');
         $uploader->setCategory($category);
         $uploader->setFilesystem($filesystem);
-        $uploader->handleUpload($request->files->get('qqfile'));
+        $uploader->handleUpload($uploadedFile);
 
-        return $this->json(array(
-            'success' => $uploader->isSuccess()
-        ));
+        if ($request->isXmlHttpRequest()) {
+
+            return $this->json(array(
+                'success' => $uploader->isSuccess()
+            ));
+        } else {
+
+            return $this->redirect($this->generateUrl('cp_media'));
+        }
     }
 
     /**
