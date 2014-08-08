@@ -5,7 +5,7 @@
     "keywords": [ "bitnoise", "cms", "media"],
     "homepage": "https://github.com/Bitnoise/BtnMediaBundle",
     "license": "MIT",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "authors": [
         {
             "name": "Bitnoise Team",
@@ -16,9 +16,8 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.*",
-        "bitnoise/base-bundle": "dev-sf23-bs3",
-        "liip/imagine-bundle": "dev-master",
-        "knplabs/knp-gaufrette-bundle" : "0.2.*@dev"
+        "liip/imagine-bundle": "~0.21",
+        "knplabs/knp-gaufrette-bundle" : "~0.1"
     },
     "repositories": [
         {
