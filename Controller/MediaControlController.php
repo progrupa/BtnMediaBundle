@@ -4,10 +4,8 @@ namespace Btn\MediaBundle\Controller;
 
 use Btn\MediaBundle\Model\MediaFileUploader;
 use Gaufrette\Filesystem;
-use Gaufrette\Adapter\Local as LocalAdapter;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 use Btn\BaseBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -144,12 +142,10 @@ class MediaControlController extends BaseController
         $uploader->handleUpload($uploadedFile);
 
         if ($request->isXmlHttpRequest()) {
-
             return $this->json(array(
                 'success' => $uploader->isSuccess()
             ));
         } else {
-
             return $this->redirect($this->generateUrl('cp_media'));
         }
     }

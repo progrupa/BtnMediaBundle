@@ -1,8 +1,6 @@
 <?php
 namespace Btn\MediaBundle\Util;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 class File
 {
     private $fieldFile     = 'file';
@@ -62,7 +60,8 @@ class File
             'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
         );
 
-    public function handleUpload($options = array()) {
+    public function handleUpload($options = array())
+    {
         if (count($options)) {
             foreach ($options as $key => $value) {
                 $this->$key = $value;

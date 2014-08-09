@@ -5,11 +5,6 @@ namespace Btn\MediaBundle\Repository;
 use Doctrine\ORM\EntityRepository,
     Doctrine\ORM\EntityManager;
 
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\Query;
-
-use Btn\MediaBundle\Entity\MediaFile;
-
 class MediaFileRepository extends EntityRepository
 {
     public function getCategories()
@@ -22,7 +17,7 @@ class MediaFileRepository extends EntityRepository
         $result     = $qb->getQuery()->getResult();
         $categories = array();
 
-        array_walk($result, function($category) use (&$categories) {
+        array_walk($result, function ($category) use (&$categories) {
             $categories[] = $category['category'];
         });
 
@@ -36,7 +31,7 @@ class MediaFileRepository extends EntityRepository
             ->where('mf.id IN (:id_list)')
         ;
 
-        if($groupBy) {
+        if ($groupBy) {
             $qb->groupBy('mf.category');
         }
 
@@ -44,10 +39,10 @@ class MediaFileRepository extends EntityRepository
 
         $result = $qb->getQuery()->getResult();
 
-        if($groupBy) {
+        if ($groupBy) {
             $categories = array();
 
-            array_walk($result, function($category) use (&$categories) {
+            array_walk($result, function ($category) use (&$categories) {
                 $categories[] = $category['category'];
             });
 

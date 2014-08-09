@@ -9,7 +9,8 @@ class MediaFileExtension extends \Twig_Extension
         $this->manager = $manager;
     }
 
-    public function getFunctions() {
+    public function getFunctions()
+    {
         return array(
             'get_media_file' => new \Twig_Function_Method($this, 'getMediaFile'),
         );

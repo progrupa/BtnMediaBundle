@@ -17,11 +17,11 @@ class MediaFileManager
     /**
      * Constructor.
      *
-     * @param EntityManager $em
-     * @param Paginator $paginator
-     * @param Request $request
+     * @param EntityManager   $em
+     * @param Paginator       $paginator
+     * @param Request         $request
      * @param Twig_Enviroment $twig
-     * @param FormFsctory $formFactory
+     * @param FormFsctory     $formFactory
      */
     public function __construct(EntityManager $em, Paginator $paginator, \Twig_Environment $twig, $formFactory, $container, $gaufretteMap)
     {
@@ -32,7 +32,6 @@ class MediaFileManager
         $this->gaufretteMap = $gaufretteMap;
         $this->repo         = $this->em->getRepository('BtnMediaBundle:MediaFile');
     }
-
 
     /**
      * Get images for node from hero repository
@@ -45,11 +44,10 @@ class MediaFileManager
         $env    = $this->container->getParameter('kernel.environment');
         $file   = $this->repo->findOneById($id);
 
-        if($file != NULL) {
-            if(FALSE && $env == 'dev') {
+        if ($file != NULL) {
+            if (FALSE && $env == 'dev') {
                 return $file->getFile();
-            }
-            else {
+            } else {
                 $filesystem = $this->gaufretteMap->get('btn_media');
 
                 $map = \Gaufrette\StreamWrapper::getFilesystemMap();

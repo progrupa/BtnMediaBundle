@@ -46,7 +46,7 @@ class MediaFileCategory
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string            $name
      * @return MediaFileCategory
      */
     public function setName($name)
@@ -77,7 +77,7 @@ class MediaFileCategory
     /**
      * Add files
      *
-     * @param \Btn\MediaBundle\Entity\MediaFile $files
+     * @param  \Btn\MediaBundle\Entity\MediaFile $files
      * @return MediaFileCategory
      */
     public function addFile(\Btn\MediaBundle\Entity\MediaFile $files)

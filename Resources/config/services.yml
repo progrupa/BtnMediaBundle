@@ -27,9 +27,10 @@ services:
         arguments: [ '@doctrine.orm.entity_manager', '%kernel.cache_dir%' ]
         calls:
             - [setAllowedExtensions, ['%btn_media.allowed_extensions%']]
+
     #add link to the CP top menu
-    btn_media.btn_admin_menu_top_item:
-        class: Knp\Menu\MenuItem
+    btn_media.menu_navbar.media_item:
+        class: %btn_admin.menu_item_class%
         factory_service: btn_admin.menu_builder
         factory_method: createMenu
         arguments: ["@request", "btn_media.route.index", "cp_media", [], []]

@@ -201,7 +201,7 @@ class MediaFileUploader
      */
     public function setReplaceOldFiles($replaceOldFiles)
     {
-        $this->replaceOldFiles = (bool)$replaceOldFiles;
+        $this->replaceOldFiles = (bool) $replaceOldFiles;
 
         return $this;
     }

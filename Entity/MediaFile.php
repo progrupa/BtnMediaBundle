@@ -81,7 +81,7 @@ class MediaFile extends File
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string    $name
      * @return MediaFile
      */
     public function setName($name)
@@ -120,7 +120,7 @@ class MediaFile extends File
     /**
      * Set file
      *
-     * @param string $file
+     * @param  string         $file
      * @return RestaurantFile
      */
     public function setFile($file)
@@ -174,7 +174,7 @@ class MediaFile extends File
     /**
      * Set description
      *
-     * @param string $description
+     * @param  string    $description
      * @return MediaFile
      */
     public function setDescription($description)
@@ -197,7 +197,7 @@ class MediaFile extends File
     /**
      * Set type
      *
-     * @param string $type
+     * @param  string    $type
      * @return MediaFile
      */
     public function setType($type)
@@ -228,7 +228,7 @@ class MediaFile extends File
     /**
      * Set category
      *
-     * @param string $category
+     * @param  string    $category
      * @return MediaFile
      */
     public function setCategory(\Btn\MediaBundle\Entity\MediaFileCategory $category = null)

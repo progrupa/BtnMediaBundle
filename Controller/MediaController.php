@@ -2,19 +2,12 @@
 
 namespace Btn\MediaBundle\Controller;
 
-use Btn\MediaBundle\Model\MediaFileUploader;
-use Gaufrette\Filesystem;
-use Gaufrette\Adapter\Local as LocalAdapter;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Btn\BaseBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
-use Exception;
 
 /**
  * News controller.
@@ -57,7 +50,8 @@ class MediaController extends BaseController
      * @Route("/download/{id}", name="app_media_download")
      * @Template()
      **/
-    public function downloadAction(Request $request, $id) {
+    public function downloadAction(Request $request, $id)
+    {
         $entity = $this->getRepository('BtnMediaBundle:MediaFile')->findOneById($id);;
 
         // Generate response

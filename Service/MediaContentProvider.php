@@ -35,7 +35,6 @@ class MediaContentProvider implements NodeContentProviderInterface
 
     public function resolveRoute($formData = array())
     {
-
         return 'app_media_category';
     }
 
@@ -46,7 +45,6 @@ class MediaContentProvider implements NodeContentProviderInterface
 
     public function resolveControlRoute($formData = array())
     {
-
         return 'cp_media_category';
     }
 
