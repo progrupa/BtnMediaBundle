@@ -1,0 +1,7 @@
+_btn_media_routing_control:
+    resource: "@BtnMediaBundle/Resources/config/routing/control.yml"
+    prefix: /control
+
+_btn_media_routing_front:
+    resource: "@BtnMediaBundle/Resources/config/routing/front.yml"
+    prefix: /

@@ -1,0 +1,3 @@
+_btn_media_routing_front_controller_media:
+    resource: "@BtnMediaBundle/Controller/MediaController.php"
+    type:     annotation

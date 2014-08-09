@@ -21,7 +21,7 @@ use Exception;
 /**
  * Media controller.
  *
- * @Route("/control/media")
+ * @Route("/media")
  */
 class MediaControlController extends BaseController
 {
