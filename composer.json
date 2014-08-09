@@ -31,7 +31,8 @@
     "target-dir": "Btn/MediaBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0-dev"
+            "dev-master": "2.0-dev",
+            "dev-master": "2.0.x-dev"
         }
     }
 }
