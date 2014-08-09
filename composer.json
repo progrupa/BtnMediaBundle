@@ -5,7 +5,8 @@
     "keywords": [ "bitnoise", "cms", "media"],
     "homepage": "https://github.com/Bitnoise/BtnMediaBundle",
     "license": "MIT",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Bitnoise Team",
