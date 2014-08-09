@@ -254,7 +254,7 @@ class qqFileUploader
      *
      * @returns array('success'=>true) or array('error'=>'error message')
      */
-    public function handleUpload($uploadDirectory, $replaceOldFile = FALSE)
+    public function handleUpload($uploadDirectory, $replaceOldFile = false)
     {
         if (!is_writable($uploadDirectory)) {
             return array('error' => 'Server error. Upload directory isn\'t writable.');

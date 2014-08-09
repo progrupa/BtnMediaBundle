@@ -24,7 +24,7 @@ class MediaFileRepository extends EntityRepository
         return $categories;
     }
 
-    public function getAllByIds($idList = array(), $groupBy = TRUE)
+    public function getAllByIds($idList = array(), $groupBy = true)
     {
         $qb = $this->createQueryBuilder('mf')
             ->select()

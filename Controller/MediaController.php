@@ -25,9 +25,9 @@ class MediaController extends BaseController
         $categoryId = $request->get('id');
         $category   = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($categoryId);
 
-        $data                 = $this->getListData($request, FALSE, $category);
-        $data['isPagination'] = TRUE;
-        $data['isCategory']   = TRUE;
+        $data                 = $this->getListData($request, false, $category);
+        $data['isPagination'] = true;
+        $data['isCategory']   = true;
         $data['category']     = $category;
 
         $params = $this->container->getParameter('btn_media');
@@ -35,7 +35,7 @@ class MediaController extends BaseController
         return $this->render($params['template'], $data);
     }
 
-    protected function getListData($request, $all = FALSE, $category = NULL)
+    protected function getListData($request, $all = false, $category = null)
     {
         $method     = ($all) ? 'findAll' : 'findByCategory';
         $categories = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findAll();

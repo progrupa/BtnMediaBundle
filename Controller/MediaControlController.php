@@ -4,18 +4,14 @@ namespace Btn\MediaBundle\Controller;
 
 use Btn\MediaBundle\Model\MediaFileUploader;
 use Gaufrette\Filesystem;
-
 use Symfony\Component\HttpFoundation\Request;
-
 use Btn\BaseBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
 use Btn\MediaBundle\Entity\MediaFile;
 use Btn\MediaBundle\Entity\MediaFileCategory;
-
 use Exception;
 
 /**
@@ -32,7 +28,7 @@ class MediaControlController extends BaseController
     public function indexAction(Request $request)
     {
         $data                 = $this->getListData($request);
-        $data['isPagination'] = TRUE;
+        $data['isPagination'] = true;
 
         $entity = new MediaFile();
         $form   = $this->createForm('btn_media_form_mediafile', $entity);
@@ -48,9 +44,9 @@ class MediaControlController extends BaseController
     public function listModalAction(Request $request)
     {
         $separated = $request->get('separated');
-        $data     = $this->getListData($request, TRUE);
+        $data     = $this->getListData($request, true);
 
-        $data['isModal']      = TRUE;
+        $data['isModal']      = true;
         $data['isPagination'] = !$separated;
         $data['separated']    = $separated;
 
@@ -65,9 +61,9 @@ class MediaControlController extends BaseController
     {
         $category             = $request->get('category');
         $data                 = $this->getListData($request, ($category == NULL));
-        $data['isModal']      = TRUE;
-        $data['isPagination'] = TRUE;
-        $data['separated']    = FALSE;
+        $data['isModal']      = true;
+        $data['isPagination'] = true;
+        $data['separated']    = false;
 
         return $data;
     }
@@ -78,7 +74,7 @@ class MediaControlController extends BaseController
      **/
     public function editAction(Request $request)
     {
-        $result = TRUE;
+        $result = true;
 
         try {
             $type   = $request->get('type');
@@ -108,7 +104,7 @@ class MediaControlController extends BaseController
     public function deleteAction(Request $request)
     {
         try {
-            $result = TRUE;
+            $result = true;
             $entity = $this->getRepository('BtnMediaBundle:MediaFile')->find($request->get('id'));
 
             $em = $this->getManager();
@@ -171,9 +167,9 @@ class MediaControlController extends BaseController
         $categoryId = $request->get('id');
         $category   = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($categoryId);
 
-        $data                 = $this->getListData($request, FALSE, $category);
-        $data['isPagination'] = TRUE;
-        $data['isCategory']   = TRUE;
+        $data                 = $this->getListData($request, false, $category);
+        $data['isPagination'] = true;
+        $data['isCategory']   = true;
         $data['category']     = $category;
 
         return $data;
@@ -184,7 +180,7 @@ class MediaControlController extends BaseController
      **/
     public function categoryAddAction(Request $request)
     {
-        $result            = TRUE;
+        $result            = true;
         $mediaFileCategory = new MediaFileCategory();
         $mediaFileCategory->setName($request->get('name'));
 
@@ -214,7 +210,7 @@ class MediaControlController extends BaseController
         return $this->redirect($this->generateUrl('btn_media_mediacontrol_category'));
     }
 
-    private function getListData($request, $all = FALSE, $category = NULL)
+    private function getListData($request, $all = false, $category = null)
     {
         if ($category == NULL) {
             $category = $request->get('category');
