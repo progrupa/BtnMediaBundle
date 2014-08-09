@@ -3,7 +3,7 @@
     {% for category in categories %}
         <li>
             <a href="{{ path('btn_media_mediacontrol_category', { id: category.id }) }}" class="btn-default btn{{ category_active.id == category.id ? ' active' }}">{{category.name}}</a>
-            <a href="{{ path('btn_media_mediacontrol_category_delete', { id: category.id }) }}" class="btn btn-small btn-danger delete" title="{% trans %}Delete category{% endtrans %} '{{ category.name }}'" onclick="return confirm('Are you sure?');">&#10008;</a>
+            <a href="{{ path('btn_media_mediacontrol_categorydelete', { id: category.id }) }}" class="btn btn-small btn-danger delete" title="{% trans %}Delete category{% endtrans %} '{{ category.name }}'" onclick="return confirm('Are you sure?');">&#10008;</a>
         </li>
     {% endfor %}
     </ul>
