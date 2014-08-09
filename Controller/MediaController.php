@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class MediaController extends BaseController
 {
     /**
-     * @Route("/category/{id}", name="app_media_category")
+     * @Route("/category/{id}", name="btn_media_media_category")
      * @Template()
      **/
     public function categoryAction(Request $request)
@@ -47,7 +47,7 @@ class MediaController extends BaseController
     }
 
     /**
-     * @Route("/download/{id}", name="app_media_download")
+     * @Route("/download/{id}", name="btn_media_media_download")
      * @Template()
      **/
     public function downloadAction(Request $request, $id)
@@ -79,5 +79,4 @@ class MediaController extends BaseController
 
         throw $this->createNotFoundException('The entity does not exist');
     }
-
 }

@@ -12,7 +12,7 @@ class MediaFileForm extends AbstractType
     /**
      * @var string $actionRouteName
      */
-    private $actionRouteName = 'cp_media_upload';
+    private $actionRouteName = 'btn_media_mediacontrol_upload';
 
     /**
      *  @var RouterInterface $router

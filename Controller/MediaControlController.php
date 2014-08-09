@@ -26,7 +26,7 @@ use Exception;
 class MediaControlController extends BaseController
 {
     /**
-     * @Route("/", name="cp_media")
+     * @Route("/", name="btn_media_mediacontrol_index")
      * @Template()
      */
     public function indexAction(Request $request)
@@ -42,7 +42,7 @@ class MediaControlController extends BaseController
         return $data;
     }
     /**
-     * @Route("/list-modal", name="cp_media_list_modal")
+     * @Route("/list-modal", name="btn_media_mediacontrol_listmodal")
      * @Template()
      **/
     public function listModalAction(Request $request)
@@ -58,7 +58,7 @@ class MediaControlController extends BaseController
     }
 
     /**
-     * @Route("/list-modal-content", name="cp_media_list_modal_content")
+     * @Route("/list-modal-content", name="btn_media_mediacontrol_listmodalcontent")
      * @Template("BtnMediaBundle::_list.html.twig")
      **/
     public function listModalContentAction(Request $request)
@@ -73,7 +73,7 @@ class MediaControlController extends BaseController
     }
 
     /**
-     * @Route("/edit", name="cp_media_edit")
+     * @Route("/edit", name="btn_media_mediacontrol_edit")
      * @Method({"POST"})
      **/
     public function editAction(Request $request)
@@ -103,7 +103,7 @@ class MediaControlController extends BaseController
     }
 
     /**
-     * @Route("/delete", name="cp_media_delete")
+     * @Route("/delete", name="btn_media_mediacontrol_delete")
      **/
     public function deleteAction(Request $request)
     {
@@ -122,7 +122,7 @@ class MediaControlController extends BaseController
     }
 
     /**
-     * @Route("/upload", name="cp_media_upload")
+     * @Route("/upload", name="btn_media_mediacontrol_upload")
      **/
     public function uploadAction(Request $request)
     {
@@ -146,12 +146,12 @@ class MediaControlController extends BaseController
                 'success' => $uploader->isSuccess()
             ));
         } else {
-            return $this->redirect($this->generateUrl('cp_media'));
+            return $this->redirect($this->generateUrl('btn_media_mediacontrol_index'));
         }
     }
 
     /**
-     * @Route("/dummy-upload")
+     * @Route("/dummy-upload", name="btn_media_mediacontrol_dummyupload")
      **/
     public function dummyUploadAction()
     {
@@ -163,7 +163,7 @@ class MediaControlController extends BaseController
     }
 
     /**
-     * @Route("/category", name="cp_media_category")
+     * @Route("/category", name="btn_media_mediacontrol_category")
      * @Template("BtnMediaBundle:MediaControl:index.html.twig")
      **/
     public function categoryAction(Request $request)
@@ -180,7 +180,7 @@ class MediaControlController extends BaseController
     }
 
     /**
-     * @Route("/category-add", name="cp_media_category_add")
+     * @Route("/category-add", name="btn_media_mediacontrol_categoryadd")
      **/
     public function categoryAddAction(Request $request)
     {
@@ -200,7 +200,7 @@ class MediaControlController extends BaseController
     }
 
     /**
-     * @Route("/category-delete/{id}", name="cp_media_category_delete")
+     * @Route("/category-delete/{id}", name="btn_media_mediacontrol_categorydelete")
      * @ParamConverter("category", class="BtnMediaBundle:MediaFileCategory")
      **/
     public function categoryDeleteAction(Request $request, $category)
@@ -211,7 +211,7 @@ class MediaControlController extends BaseController
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('cp_media_category'));
+        return $this->redirect($this->generateUrl('btn_media_mediacontrol_category'));
     }
 
     private function getListData($request, $all = FALSE, $category = NULL)

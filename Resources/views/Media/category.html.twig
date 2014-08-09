@@ -1,4 +1,4 @@
 {% for file in entities %}
-    <a href="{{ path('app_media_download', { id: file.id }) }}" class="pdf">{{ file.name }}</a>
+    <a href="{{ path('btn_media_media_download', { id: file.id }) }}" class="pdf">{{ file.name }}</a>
     <p>{{ file.description }}</p>
 {% endfor %}
