@@ -55,8 +55,8 @@
 
 {% block breadcrumb %}
     {% if category is defined and category is not null %}
-        {{ breadcrumb({'btn_media_mediacontrol_index': 'crud.breadcrumb.list', 'btn_media_mediacontrol_category': category.name }) }}
+        {{ breadcrumb({'btn_media_mediacontrol_index': 'btn_admin.list', 'btn_media_mediacontrol_category': category.name }) }}
     {% else %}
-        {{ breadcrumb({'btn_media_mediacontrol_index': 'crud.breadcrumb.list' }) }}
+        {{ breadcrumb({'btn_media_mediacontrol_index': 'btn_admin.list' }) }}
     {% endif %}
 {% endblock %}
