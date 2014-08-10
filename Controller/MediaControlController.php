@@ -222,7 +222,6 @@ class MediaControlController extends BaseController
 
         /* @todo: number of mediafiles per page - to bundle config */
         $pagination = $this->get('knp_paginator')->paginate($entities, $request->get('page', 1), 6);
-        // $pagination->setTemplate('BtnCrudBundle:Pagination:default.html.twig');
 
         $allowedExtensions = $this->container->getParameter('btn_media.allowed_extensions');
 
