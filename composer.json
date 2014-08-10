@@ -25,8 +25,9 @@
         }
     ],
     "autoload": {
-        "psr-4": { "Btn\\MediaBundle\\": "" }
+        "psr-0": { "Btn\\MediaBundle": "" }
     },
+    "target-dir": "Btn/MediaBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "2.0-dev"
