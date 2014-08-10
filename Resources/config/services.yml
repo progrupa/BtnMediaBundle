@@ -48,7 +48,7 @@ services:
     btn_media.form.type.media:
         class: Btn\MediaBundle\Form\Type\MediaType
         tags:
-            - { name: form.type, alias: btn_media_type_media }
+            - { name: form.type, alias: btn_media }
 
     btn_media.form.type.file:
         class: Btn\MediaBundle\Form\Type\FileType

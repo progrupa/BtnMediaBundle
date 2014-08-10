@@ -35,6 +35,6 @@ class MediaType extends AbstractType
 
     public function getName()
     {
-        return 'btn_mediabundle_media';
+        return 'btn_media';
     }
 }
