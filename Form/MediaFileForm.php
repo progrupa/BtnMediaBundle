@@ -32,7 +32,7 @@ class MediaFileForm extends AbstractType
             ->add('file', 'file', array(
                 'label' => 'btn_media.form.file'
             ))
-            // ->add('save', $options['data']->getId() ? 'btn_admin_update_button' : 'btn_admin_create_button');
+            // ->add('save', $options['data']->getId() ? 'btn_update' : 'btn_create');
             ->add('save', 'submit');
         ;
     }
