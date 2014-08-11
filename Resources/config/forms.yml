@@ -1,11 +1,11 @@
 services:
 
     #base Media form
-    btn_media.form.mediafile:
+    btn_media.form.media:
         class: Btn\MediaBundle\Form\MediaForm
         arguments: [ '@router' ]
         tags:
-            - { name: form.type, alias: btn_media_form_mediafile }
+            - { name: form.type, alias: btn_media_form_media }
 
     btn_media.form.mediacategory:
         class: Btn\MediaBundle\Form\MediaCategoryForm
