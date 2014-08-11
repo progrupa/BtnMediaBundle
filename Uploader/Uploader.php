@@ -1,6 +1,6 @@
 <?php
 
-namespace Btn\MediaBundle\Model;
+namespace Btn\MediaBundle\Uploader;
 
 use Btn\MediaBundle\Entity\MediaFile;
 use Btn\MediaBundle\Entity\MediaFileCategory;
