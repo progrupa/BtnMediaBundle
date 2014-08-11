@@ -1,0 +1,8 @@
+{% block main %}
+	<h2>{{ entity ? 'btn_media.media.edit'|trans : 'btn_media.media.add'|trans }} {{ entity ? entity.name }}</h2>
+{% if entity %}
+	<p>Current image (preview):</p>
+	<p><img src="{{ entity.path|imagine_filter('btn_media_thumb') }}" /></p>
+{% endif %}
+	{{ form(form) }}
+{% endblock %}

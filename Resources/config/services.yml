@@ -45,6 +45,12 @@ services:
         tags:
             - { name: form.type, alias: btn_media_form_mediafile }
 
+    btn_media.form.mediacategory:
+        class: Btn\MediaBundle\Form\MediaCategoryForm
+        arguments: [ '@router' ]
+        tags:
+            - { name: form.type, alias: btn_media_form_mediacategory }
+
     btn_media.form.type.media:
         class: Btn\MediaBundle\Form\Type\MediaType
         tags:

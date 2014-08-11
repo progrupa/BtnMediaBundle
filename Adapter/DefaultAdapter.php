@@ -49,6 +49,7 @@ class DefaultAdapter
     {
         $entity = $mediaFile ? $mediaFile : new MediaFile();
         $form = $this->formFactory->create($this->formName, $entity); //default params ($type, $data, $options)
+
         if ($request) {
             $form->handleRequest($request);
         }

@@ -1,0 +1,35 @@
+{% extends 'BtnAdminBundle::base.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-3">
+            {% block sidebar %}
+                {{ render(controller('BtnMediaBundle:MediaControl:tree', {'category': app.request.get('category')})) }}
+            {% endblock %}
+        </div>
+        <div class="col-md-9 well well-lg">
+            {% block main %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@BtnNodesBundle/Resources/public/css/jstree/style.min.css'
+        '@BtnNodesBundle/Resources/public/css/style.css'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@BtnNodesBundle/Resources/public/js/jq.slugify.js'
+        '@BtnNodesBundle/Resources/public/js/jstree.min.js'
+        '@BtnNodesBundle/Resources/public/js/nodes.js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

@@ -30,14 +30,51 @@ class MediaControlController extends BaseController
         $data                 = $this->getListData($request);
         $data['isPagination'] = true;
 
-        // $entity = new MediaFile();
-        // $form   = $this->createForm('btn_media_form_mediafile', $entity);
-
-        $form = $this->get('btn_media.adapter')->createForm();
-        $data['form'] = $form->createView();
-
         return $data;
     }
+
+    /**
+     * Lists all Nodes.
+     *
+     * @Route("/tree", name="cp_nodes_tree")
+     * @Template()
+     */
+    public function treeAction(Request $request)
+    {
+        $em      = $this->getDoctrine()->getManager();
+        $repo    = $em->getRepository('BtnMediaBundle:MediaFileCategory');
+        $current = null;
+        if ($request->get('category') !== null) {
+            $current = $this->findEntity('BtnMediaBundle:MediaFileCategory', $request->get('category'));
+        }
+
+        return array('categories' => $repo->findAll(), 'currentNode' => $current);
+    }
+
+    /**
+     * @Route("/new", name="btn_media_mediacontrol_new")
+     * @Template("BtnMediaBundle:MediaControl:form.html.twig")
+     */
+    public function newAction(Request $request)
+    {
+        $form = $this->get('btn_media.adapter')->createForm();
+
+        return array('form' => $form->createView(), 'entity' => null);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="btn_media_mediacontrol_media_edit")
+     * @Template("BtnMediaBundle:MediaControl:form.html.twig")
+     **/
+    public function editAction(Request $request, $id)
+    {
+        $entity  = $this->findEntity('BtnMediaBundle:MediaFile', $id);
+        $adapter = $this->get('btn_media.adapter');
+        $form    = $adapter->createForm($request, $entity);
+
+        return array('form' => $form->createView(), 'entity' => $entity);
+    }
+
     /**
      * @Route("/list-modal", name="btn_media_mediacontrol_listmodal")
      * @Template()
@@ -73,7 +110,7 @@ class MediaControlController extends BaseController
      * @Route("/edit", name="btn_media_mediacontrol_edit")
      * @Method({"POST"})
      **/
-    public function editAction(Request $request)
+    public function editXHRAction(Request $request)
     {
         $result = true;
 
@@ -123,13 +160,6 @@ class MediaControlController extends BaseController
      **/
     public function uploadAction(Request $request)
     {
-        // $entity = new MediaFile();
-        // $form   = $this->createForm('btn_media_form_mediafile', $entity);
-        // $form->handleRequest($request);
-
-        // $form = $this->get('btn_media.adapter')->createForm();
-        // $uploadedFile = $form->getData()->getFile() ? $form->getData()->getFile() : $request->files->get('file');//was qqfile
-
         $categoryId = $request->get('categoryId', null);
         $category   = $categoryId ? $this->getRepository('BtnMediaBundle:MediaFileCategory')->find($categoryId) : null;
         $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
@@ -214,6 +244,75 @@ class MediaControlController extends BaseController
         }
 
         return $this->redirect($this->generateUrl('btn_media_mediacontrol_category'));
+    }
+
+    /**
+     * @Route("/media-category/new", name="btn_media_mediacontrol_new_category")
+     * @Template("BtnMediaBundle:MediaControl:categoryForm.html.twig")
+     **/
+    public function newCategoryAction(Request $request)
+    {
+        $entity = new MediaFileCategory();
+        $form   = $this->createForm('btn_media_form_mediacategory', $entity);
+
+        return array('form' => $form->createView());
+    }
+
+    /**
+     * @Route("/media-category/create", name="btn_media_mediacontrol_create_category")
+     * @Method({"POST"})
+     * @Template("BtnMediaBundle:MediaControl:categoryForm.html.twig")
+     **/
+    public function createCategoryAction(Request $request)
+    {
+        $entity = new MediaFileCategory();
+        $form   = $this->createForm('btn_media_form_mediacategory', $entity);
+        $form->handleRequest($request);
+        $category = $form->getData();
+        //save MediaFileCategory entity
+        $em = $this->getManager();
+        $em->persist($category);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('btn_media_mediacontrol_edit_category', array('id' => $category->getId())));
+    }
+
+    /**
+     * @Route("/media-category/edit/{id}", name="btn_media_mediacontrol_edit_category")
+     * @Template("BtnMediaBundle:MediaControl:categoryForm.html.twig")
+     **/
+    public function editCategoryAction(Request $request, $id)
+    {
+        $entity = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($id);
+        $form   = $this->createForm('btn_media_form_mediacategory', $entity);
+        $form->handleRequest($request);
+        //save MediaFileCategory entity
+        $em = $this->getManager();
+        $em->persist($form->getData());
+        $em->flush();
+
+        return array('form' => $form->createView());
+        // return $this->redirect($this->generateUrl('btn_media_mediacontrol_category'));
+    }
+
+    /**
+     * @Route("/media-category/update/{id}", name="btn_media_mediacontrol_update_category")
+     * @Method({"POST"})
+     * @Template("BtnMediaBundle:MediaControl:categoryForm.html.twig")
+     **/
+    public function updateCategoryAction(Request $request, $id)
+    {
+        // $entity = new MediaFileCategory();
+        $entity = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($id);
+        $form   = $this->createForm('btn_media_form_mediacategory', $entity);
+        $form->handleRequest($request);
+        $category = $form->getData();
+        //save MediaFileCategory entity
+        $em = $this->getManager();
+        $em->persist($category);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('btn_media_mediacontrol_edit_category', array('id' => $category->getId())));
     }
 
     private function getListData($request, $all = false, $category = null)

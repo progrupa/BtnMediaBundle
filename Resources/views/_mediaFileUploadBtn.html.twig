@@ -1,8 +1,0 @@
-{% block mediaFileUploadBtn %}
-    <div class="bitnoise-media-uploader"
-       data-category-id="{{ category is defined and category is not null ? category.id : 0 }}"
-       data-multiple="true"
-       data-href="{{ path('btn_media_mediacontrol_upload') }}"
-       data-allowed-extensions="{{ allowed_extensions|join(',') }}"
-    ></div>
-{% endblock %}

@@ -1,0 +1,10 @@
+<div id="tree" class="top-offset">
+    <ul>
+        {% for category in categories %}
+            {% include 'BtnMediaBundle:MediaControl:_tree.html.twig' %}
+        {% endfor %}
+    </ul>
+</div>
+<div class="top-offset">
+    <a href="{{ url('btn_media_mediacontrol_new_category') }}" class="btn btn-primary btn-sm">{{ 'btn_media.category.create'|trans }}</a>
+</div>

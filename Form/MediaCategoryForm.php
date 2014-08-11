@@ -7,12 +7,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Routing\RouterInterface;
 
-class MediaFileForm extends AbstractType
+class MediaCategoryForm extends AbstractType
 {
     /**
      * @var string $actionRouteName
      */
-    private $actionRouteName = 'btn_media_mediacontrol_upload';
+    private $actionRouteName = 'btn_media_mediacontrol_create_category';
 
     /**
      *  @var RouterInterface $router
@@ -33,10 +33,8 @@ class MediaFileForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file', 'btn_media_type_file', array('mapped' => false))
             ->add('name')
-            ->add('description', 'textarea')
-            ->add('save', $options['data']->getId() ? 'btn_update' : 'btn_create')
+            ->add('save', $options['data']->getId() ? 'btn_update' : 'btn_create');
         ;
     }
 
@@ -47,14 +45,14 @@ class MediaFileForm extends AbstractType
     {
         $resolver->setDefaults(array(
             //TODO: set data_class ??
-            // 'data_class' => null,
-            'action' => $this->router->generate($this->getActionRouteName())
+            'data_class' => 'Btn\MediaBundle\Entity\MediaFileCategory',
+            'action'     => $this->router->generate($this->getActionRouteName())
         ));
     }
 
     public function getName()
     {
-        return 'btn_media_form_mediafile';
+        return 'btn_media_form_mediacategory';
     }
 
     /**
