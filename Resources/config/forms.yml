@@ -1,0 +1,24 @@
+services:
+
+    #base MediaFile form
+    btn_media.form.mediafile:
+        class: Btn\MediaBundle\Form\MediaFileForm
+        arguments: [ '@router' ]
+        tags:
+            - { name: form.type, alias: btn_media_form_mediafile }
+
+    btn_media.form.mediacategory:
+        class: Btn\MediaBundle\Form\MediaCategoryForm
+        arguments: [ '@router' ]
+        tags:
+            - { name: form.type, alias: btn_media_form_mediacategory }
+
+    btn_media.form.type.media:
+        class: Btn\MediaBundle\Form\Type\MediaType
+        tags:
+            - { name: form.type, alias: btn_media }
+
+    btn_media.form.type.file:
+        class: Btn\MediaBundle\Form\Type\FileType
+        tags:
+            - { name: form.type, alias: btn_media_type_file }
