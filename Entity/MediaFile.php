@@ -3,7 +3,7 @@
 namespace Btn\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Btn\MediaBundle\Util\File;
+use Btn\MediaBundle\Model\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

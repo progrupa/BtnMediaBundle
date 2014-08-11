@@ -1,10 +1,10 @@
 <?php
-namespace Btn\MediaBundle\Util;
+namespace Btn\MediaBundle\Model;
 
 class File
 {
-    private $fieldFile     = 'file';
-    private $fieldPath     = 'path';
+    private $fieldFile = 'file';
+    private $fieldPath = 'path';
     private $mimeTypes = array(
             'txt' => 'text/plain',
             'htm' => 'text/html',
@@ -59,38 +59,6 @@ class File
             'odt' => 'application/vnd.oasis.opendocument.text',
             'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
         );
-
-    public function handleUpload($options = array())
-    {
-        if (count($options)) {
-            foreach ($options as $key => $value) {
-                $this->$key = $value;
-            }
-        }
-
-        $old = $this->getUploadRootDir() . '/' . $this->getPath();
-
-        if ($this->getFile()) {
-            if (file_exists($this->getUploadRootPath())) {
-                $p = $this->getUploadRootPath();
-                unset($p);
-            }
-
-            // do whatever you want to generate a unique name
-            $this->setPath(sha1(uniqid(mt_rand(), true)).'.'.$this->getFile()->guessExtension());
-            $this->getFile()->move($this->getUploadRootDir(), $this->getPath());
-
-            @unlink($old);
-            if (file_exists($this->getFile())) {
-                $p = $this->getFile();
-                unset($p);
-            }
-
-            $this->setFile(null);
-        }
-
-        return $this;
-    }
 
     private function getFile()
     {

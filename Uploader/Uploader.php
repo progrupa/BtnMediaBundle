@@ -8,7 +8,9 @@ use Doctrine\ORM\EntityManager;
 use Gaufrette\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class MediaFileUploader
+use Btn\MediaBundle\Service\UploadAdapter;
+
+class Uploader
 {
     /**
      * @var EntityManager
@@ -59,6 +61,11 @@ class MediaFileUploader
      * @var string
      */
     private $cacheDirectory;
+
+    /**
+     * @var UploadAdapter
+     */
+    private $adapter;
 
     /**
      * @param EntityManager $em
@@ -271,7 +278,7 @@ class MediaFileUploader
      */
     private function saveUpload(UploadedFile $file)
     {
-        $media     = new MediaFile();
+        $media     = $this->adapter->getData();
         $extension = $file->guessExtension();
         $filename  = $basename = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
 
@@ -383,21 +390,39 @@ class MediaFileUploader
     }
 
     /**
-     * @param UploadedFile $file
+     * WAS param UploadedFile $file
+     * @param MediaFile $media
      *
      * @return MediaFileUploader
      */
     public function handleUpload(UploadedFile $file)
     {
+        $handleMethod = 'saveUpload';
         if ($file->guessExtension() == 'zip') {
-            $this->handleZip($file);
-        } else {
-            $this->saveUpload($file);
+            $handleMethod = 'handleZip';
         }
+        $this->$handleMethod($file);
 
         $this->em->flush();
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function setAdapter(UploadAdapter $adapter)
+    {
+        $this->adapter = $adapter;
+        $this->handleUpload($adapter->getUploadedFile());
+    }
+
+    /**
+     * @return array
+     */
+    private function handleAdapter()
+    {
+
     }
 
     /**

@@ -30,9 +30,10 @@ class MediaControlController extends BaseController
         $data                 = $this->getListData($request);
         $data['isPagination'] = true;
 
-        $entity = new MediaFile();
-        $form   = $this->createForm('btn_media_form_mediafile', $entity);
+        // $entity = new MediaFile();
+        // $form   = $this->createForm('btn_media_form_mediafile', $entity);
 
+        $form = $this->get('btn_media.adapter')->createForm();
         $data['form'] = $form->createView();
 
         return $data;
@@ -122,11 +123,13 @@ class MediaControlController extends BaseController
      **/
     public function uploadAction(Request $request)
     {
-        $entity = new MediaFile();
-        $form   = $this->createForm('btn_media_form_mediafile', $entity);
-        $form->handleRequest($request);
-        $uploadedFile = $form->getData()->getFile() ? $form->getData()->getFile() : $request->files->get('file');//was qqfile
-        // ldd($form->getData());
+        // $entity = new MediaFile();
+        // $form   = $this->createForm('btn_media_form_mediafile', $entity);
+        // $form->handleRequest($request);
+
+        // $form = $this->get('btn_media.adapter')->createForm();
+        // $uploadedFile = $form->getData()->getFile() ? $form->getData()->getFile() : $request->files->get('file');//was qqfile
+
         $categoryId = $request->get('categoryId', null);
         $category   = $categoryId ? $this->getRepository('BtnMediaBundle:MediaFileCategory')->find($categoryId) : null;
         $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
@@ -135,7 +138,10 @@ class MediaControlController extends BaseController
         $uploader = $this->get('mediafile.uploader');
         $uploader->setCategory($category);
         $uploader->setFilesystem($filesystem);
-        $uploader->handleUpload($uploadedFile);
+        // $uploader->handleUpload($uploadedFile);
+        $adapter = $this->get('btn_media.adapter');
+        $adapter->createForm($request);
+        $uploader->setAdapter($adapter);
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(array(

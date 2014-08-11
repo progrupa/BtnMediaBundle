@@ -22,8 +22,8 @@ services:
         tags:
             - { name: twig.extension }
 
-    mediafile.uploader:
-        class: Btn\MediaBundle\Model\MediaFileUploader
+    btn_media.uploader:
+        class: Btn\MediaBundle\Uploader\Uploader
         arguments: [ '@doctrine.orm.entity_manager', '%kernel.cache_dir%' ]
         calls:
             - [setAllowedExtensions, ['%btn_media.allowed_extensions%']]
@@ -48,12 +48,20 @@ services:
     btn_media.form.type.media:
         class: Btn\MediaBundle\Form\Type\MediaType
         tags:
-            - { name: form.type, alias: btn_media }
+            - { name: form.type, alias: btn_media_type_media }
 
     btn_media.form.type.file:
         class: Btn\MediaBundle\Form\Type\FileType
         tags:
             - { name: form.type, alias: btn_media_type_file }
+
+    #upload adapter service
+    btn_media.adapter:
+        class: Btn\MediaBundle\Adapter\DefaultAdapter
+        arguments:
+            em:             '@doctrine.orm.entity_manager'
+            formFactory:    '@form.factory'
+            formName:       'btn_media_form_mediafile'
 
     # btn_media.content_provider:
     #     class: Btn\NodesBundle\Service\RouteContentProvider

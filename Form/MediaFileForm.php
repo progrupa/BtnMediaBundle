@@ -19,21 +19,22 @@ class MediaFileForm extends AbstractType
      */
     private $router;
 
+    /**
+     *
+     */
     public function __construct(RouterInterface $router)
     {
         $this->router = $router;
     }
+
     /**
      *
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file', 'file', array(
-                'label' => 'btn_media.form.file'
-            ))
-            // ->add('save', $options['data']->getId() ? 'btn_update' : 'btn_create');
-            ->add('save', 'submit');
+            ->add('file', 'btn_media_type_file')
+            ->add('save', $options['data']->getId() ? 'btn_update' : 'btn_create');
         ;
     }
 
