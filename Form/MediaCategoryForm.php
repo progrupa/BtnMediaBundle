@@ -45,7 +45,7 @@ class MediaCategoryForm extends AbstractType
     {
         $resolver->setDefaults(array(
             //TODO: set data_class ??
-            'data_class' => 'Btn\MediaBundle\Entity\MediaFileCategory',
+            'data_class' => 'Btn\MediaBundle\Entity\MediaCategory',
             'action'     => $this->router->generate($this->getActionRouteName())
         ));
     }

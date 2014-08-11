@@ -2,24 +2,20 @@
 
 namespace Btn\MediaBundle\Controller;
 
-use Btn\MediaBundle\Model\MediaFileUploader;
+use Btn\MediaBundle\Model\MediaUploader;
 use Gaufrette\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
-use Btn\BaseBundle\Controller\BaseController;
+use Btn\AdminBundle\Controller\AbstractControlController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Btn\MediaBundle\Entity\MediaFile;
-use Btn\MediaBundle\Entity\MediaFileCategory;
-use Exception;
 
 /**
  * Media controller.
  *
  * @Route("/media")
  */
-class MediaControlController extends BaseController
+class MediaControlController extends AbstractControlController
 {
     /**
      * @Route("/", name="btn_media_mediacontrol_index")
@@ -41,11 +37,11 @@ class MediaControlController extends BaseController
      */
     public function treeAction(Request $request)
     {
-        $em      = $this->getDoctrine()->getManager();
-        $repo    = $em->getRepository('BtnMediaBundle:MediaFileCategory');
-        $current = null;
+        $provider = $this->get('btn_media.provider.media_category');
+        $repo     = $provider->getRepository();
+        $current  = null;
         if ($request->get('category') !== null) {
-            $current = $this->findEntity('BtnMediaBundle:MediaFileCategory', $request->get('category'));
+            $current = $repo->find($request->get('category'));
         }
 
         return array('categories' => $repo->findAll(), 'currentNode' => $current);
@@ -68,9 +64,10 @@ class MediaControlController extends BaseController
      **/
     public function editAction(Request $request, $id)
     {
-        $entity  = $this->findEntity('BtnMediaBundle:MediaFile', $id);
-        $adapter = $this->get('btn_media.adapter');
-        $form    = $adapter->createForm($request, $entity);
+        $provider = $this->get('btn_media.provider.media');
+        $entity   = $this->getRepository()->find($id);
+        $adapter  = $this->get('btn_media.adapter');
+        $form     = $adapter->createForm($request, $entity);
 
         return array('form' => $form->createView(), 'entity' => $entity);
     }
@@ -115,13 +112,16 @@ class MediaControlController extends BaseController
         $result = true;
 
         try {
-            $type   = $request->get('type');
+            $mediaProvider         = $this->get('btn_media.provider.media');
+            $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+
+
             $method = 'set' . ucfirst($type);
             $value  = $request->get('value');
-            $entity = $this->getRepository('BtnMediaBundle:MediaFile')->find($request->get('id'));
+            $entity = $mediaProvider->getRepository()->find($request->get('id'));
 
             if ($type == 'category') {
-                $value = $this->getRepository('BtnMediaBundle:MediaFileCategory')->find($value);
+                $value = $mediaCategoryProvider->getRepository()->find($value);
             }
 
             $entity->$method($value);
@@ -129,7 +129,7 @@ class MediaControlController extends BaseController
             $em = $this->getManager();
             $em->persist($entity);
             $em->flush();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $result = $e->getMessage();
         }
 
@@ -143,12 +143,10 @@ class MediaControlController extends BaseController
     {
         try {
             $result = true;
-            $entity = $this->getRepository('BtnMediaBundle:MediaFile')->find($request->get('id'));
-
-            $em = $this->getManager();
-            $em->remove($entity);
-            $em->flush();
-        } catch (Exception $e) {
+            $provider = $this->get('btn_media.provider.media');
+            $entity = $provider->getRepository()->find($request->get('id'));
+            $provider->delete($entity);
+        } catch (\Exception $e) {
             $result = $e->getMessage();
         }
 
@@ -161,10 +159,11 @@ class MediaControlController extends BaseController
     public function uploadAction(Request $request)
     {
         $categoryId = $request->get('categoryId', null);
-        $category   = $categoryId ? $this->getRepository('BtnMediaBundle:MediaFileCategory')->find($categoryId) : null;
-        $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $category   = $categoryId ? $mediaCategoryProvider->getRepository()->find($categoryId) : null;
 
-        /** @var MediaFileUploader $uploader */
+
+        /** @var MediaUploader $uploader */
         $uploader = $this->get('mediafile.uploader');
         $uploader->setCategory($category);
         $uploader->setFilesystem($filesystem);
@@ -201,7 +200,8 @@ class MediaControlController extends BaseController
     public function categoryAction(Request $request)
     {
         $categoryId = $request->get('id');
-        $category   = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($categoryId);
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $category   = $mediaCategoryProvider->getRepository()->findOneById($categoryId);
 
         $data                 = $this->getListData($request, false, $category);
         $data['isPagination'] = true;
@@ -216,15 +216,14 @@ class MediaControlController extends BaseController
      **/
     public function categoryAddAction(Request $request)
     {
-        $result            = true;
-        $mediaFileCategory = new MediaFileCategory();
-        $mediaFileCategory->setName($request->get('name'));
+        $result                = true;
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $mediaCategory         = $mediaCategoryProvider->create();
+        $mediaCategory->setName($request->get('name'));
 
         try {
-            $em = $this->getManager();
-            $em->persist($mediaFileCategory);
-            $em->flush();
-        } catch (Exception $e) {
+            $mediaCategoryProvider->save($mediaCategory);
+        } catch (\Exception $e) {
             $result = $e->getMassage();
         }
 
@@ -233,14 +232,14 @@ class MediaControlController extends BaseController
 
     /**
      * @Route("/category-delete/{id}", name="btn_media_mediacontrol_categorydelete")
-     * @ParamConverter("category", class="BtnMediaBundle:MediaFileCategory")
      **/
-    public function categoryDeleteAction(Request $request, $category)
+    public function categoryDeleteAction(Request $request, $id)
     {
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $category = $mediaCategoryProvider->getRepository()->find($id);
+
         if ($category) {
-            $em = $this->getManager();
-            $em->remove($category);
-            $em->flush();
+            $mediaCategoryProvider->delete($category);
         }
 
         return $this->redirect($this->generateUrl('btn_media_mediacontrol_category'));
@@ -252,7 +251,8 @@ class MediaControlController extends BaseController
      **/
     public function newCategoryAction(Request $request)
     {
-        $entity = new MediaFileCategory();
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $entity = $mediaCategoryProvider->create();
         $form   = $this->createForm('btn_media_form_mediacategory', $entity);
 
         return array('form' => $form->createView());
@@ -265,14 +265,13 @@ class MediaControlController extends BaseController
      **/
     public function createCategoryAction(Request $request)
     {
-        $entity = new MediaFileCategory();
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $entity = $mediaCategoryProvider->create();
         $form   = $this->createForm('btn_media_form_mediacategory', $entity);
         $form->handleRequest($request);
         $category = $form->getData();
-        //save MediaFileCategory entity
-        $em = $this->getManager();
-        $em->persist($category);
-        $em->flush();
+        //save MediaCategory entity
+        $mediaCategoryProvider->save($entity);
 
         return $this->redirect($this->generateUrl('btn_media_mediacontrol_edit_category', array('id' => $category->getId())));
     }
@@ -283,13 +282,12 @@ class MediaControlController extends BaseController
      **/
     public function editCategoryAction(Request $request, $id)
     {
-        $entity = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($id);
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $entity = $mediaCategoryProvider->getRepository()->find($id);
         $form   = $this->createForm('btn_media_form_mediacategory', $entity);
         $form->handleRequest($request);
-        //save MediaFileCategory entity
-        $em = $this->getManager();
-        $em->persist($form->getData());
-        $em->flush();
+        //save MediaCategory entity
+        $mediaCategoryProvider->save($entity);
 
         return array('form' => $form->createView());
         // return $this->redirect($this->generateUrl('btn_media_mediacontrol_category'));
@@ -302,15 +300,12 @@ class MediaControlController extends BaseController
      **/
     public function updateCategoryAction(Request $request, $id)
     {
-        // $entity = new MediaFileCategory();
-        $entity = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($id);
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $entity = $mediaCategoryProvider->getRepository()->find($id);
         $form   = $this->createForm('btn_media_form_mediacategory', $entity);
         $form->handleRequest($request);
-        $category = $form->getData();
-        //save MediaFileCategory entity
-        $em = $this->getManager();
-        $em->persist($category);
-        $em->flush();
+        //save MediaCategory entity
+        $mediaCategoryProvider->save($entity);
 
         return $this->redirect($this->generateUrl('btn_media_mediacontrol_edit_category', array('id' => $category->getId())));
     }
@@ -321,15 +316,22 @@ class MediaControlController extends BaseController
             $category = $request->get('category');
         }
 
-        $method     = ($all) ? 'findAll' : 'findByCategory';
-        $categories = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findAll();
-        $entities   = $this->getRepository('BtnMediaBundle:MediaFile')->$method($category);
+        $mediaProvider         = $this->get('btn_media.provider.media');
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+
+        $method     = $all ? 'findAll' : 'findByCategory';
+        $categories = $mediaCategoryProvider->getRepository()->findAll();
+        $entities   = $mediaProvider->getRepository()->$method($category);
 
         /* @todo: number of mediafiles per page - to bundle config */
         $pagination = $this->get('knp_paginator')->paginate($entities, $request->get('page', 1), 6);
 
-        $allowedExtensions = $this->container->getParameter('btn_media.allowed_extensions');
+        $allowedExtensions = $this->container->getParameter('btn_media.media.allowed_extensions');
 
-        return array('categories' => $categories, 'pagination' => $pagination, 'allowed_extensions' => $allowedExtensions);
+        return array(
+            'categories'         => $categories,
+            'pagination'         => $pagination,
+            'allowed_extensions' => $allowedExtensions,
+        );
     }
 }

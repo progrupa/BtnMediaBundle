@@ -20,16 +20,25 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('btn_media');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
-        //
         $rootNode
             ->children()
-                ->scalarNode('template')->defaultValue('BtnMediaBundle:Media:category.html.twig')->end()
-                ->arrayNode('allowed_extensions')
-                    ->defaultValue(array('jpeg', 'jpg', 'png', 'zip', 'pdf'))
-                    ->prototype('scalar')
+                ->arrayNode('media')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('class')->cannotBeEmpty()->defaultValue('Btn\\MediaBundle\\Entity\\Media')->end()
+                        ->arrayNode('allowed_extensions')
+                            ->defaultValue(array('jpeg', 'jpg', 'png', 'zip', 'pdf'))
+                            ->prototype('scalar')
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('media_category')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('class')->cannotBeEmpty()->defaultValue('Btn\\MediaBundle\\Entity\\MediaCategory')->end()
+                        ->scalarNode('template')->defaultValue('BtnMediaBundle:Media:category.html.twig')->end()
+                    ->end()
                 ->end()
             ->end()
         ;

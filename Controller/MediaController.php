@@ -22,24 +22,28 @@ class MediaController extends BaseController
      **/
     public function categoryAction(Request $request)
     {
-        $categoryId = $request->get('id');
-        $category   = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findOneById($categoryId);
+        $categoryId            = $request->get('id');
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $category              = $mediaCategoryProvider->getRepository()->findOneById($categoryId);
 
         $data                 = $this->getListData($request, false, $category);
         $data['isPagination'] = true;
         $data['isCategory']   = true;
         $data['category']     = $category;
 
-        $params = $this->container->getParameter('btn_media');
+        $template = $this->container->getParameter('btn_media.media_category.template');
 
-        return $this->render($params['template'], $data);
+        return $this->render($template, $data);
     }
 
     protected function getListData($request, $all = false, $category = null)
     {
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $mediaProvider         = $this->get('btn_media.provider.media');
+
         $method     = ($all) ? 'findAll' : 'findByCategory';
-        $categories = $this->getRepository('BtnMediaBundle:MediaFileCategory')->findAll();
-        $entities   = $this->getRepository('BtnMediaBundle:MediaFile')->$method($category);
+        $categories = $mediaCategoryProvider->getRepository()->findAll();
+        $entities   = $mediaProvider->getRepository()->$method($category);
 
         $params = $this->container->getParameter('btn_media');
 
@@ -52,7 +56,8 @@ class MediaController extends BaseController
      **/
     public function downloadAction(Request $request, $id)
     {
-        $entity = $this->getRepository('BtnMediaBundle:MediaFile')->findOneById($id);;
+        $mediaProvider = $this->get('btn_media.provider.media');
+        $entity        = $mediaProvider->getRepository()->findOneById($id);
 
         // Generate response
         if ($entity) {

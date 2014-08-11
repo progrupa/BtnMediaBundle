@@ -7,13 +7,10 @@ use Btn\MediaBundle\Model\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * MediaFile
- *
- * @ORM\Table(name="media_file")
- * @ORM\Entity(repositoryClass="Btn\MediaBundle\Repository\MediaFileRepository")
- * @ORM\HasLifecycleCallbacks
+ * @ORM\MappedSuperclass()
+ * @ORM\HasLifecycleCallbacks()
  */
-class MediaFile extends File
+abstract class AbstractMedia extends File implements MediaInterface
 {
     /**
      * @var integer
@@ -40,20 +37,17 @@ class MediaFile extends File
     private $description;
 
     /**
-     * @var integer
-     *
-     * @ORM\ManyToOne(targetEntity="Btn\MediaBundle\Entity\MediaFileCategory", inversedBy="files")
-     * @ORM\JoinColumn(name="media_file_category_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    private $category;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=255, nullable=true)
      * @Assert\NotBlank()
      */
     private $type;
+
+    /**
+     * @var integer
+     */
+    private $category;
 
     /**
      * @var string
@@ -82,7 +76,7 @@ class MediaFile extends File
      * Set name
      *
      * @param  string    $name
-     * @return MediaFile
+     * @return Media
      */
     public function setName($name)
     {
@@ -175,7 +169,7 @@ class MediaFile extends File
      * Set description
      *
      * @param  string    $description
-     * @return MediaFile
+     * @return Media
      */
     public function setDescription($description)
     {
@@ -198,7 +192,7 @@ class MediaFile extends File
      * Set type
      *
      * @param  string    $type
-     * @return MediaFile
+     * @return Media
      */
     public function setType($type)
     {
@@ -218,20 +212,12 @@ class MediaFile extends File
     }
 
     /**
-     *
-     */
-    public function __toString()
-    {
-        return $this->getName();
-    }
-
-    /**
      * Set category
      *
      * @param  string    $category
-     * @return MediaFile
+     * @return Media
      */
-    public function setCategory(\Btn\MediaBundle\Entity\MediaFileCategory $category = null)
+    public function setCategory(MediaCategoryInterface $category = null)
     {
         $this->category = $category;
 
@@ -290,5 +276,13 @@ class MediaFile extends File
     public function getPreviewExtensions()
     {
         return $this->previewExtensions;
+    }
+
+    /**
+     *
+     */
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

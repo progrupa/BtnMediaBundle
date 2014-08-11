@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Routing\RouterInterface;
 
-class MediaFileForm extends AbstractType
+class MediaForm extends AbstractType
 {
     /**
      * @var string $actionRouteName
@@ -54,7 +54,7 @@ class MediaFileForm extends AbstractType
 
     public function getName()
     {
-        return 'btn_media_form_mediafile';
+        return 'btn_media_form_media';
     }
 
     /**

@@ -1,8 +1,8 @@
 services:
 
-    #base MediaFile form
+    #base Media form
     btn_media.form.mediafile:
-        class: Btn\MediaBundle\Form\MediaFileForm
+        class: Btn\MediaBundle\Form\MediaForm
         arguments: [ '@router' ]
         tags:
             - { name: form.type, alias: btn_media_form_mediafile }
@@ -15,6 +15,8 @@ services:
 
     btn_media.form.type.media:
         class: Btn\MediaBundle\Form\Type\MediaType
+        arguments:
+            provider: @btn_media.provider.media
         tags:
             - { name: form.type, alias: btn_media }
 

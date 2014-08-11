@@ -2,10 +2,10 @@
 
 namespace Btn\MediaBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManager;
 
-class MediaFileRepository extends EntityRepository
+class MediaRepository extends EntityRepository
 {
     public function getCategories()
     {

@@ -2,8 +2,8 @@
 
 namespace Btn\MediaBundle\Uploader;
 
-use Btn\MediaBundle\Entity\MediaFile;
-use Btn\MediaBundle\Entity\MediaFileCategory;
+use Btn\MediaBundle\Entity\Media;
+use Btn\MediaBundle\Entity\MediaCategory;
 use Doctrine\ORM\EntityManager;
 use Gaufrette\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -38,7 +38,7 @@ class Uploader
     private $filesystem;
 
     /**
-     * @var MediaFileCategory
+     * @var MediaCategory
      */
     private $category;
 
@@ -94,7 +94,7 @@ class Uploader
     /**
      * @param $error
      *
-     * @return MediaFileUploader
+     * @return MediaUploader
      */
     public function addError($error)
     {
@@ -122,7 +122,7 @@ class Uploader
     /**
      * @param array $allowedExtensions
      *
-     * @return MediaFileUploader
+     * @return MediaUploader
      */
     public function setAllowedExtensions(array $allowedExtensions)
     {
@@ -142,7 +142,7 @@ class Uploader
     /**
      * @param $sizeLimit
      *
-     * @return MediaFileUploader
+     * @return MediaUploader
      */
     public function setSizeLimit($sizeLimit)
     {
@@ -164,7 +164,7 @@ class Uploader
     /**
      * @param Filesystem $filesystem
      *
-     * @return MediaFileUploader
+     * @return MediaUploader
      */
     public function setFilesystem(Filesystem $filesystem)
     {
@@ -182,11 +182,11 @@ class Uploader
     }
 
     /**
-     * @param MediaFileCategory $category
+     * @param MediaCategory $category
      *
-     * @return MediaFileUploader
+     * @return MediaUploader
      */
-    public function setCategory(MediaFileCategory $category = null)
+    public function setCategory(MediaCategory $category = null)
     {
         $this->category = $category;
 
@@ -194,7 +194,7 @@ class Uploader
     }
 
     /**
-     * @return MediaFileCategory
+     * @return MediaCategory
      */
     public function getCategory()
     {
@@ -204,7 +204,7 @@ class Uploader
     /**
      * @param bool $replaceOldFiles
      *
-     * @return MediaFileUploader
+     * @return MediaUploader
      */
     public function setReplaceOldFiles($replaceOldFiles)
     {
@@ -346,7 +346,7 @@ class Uploader
     /**
      * @param UploadedFile $file
      *
-     * @return MediaFileUploader
+     * @return MediaUploader
      */
     private function handleFile(UploadedFile $file)
     {
@@ -391,9 +391,9 @@ class Uploader
 
     /**
      * WAS param UploadedFile $file
-     * @param MediaFile $media
+     * @param Media $media
      *
-     * @return MediaFileUploader
+     * @return MediaUploader
      */
     public function handleUpload(UploadedFile $file)
     {

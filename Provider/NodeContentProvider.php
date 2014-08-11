@@ -4,26 +4,20 @@ namespace Btn\MediaBundle\Service;
 
 use Btn\NodesBundle\Service\NodeContentProviderInterface;
 use Btn\MediaBundle\Form\NodeContentType;
+use Btn\AdminBundle\Provider\EntityProviderInterface;
 
-/**
-* MediaContentProvider
-*
-*/
-class MediaContentProvider implements NodeContentProviderInterface
+class NodeContentProvider implements NodeContentProviderInterface
 {
+    private $provider;
 
-    private $router;
-    private $em;
-
-    public function __construct($router, $em)
+    public function __construct(EntityProviderInterface $provider)
     {
-        $this->router = $router;
-        $this->em     = $em;
+        $this->provider = $provider;
     }
 
     public function getForm()
     {
-        $medias = $this->em->getRepository('BtnMediaBundle:MediaFileCategory')->findAll();
+        $medias = $this->provider->getRepository()->findAll();
 
         $data = array();
         foreach ($medias as $media) {

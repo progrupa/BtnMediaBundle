@@ -1,7 +1,7 @@
 services:
-    # btn_media.content_provider:
-    #     class: Btn\NodesBundle\Service\RouteContentProvider
-    #     arguments:
-    #         availableRoutes: %btn.nodes.availableRoutes%
-    #     tags:
-    #         - { name: btn_nodes.content_provider }
+    btn_media.provider.node_content_provider:
+        class: Btn\NodesBundle\Provider\NodeContentProvider
+        arguments:
+            provider: @btn_media.provider.media_category
+        tags:
+            - { name: btn_nodes.content_provider }

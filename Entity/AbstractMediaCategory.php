@@ -3,14 +3,12 @@
 namespace Btn\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * MediaFileCategory
- *
-* @ORM\Table(name="media_file_category")
- * @ORM\Entity
+ * @ORM\MappedSuperclass()
  */
-class MediaFileCategory
+abstract class AbstractMediaCategory
 {
     /**
      * @var integer
@@ -29,9 +27,17 @@ class MediaFileCategory
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Btn\MediaBundle\Entity\MediaFile", mappedBy="category")
+     * @var integer
      */
     private $files;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->files = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -47,7 +53,7 @@ class MediaFileCategory
      * Set name
      *
      * @param  string            $name
-     * @return MediaFileCategory
+     * @return MediaCategory
      */
     public function setName($name)
     {
@@ -67,20 +73,12 @@ class MediaFileCategory
     }
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->files = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
      * Add files
      *
-     * @param  \Btn\MediaBundle\Entity\MediaFile $files
-     * @return MediaFileCategory
+     * @param  MediaInterface $files
+     * @return MediaCategory
      */
-    public function addFile(\Btn\MediaBundle\Entity\MediaFile $files)
+    public function addFile(MediaInterface $files)
     {
         $this->files[] = $files;
 
@@ -90,9 +88,9 @@ class MediaFileCategory
     /**
      * Remove files
      *
-     * @param \Btn\MediaBundle\Entity\MediaFile $files
+     * @param MediaInterface $files
      */
-    public function removeFile(\Btn\MediaBundle\Entity\MediaFile $files)
+    public function removeFile(MediaInterface $files)
     {
         $this->files->removeElement($files);
     }

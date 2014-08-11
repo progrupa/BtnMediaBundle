@@ -1,7 +1,7 @@
 <?php
 namespace Btn\MediaBundle\Twig;
 
-class MediaFileExtension extends \Twig_Extension
+class MediaExtension extends \Twig_Extension
 {
 
     public function __construct($manager)
@@ -12,17 +12,17 @@ class MediaFileExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'get_media_file' => new \Twig_Function_Method($this, 'getMediaFile'),
+            'btn_get_media' => new \Twig_Function_Method($this, 'getMedia'),
         );
     }
 
-    public function getMediaFile($name)
+    public function getMedia($name)
     {
-        return $this->manager->getMediaFile($name);
+        return $this->manager->getMedia($name);
     }
 
     public function getName()
     {
-        return 'mediafile_extensions';
+        return 'btn.media.media_extensions';
     }
 }

@@ -1,37 +1,53 @@
+parameters:
+    btn_media.manager.media.class: Btn\MediaBundle\Manager\MediaManager
+    btn_media.uploader.class: Btn\MediaBundle\Uploader\Uploader
+    btn_media.adapter.default.class: Btn\MediaBundle\Adapter\DefaultAdapter
+    btn_media.extension.media.class: Btn\MediaBundle\Twig\MediaExtension
+
 services:
-    liip_imagine.data.loader.stream.btn_media:
+    btn_media.provider.media:
+        class: %btn_admin.provider.entity.class%
+        parent: btn_admin.provider.abstract_entity
+        arguments: ['%btn_media.media.class%']
+
+    btn_media.provider.media_category:
+        class: %btn_admin.provider.entity.class%
+        parent: btn_admin.provider.abstract_entity
+        arguments: ['%btn_media.media_category.class%']
+
+    btn_media.liip_imagine.data.loader.stream:
         class: "%liip_imagine.data.loader.stream.class%"
         arguments:
             - 'gaufrette://btn_media/'
         tags:
             - { name: 'liip_imagine.binary.loader', loader: 'stream.btn_media' }
 
-    mediafile.manager:
-        class: Btn\MediaBundle\Model\MediaFileManager
+    btn_media.manager.media:
+        class: %btn_media.manager.media.class%
         arguments:
-            em:          '@doctrine.orm.entity_manager'
-            paginator:   '@knp_paginator'
-            twig:        '@twig'
-            formFactory: '@form.factory'
-            container:   '@service_container'
+            provider:    '@btn_media.provider.media'
+            environment: '%kernel.environment%'
             gaufrette:   '@knp_gaufrette.filesystem_map'
 
-    extension.mediafile:
-        class: Btn\MediaBundle\Twig\MediaFileExtension
-        arguments: [ '@mediafile.manager' ]
+    btn_media.extension.media:
+        class: %btn_media.extension.media.class%
+        arguments: [ '@btn_media.manager.media' ]
         tags:
             - { name: twig.extension }
 
     btn_media.uploader:
-        class: Btn\MediaBundle\Uploader\Uploader
-        arguments: [ '@doctrine.orm.entity_manager', '%kernel.cache_dir%' ]
+        class: %btn_media.uploader.class%
+        arguments: [ '@doctrine.orm.entity_manager', '%kernel.cache_dir%']
         calls:
-            - [setAllowedExtensions, ['%btn_media.allowed_extensions%']]
+            - [setAllowedExtensions, ['%btn_media.media.allowed_extensions%']]
 
     #upload adapter service
-    btn_media.adapter:
-        class: Btn\MediaBundle\Adapter\DefaultAdapter
+    btn_media.adapter.default:
+        class: %btn_media.adapter.default.class%
         arguments:
-            em:             '@doctrine.orm.entity_manager'
-            formFactory:    '@form.factory'
-            formName:       'btn_media_form_mediafile'
+            mediaProvider:         '@btn_media.provider.media'
+            mediaCategoryProvider: '@btn_media.provider.media_category'
+            formFactory:           '@form.factory'
+            formName:              'btn_media_form_media'
+
+    btn_media.adapter: @btn_media.adapter.default
