@@ -50,6 +50,7 @@ class DefaultAdapter implements AdapterInterface
         //bind entity with category, if category is set as GET param
         if ($request && ($category = $request->get('category'))) {
             $category = $this->mediaCategoryProvider->getRepository()->find($category);
+            // ld($category);
             $entity->setCategory($category);
         }
         //change form action route params

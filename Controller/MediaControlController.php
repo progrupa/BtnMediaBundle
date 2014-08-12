@@ -19,9 +19,10 @@ class MediaControlController extends AbstractControlController
 {
     /**
      * @Route("/", name="btn_media_mediacontrol_media_index")
+     * @Route("/category/{category}", name="btn_media_mediacontrol_media_index_category")
      * @Template()
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, $category = null)
     {
         $data                 = $this->getListData($request);
         $data['isPagination'] = true;
@@ -31,9 +32,10 @@ class MediaControlController extends AbstractControlController
 
     /**
      * @Route("/new", name="btn_media_mediacontrol_media_new")
+     * @Route("/new/category/{category}", name="btn_media_mediacontrol_media_new_category")
      * @Template("BtnMediaBundle:MediaControl:form.html.twig")
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, $category = null)
     {
         $form = $this->get('btn_media.adapter')->createForm($request);
 
@@ -86,7 +88,7 @@ class MediaControlController extends AbstractControlController
             }
             if (count($medias) > 0 || $media) {
 
-                return $this->redirect($this->generateUrl('btn_media_mediacontrol_media_index', $params));
+                return $this->redirect($this->generateUrl('btn_media_mediacontrol_media_index_category', $params));
             }
         }
 
@@ -111,7 +113,7 @@ class MediaControlController extends AbstractControlController
 
         }
 
-        return $this->redirect($this->generateUrl('btn_media_mediacontrol_media_index', $params));
+        return $this->redirect($this->generateUrl(empty($params) ? 'btn_media_mediacontrol_media_index' : 'btn_media_mediacontrol_media_index_category', $params));
     }
 
     /**

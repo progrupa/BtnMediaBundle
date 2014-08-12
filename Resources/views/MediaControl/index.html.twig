@@ -3,14 +3,21 @@
 {% block main %}
     <h2>Media</h2>
     <div id="category-actions">
-        <a href="{{ path('btn_media_mediacontrol_media_new', {'category': app.request.get('category')})}}" class="btn btn-success">
-            {{ 'btn_media.media.add'|trans }}</a>
     {% if app.request.get('category') %}
-    <a href="{{ path('btn_media_mediacontrol_edit_category', {'id': app.request.get('category')})}}" class="btn btn-primary">
+        <a href="{{ path('btn_media_mediacontrol_media_new_category', {'category': app.request.get('category')})}}" class="btn btn-success">
+            {{ 'btn_media.media.add'|trans }}</a>
+        <a href="{{ path('btn_media_mediacontrol_edit_category', {'id': app.request.get('category')})}}" class="btn btn-primary">
             {{ 'btn_media.category.edit'|trans }}</a>
-        <a href="{{ path('btn_media_mediacontrol_category_delete', {'id': app.request.get('category')})}}" class="btn btn-danger">
+        <a href="{{ path('btn_media_mediacontrol_category_delete', {'id': app.request.get('category')})}}"
+            class="btn btn-danger"
+            data-confirm="{{ 'btn_admin.category.delete_confirm'|trans }}"
+            >
             {{ 'btn_media.category.delete'|trans }}</a>
+    {% else %}
+        <a href="{{ path('btn_media_mediacontrol_media_new')}}" class="btn btn-success">
+            {{ 'btn_media.media.add'|trans }}</a>
     {% endif %}
+
     </div>
     <table class="table table-striped table-bordered table-condensed">
         <thead>

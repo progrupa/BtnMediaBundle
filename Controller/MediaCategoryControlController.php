@@ -75,8 +75,7 @@ class MediaCategoryControlController extends AbstractControlController
         $form = $this->get('btn_media.form.mediacategory');
         $form->setActionRouteName('btn_media_mediacontrol_update_category');
         $form->setActionRouteParams(array('id' => $entity->getId()));
-        $form   = $this->createForm($form, $entity);
-        // $form->handleRequest($request);
+        $form = $this->createForm($form, $entity);
         //save MediaCategory entity
         $mediaCategoryProvider->save($entity);
 
