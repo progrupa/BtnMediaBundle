@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\MappedSuperclass()
  */
-abstract class AbstractMediaCategory
+abstract class AbstractMediaCategory implements MediaCategoryInterface
 {
     /**
      * @var integer
