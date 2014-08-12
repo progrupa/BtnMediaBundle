@@ -24,10 +24,7 @@ class MediaControlController extends AbstractControlController
      */
     public function indexAction(Request $request, $category = null)
     {
-        $data                 = $this->getListData($request);
-        $data['isPagination'] = true;
-
-        return $data;
+        return $this->getListData($request);
     }
 
     /**
@@ -162,28 +159,16 @@ class MediaControlController extends AbstractControlController
     /**
      * Get paginated media list
      */
-    private function getListData($request, $all = false, $category = null)
+    private function getListData(Request $request)
     {
-        if ($category == NULL) {
-            $category = $request->get('category');
-        }
-
-        $mediaProvider         = $this->get('btn_media.provider.media');
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
-
-        $method     = $all ? 'findAll' : 'findByCategory';
-        $categories = $mediaCategoryProvider->getRepository()->findAll();
-        $entities   = $mediaProvider->getRepository()->$method($category);
+        $category      = $request->get('category');
+        $mediaProvider = $this->get('btn_media.provider.media');
+        $method        = $category ? 'findByCategory' : 'findAll';
+        $entities      = $mediaProvider->getRepository()->$method($category);
 
         /* @todo: number of mediafiles per page - to bundle config */
         $pagination = $this->get('knp_paginator')->paginate($entities, $request->get('page', 1), 6);
 
-        $allowedExtensions = $this->container->getParameter('btn_media.media.allowed_extensions');
-
-        return array(
-            'categories'         => $categories,
-            'pagination'         => $pagination,
-            'allowed_extensions' => $allowedExtensions,
-        );
+        return array('pagination' => $pagination);
     }
 }
