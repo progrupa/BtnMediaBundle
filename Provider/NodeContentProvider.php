@@ -2,7 +2,7 @@
 
 namespace Btn\MediaBundle\Service;
 
-use Btn\NodesBundle\Service\NodeContentProviderInterface;
+use Btn\NodesBundle\Provider\NodeContentProviderInterface;
 use Btn\MediaBundle\Form\NodeContentType;
 use Btn\AdminBundle\Provider\EntityProviderInterface;
 
