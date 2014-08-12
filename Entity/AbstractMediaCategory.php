@@ -17,19 +17,19 @@ abstract class AbstractMediaCategory
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var integer
      */
-    private $files;
+    protected $files;
 
     /**
      * Constructor

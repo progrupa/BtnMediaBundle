@@ -19,7 +19,7 @@ abstract class AbstractMedia extends File implements MediaInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -27,21 +27,21 @@ abstract class AbstractMedia extends File implements MediaInterface
      * @ORM\Column(name="name", type="string", length=255)
      * @Assert\NotBlank()
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
-    private $description;
+    protected $description;
 
     /**
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=255, nullable=true)
      */
-    private $type;
+    protected $type;
 
     /**
      * @var integer
@@ -53,12 +53,12 @@ abstract class AbstractMedia extends File implements MediaInterface
      *
      * @ORM\Column(name="file", type="string", length=255)
      */
-    private $file;
+    protected $file;
 
     /**
      *
      */
-    private $previewExtensions = array('jpeg', 'jpg', 'png', 'gif');
+    protected $previewExtensions = array('jpeg', 'jpg', 'png', 'gif');
 
     /**
      * Get id

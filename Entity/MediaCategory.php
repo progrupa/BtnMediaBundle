@@ -14,5 +14,5 @@ class MediaCategory extends AbstractMediaCategory implements MediaCategoryInterf
     /**
      * @ORM\OneToMany(targetEntity="Btn\MediaBundle\Entity\Media", mappedBy="category")
      */
-    private $files;
+    protected $files;
 }
