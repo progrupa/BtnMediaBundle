@@ -1,29 +1,17 @@
-{#
-{% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3" >
-            {% include 'BtnMediaBundle::_categories.html.twig' with {pagination: pagination, category_active: category|default({id:0})}  %}
-            {% include 'BtnMediaBundle::_addCategoryBtn.html.twig' %}
-        </div>
-        <div class="col-md-9" >
-            {% include 'BtnMediaBundle::_list.html.twig' with {pagination: pagination}  %}
-            <div class="clearfix"></div>
-            {% if category is defined and category is not null %}
-                {% include 'BtnMediaBundle::_mediaFileUploadBtn.html.twig' %}
-                {% include 'BtnMediaBundle::_mediaFileUploadTemplate.html.twig' %}
-            {% endif %}
-            {{ form(form) }}
-        </div>
-    </div>
-</div>
-{% endblock %} #}
-
 {% extends 'BtnMediaBundle::layout.html.twig' %}
 
 {% block main %}
     <h2>Media</h2>
-
+    <div id="category-actions">
+        <a href="{{ path('btn_media_mediacontrol_media_new', {'category': app.request.get('category')})}}" class="btn btn-success">
+            {{ 'btn_media.media.add'|trans }}</a>
+    {% if app.request.get('category') %}
+    <a href="{{ path('btn_media_mediacontrol_edit_category', {'id': app.request.get('category')})}}" class="btn btn-primary">
+            {{ 'btn_media.category.edit'|trans }}</a>
+        <a href="{{ path('btn_media_mediacontrol_category_delete', {'id': app.request.get('category')})}}" class="btn btn-danger">
+            {{ 'btn_media.category.delete'|trans }}</a>
+    {% endif %}
+    </div>
     <table class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
@@ -41,50 +29,21 @@
                 <td><img src="{{ entity.path|imagine_filter('btn_media_thumb') }}" /></td>
                 <td>
                     <a href="{{ path('btn_media_mediacontrol_media_edit', { 'id': entity.id }) }}" class="btn btn-primary">
-                        {% trans %}btn_admin.edit{% endtrans %}</a>
+                        {{ 'btn_admin.media.edit'|trans }}</a>
+                    <a href="{{ path('btn_media_mediacontrol_media_delete', { 'id': entity.id }) }}"
+                        class="btn btn-danger"
+                        data-confirm="{{ 'btn_admin.media.delete_confirm'|trans }}"
+                        >
+                        {{ 'btn_admin.media.delete'|trans }}</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    {{ render(controller('BtnMediaBundle:MediaControl:new', {'categoryId': app.request.get('category')})) }}
-
     {{ knp_pagination_render(pagination) }}
 
 {% endblock %}
-
-
-{# {% block javascripts %}
-    {{ parent() }}
-    {% javascripts
-        'bundles/btnmedia/js/fineUploader/js/util.js'
-        'bundles/btnmedia/js/fineUploader/js/error.js'
-        'bundles/btnmedia/js/fineUploader/js/version.js'
-        'bundles/btnmedia/js/fineUploader/js/features.js'
-        'bundles/btnmedia/js/fineUploader/js/promise.js'
-        'bundles/btnmedia/js/fineUploader/js/button.js'
-        'bundles/btnmedia/js/fineUploader/js/upload-data.js'
-        'bundles/btnmedia/js/fineUploader/js/uploader.basic.api.js'
-        'bundles/btnmedia/js/fineUploader/js/uploader.basic.js'
-        'bundles/btnmedia/js/fineUploader/js/ajax.requester.js'
-        'bundles/btnmedia/js/fineUploader/js/handler.base.js'
-        'bundles/btnmedia/js/fineUploader/js/abstract.handler.form.js'
-        'bundles/btnmedia/js/fineUploader/js/abstract.handler.xhr.js'
-        'bundles/btnmedia/js/fineUploader/js/window.receive.message.js'
-        'bundles/btnmedia/js/fineUploader/js/uploader.api.js'
-        'bundles/btnmedia/js/fineUploader/js/uploader.js'
-        'bundles/btnmedia/js/fineUploader/js/templating.js'
-        'bundles/btnmedia/js/fineUploader/js/handler.form.js'
-        'bundles/btnmedia/js/fineUploader/js/handler.xhr.js'
-        'bundles/btnmedia/js/fineUploader/js/dnd.js'
-        'bundles/btnmedia/js/fineUploader/js/jquery-plugin.js'
-        'bundles/btnmedia/js/jq.mediaUploader.js'
-        'bundles/btnmedia/js/default.admin.js'
-    %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %} #}
 
 {# {% block breadcrumb %}
     {% if category is defined and category is not null %}

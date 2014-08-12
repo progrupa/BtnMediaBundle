@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class MediaControlController extends AbstractControlController
 {
     /**
-     * @Route("/", name="btn_media_mediacontrol_index")
+     * @Route("/", name="btn_media_mediacontrol_media_index")
      * @Template()
      */
     public function indexAction(Request $request)
@@ -30,30 +30,12 @@ class MediaControlController extends AbstractControlController
     }
 
     /**
-     * Lists all Nodes.
-     *
-     * @Route("/tree", name="cp_nodes_tree")
-     * @Template()
-     */
-    public function treeAction(Request $request)
-    {
-        $provider = $this->get('btn_media.provider.media_category');
-        $repo     = $provider->getRepository();
-        $current  = null;
-        if ($request->get('category') !== null) {
-            $current = $repo->find($request->get('category'));
-        }
-
-        return array('categories' => $repo->findAll(), 'currentNode' => $current);
-    }
-
-    /**
-     * @Route("/new", name="btn_media_mediacontrol_new")
+     * @Route("/new", name="btn_media_mediacontrol_media_new")
      * @Template("BtnMediaBundle:MediaControl:form.html.twig")
      */
     public function newAction(Request $request)
     {
-        $form = $this->get('btn_media.adapter')->createForm();
+        $form = $this->get('btn_media.adapter')->createForm($request);
 
         return array('form' => $form->createView(), 'entity' => null);
     }
@@ -64,12 +46,72 @@ class MediaControlController extends AbstractControlController
      **/
     public function editAction(Request $request, $id)
     {
-        $provider = $this->get('btn_media.provider.media');
-        $entity   = $this->getRepository()->find($id);
-        $adapter  = $this->get('btn_media.adapter');
-        $form     = $adapter->createForm($request, $entity);
+        $entity   = $this->get('btn_media.provider.media')->getRepository()->find($id);
+        $form     = $this->get('btn_media.adapter')->createForm($request, $entity);
 
         return array('form' => $form->createView(), 'entity' => $entity);
+    }
+
+    /**
+     * @Route("/upload/{id}", name="btn_media_mediacontrol_media_upload")
+     * @Template("BtnMediaBundle:MediaControl:form.html.twig")
+     **/
+    public function uploadAction(Request $request, $id = null)
+    {
+        /** @var Media $entity */
+        $entity = $id ? $this->get('btn_media.provider.media')->getRepository()->find($id) : null;
+        /** @var Gaufrette/Filesystem $entity */
+        $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
+        /** @var MediaUploader $uploader */
+        $uploader = $this->get('btn_media.uploader');
+        $uploader->setFilesystem($filesystem);
+        $adapter = $this->get('btn_media.adapter');
+        $form    = $adapter->createForm($request, $entity);
+        $uploader->setAdapter($adapter);
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'success' => $uploader->isSuccess()
+            ));
+        } else {
+            $medias = $uploader->getUploadedMedias();
+            $params = array();
+            $media  = null;
+            //if there was a single upload, and file was added to the category, set GET category id param
+            if (is_array($medias) && count($medias) === 1) {
+                $media = array_pop($medias);
+                if ($media && $media->getCategory()) {
+                    $params = array('category' => $media->getCategory()->getId());
+                }
+            }
+            if (count($medias) > 0 || $media) {
+
+                return $this->redirect($this->generateUrl('btn_media_mediacontrol_media_index', $params));
+            }
+        }
+
+        return array('form' => $form->createView(), 'entity' => null);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="btn_media_mediacontrol_media_delete")
+     **/
+    public function deleteAction(Request $request, $id)
+    {
+        $params = array();
+        try {
+            $provider = $this->get('btn_media.provider.media');
+            $entity   = $provider->getRepository()->find($id);
+            if ($entity->getCategory()) {
+                $params['category'] = $entity->getCategory()->getId();
+            }
+            $provider->delete($entity);
+        } catch (\Exception $e) {
+            throw new Exception($e->getMessage());
+
+        }
+
+        return $this->redirect($this->generateUrl('btn_media_mediacontrol_media_index', $params));
     }
 
     /**
@@ -79,7 +121,7 @@ class MediaControlController extends AbstractControlController
     public function listModalAction(Request $request)
     {
         $separated = $request->get('separated');
-        $data     = $this->getListData($request, true);
+        $data      = $this->getListData($request, true);
 
         $data['isModal']      = true;
         $data['isPagination'] = !$separated;
@@ -104,84 +146,6 @@ class MediaControlController extends AbstractControlController
     }
 
     /**
-     * @Route("/edit", name="btn_media_mediacontrol_edit")
-     * @Method({"POST"})
-     **/
-    public function editXHRAction(Request $request)
-    {
-        $result = true;
-
-        try {
-            $mediaProvider         = $this->get('btn_media.provider.media');
-            $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
-
-
-            $method = 'set' . ucfirst($type);
-            $value  = $request->get('value');
-            $entity = $mediaProvider->getRepository()->find($request->get('id'));
-
-            if ($type == 'category') {
-                $value = $mediaCategoryProvider->getRepository()->find($value);
-            }
-
-            $entity->$method($value);
-
-            $em = $this->getManager();
-            $em->persist($entity);
-            $em->flush();
-        } catch (\Exception $e) {
-            $result = $e->getMessage();
-        }
-
-        return $this->json(array('result' => $result));
-    }
-
-    /**
-     * @Route("/delete", name="btn_media_mediacontrol_delete")
-     **/
-    public function deleteAction(Request $request)
-    {
-        try {
-            $result = true;
-            $provider = $this->get('btn_media.provider.media');
-            $entity = $provider->getRepository()->find($request->get('id'));
-            $provider->delete($entity);
-        } catch (\Exception $e) {
-            $result = $e->getMessage();
-        }
-
-        return $this->json(array('result' => $result));
-    }
-
-    /**
-     * @Route("/upload", name="btn_media_mediacontrol_upload")
-     **/
-    public function uploadAction(Request $request)
-    {
-        $categoryId = $request->get('categoryId', null);
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
-        $category   = $categoryId ? $mediaCategoryProvider->getRepository()->find($categoryId) : null;
-
-
-        /** @var MediaUploader $uploader */
-        $uploader = $this->get('mediafile.uploader');
-        $uploader->setCategory($category);
-        $uploader->setFilesystem($filesystem);
-        // $uploader->handleUpload($uploadedFile);
-        $adapter = $this->get('btn_media.adapter');
-        $adapter->createForm($request);
-        $uploader->setAdapter($adapter);
-
-        if ($request->isXmlHttpRequest()) {
-            return $this->json(array(
-                'success' => $uploader->isSuccess()
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('btn_media_mediacontrol_index'));
-        }
-    }
-
-    /**
      * @Route("/dummy-upload", name="btn_media_mediacontrol_dummyupload")
      **/
     public function dummyUploadAction()
@@ -194,122 +158,8 @@ class MediaControlController extends AbstractControlController
     }
 
     /**
-     * @Route("/category", name="btn_media_mediacontrol_category")
-     * @Template("BtnMediaBundle:MediaControl:index.html.twig")
-     **/
-    public function categoryAction(Request $request)
-    {
-        $categoryId = $request->get('id');
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
-        $category   = $mediaCategoryProvider->getRepository()->findOneById($categoryId);
-
-        $data                 = $this->getListData($request, false, $category);
-        $data['isPagination'] = true;
-        $data['isCategory']   = true;
-        $data['category']     = $category;
-
-        return $data;
-    }
-
-    /**
-     * @Route("/category-add", name="btn_media_mediacontrol_categoryadd")
-     **/
-    public function categoryAddAction(Request $request)
-    {
-        $result                = true;
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
-        $mediaCategory         = $mediaCategoryProvider->create();
-        $mediaCategory->setName($request->get('name'));
-
-        try {
-            $mediaCategoryProvider->save($mediaCategory);
-        } catch (\Exception $e) {
-            $result = $e->getMassage();
-        }
-
-        return $this->json(array('result' => $result));
-    }
-
-    /**
-     * @Route("/category-delete/{id}", name="btn_media_mediacontrol_categorydelete")
-     **/
-    public function categoryDeleteAction(Request $request, $id)
-    {
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
-        $category = $mediaCategoryProvider->getRepository()->find($id);
-
-        if ($category) {
-            $mediaCategoryProvider->delete($category);
-        }
-
-        return $this->redirect($this->generateUrl('btn_media_mediacontrol_category'));
-    }
-
-    /**
-     * @Route("/media-category/new", name="btn_media_mediacontrol_new_category")
-     * @Template("BtnMediaBundle:MediaControl:categoryForm.html.twig")
-     **/
-    public function newCategoryAction(Request $request)
-    {
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
-        $entity = $mediaCategoryProvider->create();
-        $form   = $this->createForm('btn_media_form_mediacategory', $entity);
-
-        return array('form' => $form->createView());
-    }
-
-    /**
-     * @Route("/media-category/create", name="btn_media_mediacontrol_create_category")
-     * @Method({"POST"})
-     * @Template("BtnMediaBundle:MediaControl:categoryForm.html.twig")
-     **/
-    public function createCategoryAction(Request $request)
-    {
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
-        $entity = $mediaCategoryProvider->create();
-        $form   = $this->createForm('btn_media_form_mediacategory', $entity);
-        $form->handleRequest($request);
-        $category = $form->getData();
-        //save MediaCategory entity
-        $mediaCategoryProvider->save($entity);
-
-        return $this->redirect($this->generateUrl('btn_media_mediacontrol_edit_category', array('id' => $category->getId())));
-    }
-
-    /**
-     * @Route("/media-category/edit/{id}", name="btn_media_mediacontrol_edit_category")
-     * @Template("BtnMediaBundle:MediaControl:categoryForm.html.twig")
-     **/
-    public function editCategoryAction(Request $request, $id)
-    {
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
-        $entity = $mediaCategoryProvider->getRepository()->find($id);
-        $form   = $this->createForm('btn_media_form_mediacategory', $entity);
-        $form->handleRequest($request);
-        //save MediaCategory entity
-        $mediaCategoryProvider->save($entity);
-
-        return array('form' => $form->createView());
-        // return $this->redirect($this->generateUrl('btn_media_mediacontrol_category'));
-    }
-
-    /**
-     * @Route("/media-category/update/{id}", name="btn_media_mediacontrol_update_category")
-     * @Method({"POST"})
-     * @Template("BtnMediaBundle:MediaControl:categoryForm.html.twig")
-     **/
-    public function updateCategoryAction(Request $request, $id)
-    {
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
-        $entity = $mediaCategoryProvider->getRepository()->find($id);
-        $form   = $this->createForm('btn_media_form_mediacategory', $entity);
-        $form->handleRequest($request);
-        //save MediaCategory entity
-        $mediaCategoryProvider->save($entity);
-
-        return $this->redirect($this->generateUrl('btn_media_mediacontrol_edit_category', array('id' => $category->getId())));
-    }
-
+     * Get paginated media list
+     */
     private function getListData($request, $all = false, $category = null)
     {
         if ($category == NULL) {

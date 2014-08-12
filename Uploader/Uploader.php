@@ -7,8 +7,7 @@ use Btn\MediaBundle\Entity\MediaCategory;
 use Doctrine\ORM\EntityManager;
 use Gaufrette\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
-use Btn\MediaBundle\Service\UploadAdapter;
+use Btn\MediaBundle\Adapter\AdapterInterface;
 
 class Uploader
 {
@@ -38,11 +37,6 @@ class Uploader
     private $filesystem;
 
     /**
-     * @var MediaCategory
-     */
-    private $category;
-
-    /**
      * @var array
      */
     private $errors;
@@ -63,7 +57,7 @@ class Uploader
     private $cacheDirectory;
 
     /**
-     * @var UploadAdapter
+     * @var AdapterInterface
      */
     private $adapter;
 
@@ -83,7 +77,6 @@ class Uploader
         $this->allowedExtensions = array();
         $this->sizeLimit         = $this->toBytes(ini_get('upload_max_filesize'));
         $this->filesystem        = null;
-        $this->category          = null;
         $this->replaceOldFiles   = false;
         $this->file              = null;
         $this->errors            = array();
@@ -182,26 +175,6 @@ class Uploader
     }
 
     /**
-     * @param MediaCategory $category
-     *
-     * @return MediaUploader
-     */
-    public function setCategory(MediaCategory $category = null)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * @return MediaCategory
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
      * @param bool $replaceOldFiles
      *
      * @return MediaUploader
@@ -275,42 +248,44 @@ class Uploader
 
     /**
      * @param UploadedFile $file
+     *
      */
-    private function saveUpload(UploadedFile $file)
+    private function saveUpload(UploadedFile $file = null)
     {
-        $media     = $this->adapter->getData();
-        $extension = $file->guessExtension();
-        $filename  = $basename = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+        $media = $this->adapter->getFormData();
+        if ($file) {
+            $extension = $file->guessExtension();
+            $filename  = $basename = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
 
-        if ($this->getReplaceOldFiles() == false) {
-            $counter = 0;
-            if ($this->filesystem) {
-                while ($this->filesystem->has($filename . '.' . $extension)) {
-                    $filename = $basename . $counter++;
-                }
-            } else {
-                $directory = $media->getUploadRootDir();
-                while (file_exists($directory . DIRECTORY_SEPARATOR . $filename . '.' . $extension)) {
-                    $filename = $basename . $counter++;
+            if ($this->getReplaceOldFiles() == false) {
+                $counter = 0;
+                if ($this->filesystem) {
+                    while ($this->filesystem->has($filename . '.' . $extension)) {
+                        $filename = $basename . $counter++;
+                    }
+                } else {
+                    $directory = $media->getUploadRootDir();
+                    while (file_exists($directory . DIRECTORY_SEPARATOR . $filename . '.' . $extension)) {
+                        $filename = $basename . $counter++;
+                    }
                 }
             }
+
+            $filename .= '.' . $extension;
+
+            $media->setName($media->getName() ? $media->getName() : $filename);
+            $media->setFile($filename);
+            $media->setType($file->getMimeType());
+
+            if ($this->filesystem) {
+                $gaufrette = $this->filesystem->get($filename, true);
+                $gaufrette->setContent(file_get_contents($file->getRealPath()));
+            } else {
+                $file->move($media->getUploadRootDir(), $filename);
+            }
+
+            $this->uploadedFiles[] = $filename;
         }
-
-        $filename .= '.' . $extension;
-
-        $media->setName($filename);
-        $media->setFile($filename);
-        $media->setCategory($this->getCategory());
-        $media->setType($file->getMimeType());
-
-        if ($this->filesystem) {
-            $gaufrette = $this->filesystem->get($filename, true);
-            $gaufrette->setContent(file_get_contents($file->getRealPath()));
-        } else {
-            $file->move($media->getUploadRootDir(), $filename);
-        }
-
-        $this->uploadedFiles[] = $filename;
         $this->uploadedMedias[] = $media;
 
         $this->em->persist($media);
@@ -390,15 +365,14 @@ class Uploader
     }
 
     /**
-     * WAS param UploadedFile $file
-     * @param Media $media
+     * @param UploadedFile $file
      *
      * @return MediaUploader
      */
-    public function handleUpload(UploadedFile $file)
+    public function handleUpload(UploadedFile $file = null)
     {
         $handleMethod = 'saveUpload';
-        if ($file->guessExtension() == 'zip') {
+        if ($file && $file->guessExtension() == 'zip') {
             $handleMethod = 'handleZip';
         }
         $this->$handleMethod($file);
@@ -409,20 +383,12 @@ class Uploader
     }
 
     /**
-     * @return array
+     * Set adapter and handleUpload
      */
-    public function setAdapter(UploadAdapter $adapter)
+    public function setAdapter(AdapterInterface $adapter)
     {
         $this->adapter = $adapter;
         $this->handleUpload($adapter->getUploadedFile());
-    }
-
-    /**
-     * @return array
-     */
-    private function handleAdapter()
-    {
-
     }
 
     /**

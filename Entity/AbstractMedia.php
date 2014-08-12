@@ -40,20 +40,18 @@ abstract class AbstractMedia extends File implements MediaInterface
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $type;
 
     /**
      * @var integer
      */
-    private $category;
+    protected $category;
 
     /**
      * @var string
      *
      * @ORM\Column(name="file", type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $file;
 

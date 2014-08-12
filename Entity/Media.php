@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Media extends AbstractMedia
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Btn\MediaBundle\Entity\MediaCategory", inversedBy="files")
+     * @ORM\ManyToOne(targetEntity="Btn\MediaBundle\Entity\MediaCategory", inversedBy="files", cascade={"persist"})
      * @ORM\JoinColumn(name="media_category_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    private $category;
+    protected $category;
 }

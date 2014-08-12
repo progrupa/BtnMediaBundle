@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-3">
             {% block sidebar %}
-                {{ render(controller('BtnMediaBundle:MediaControl:tree', {'category': app.request.get('category')})) }}
+                {{ render(controller('BtnMediaBundle:MediaCategoryControl:tree', {'category': app.request.get('category')})) }}
             {% endblock %}
         </div>
         <div class="col-md-9 well well-lg">

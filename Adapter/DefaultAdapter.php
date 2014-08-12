@@ -2,19 +2,17 @@
 
 namespace Btn\MediaBundle\Adapter;
 
-use Btn\NodesBundle\Service\NodeContentProviderInterface;
-use Btn\MediaBundle\Form\NodeContentType;
-use Btn\MediaBundle\Entity\Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Btn\AdminBundle\Provider\EntityProviderInterface;
+use Btn\MediaBundle\Adapter\AdapterInterface;
 
 /**
 * DefaultAdapter
 */
-class DefaultAdapter
+class DefaultAdapter implements AdapterInterface
 {
     /** @var \Btn\AdminBundle\Provider\EntityProviderInterface $mediaProvider */
     protected $mediaProvider;
@@ -22,33 +20,50 @@ class DefaultAdapter
     protected $mediaCategoryProvider;
     /** @var \Symfony\Component\Form\FormFactoryInterface $formFactory */
     protected $formFactory;
-    /** @var string $formName */
-    protected $formName;
     /** @var \Symfony\Component\Form\AbstractType $form */
     protected $form = null;
+    /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+    protected $file = null;
 
     /**
-     * @param FormFactory $formFactory
-     * @param string $formName name of form service or instance of form AbstractType
+     * @param EntityProviderInterface   $mediaProvider
+     * @param EntityProviderInterface   $mediaCategoryProvider
+     * @param FormFactory               $formFactory
+     * @param AbstractType              $form instance of form AbstractType
      */
-    public function __construct(EntityProviderInterface $mediaProvider, EntityProviderInterface $mediaCategoryProvider, FormFactoryInterface $formFactory, $formName)
+    public function __construct(
+        EntityProviderInterface $mediaProvider,
+        EntityProviderInterface $mediaCategoryProvider,
+        FormFactoryInterface $formFactory,
+        AbstractType $form
+        )
     {
         $this->mediaProvider         = $mediaProvider;
         $this->mediaCategoryProvider = $mediaCategoryProvider;
         $this->formFactory           = $formFactory;
-        $this->formName              = $formName;
-        if ($formName instanceof AbstractType) {
-            $this->form = $formName;
-        }
+        $this->form                  = $form;
     }
 
     public function createForm(Request $request = null, $mediaFile = null)
     {
         $entity = $mediaFile ? $mediaFile : $this->mediaProvider->create();
-        $form   = $this->formFactory->create($this->formName, $entity);
-
+        //bind entity with category, if category is set as GET param
+        if ($request && ($category = $request->get('category'))) {
+            $category = $this->mediaCategoryProvider->getRepository()->find($category);
+            $entity->setCategory($category);
+        }
+        //change form action route params
+        if ($entity->getId()) {
+            $this->form->setActionRouteParams(array('id' => $entity->getId()));
+        }
+        //create form based on form type service and set data
+        $form = $this->formFactory->create($this->form, $entity);
+        //bind form with the request if avaible
         if ($request) {
             $form->handleRequest($request);
+            //set uploaded file from request FileBag
+            $file = $request->files->get($form->getName());
+            $this->setUploadedFile(is_array($file) ? array_pop($file) : $file);
         }
 
         $this->setForm($form);
@@ -63,13 +78,20 @@ class DefaultAdapter
      */
     public function getUploadedFile()
     {
-        $file = $this->form->getData()->getFile();
-        if (!$mediaFile instanceof UploadedFile) {
+        return $this->file;
+    }
 
-            throw new \Exception("UploadAdapter: Method getUploadedFile didn't returned UploadedFile object");
-        }
+    /**
+     * Set UploadedFile object
+     *
+     * @param UploadedFile $file
+     * @return AdapterInterface
+     */
+    public function setUploadedFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
 
-        return $file;
+        return $this;
     }
 
     /**

@@ -48,6 +48,6 @@ services:
             mediaProvider:         '@btn_media.provider.media'
             mediaCategoryProvider: '@btn_media.provider.media_category'
             formFactory:           '@form.factory'
-            formName:              'btn_media_form_media'
+            formName:              '@btn_media.form.media'
 
     btn_media.adapter: @btn_media.adapter.default

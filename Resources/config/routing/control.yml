@@ -1,3 +1,7 @@
 _btn_media_routing_control_controller_media:
     resource: "@BtnMediaBundle/Controller/MediaControlController.php"
     type:     annotation
+
+_btn_media_routing_control_controller_category:
+    resource: "@BtnMediaBundle/Controller/MediaCategoryControlController.php"
+    type:     annotation

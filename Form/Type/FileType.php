@@ -13,7 +13,7 @@ class FileType extends AbstractType
 
         $resolver->setDefaults(array(
             'empty_value' => 'btn_media.type.file.empty_value',
-            'label'       => 'btn_media.type.file.label'
+            'label'       => 'btn_media.type.file.label',
         ));
     }
 

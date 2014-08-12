@@ -15,6 +15,11 @@ class MediaCategoryForm extends AbstractType
     private $actionRouteName = 'btn_media_mediacontrol_create_category';
 
     /**
+     * @var string $actionRouteParams
+     */
+    private $actionRouteParams = array();
+
+    /**
      *  @var RouterInterface $router
      */
     private $router;
@@ -46,7 +51,7 @@ class MediaCategoryForm extends AbstractType
         $resolver->setDefaults(array(
             //TODO: set data_class ??
             'data_class' => 'Btn\MediaBundle\Entity\MediaCategory',
-            'action'     => $this->router->generate($this->getActionRouteName())
+            'action'     => $this->router->generate($this->getActionRouteName(), $this->getActionRouteParams())
         ));
     }
 
@@ -72,5 +77,23 @@ class MediaCategoryForm extends AbstractType
     public function getActionRouteName()
     {
         return $this->actionRouteName;
+    }
+
+    /**
+     * Set form action route params
+     * @param array $routeParams
+     */
+    public function setActionRouteParams($routeParams)
+    {
+        $this->actionRouteParams = $routeParams;
+    }
+
+    /**
+     * Get form action route params
+     * @return array $routeParams
+     */
+    public function getActionRouteParams()
+    {
+        return $this->actionRouteParams;
     }
 }
