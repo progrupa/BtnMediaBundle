@@ -19,7 +19,7 @@ class MediaControlController extends AbstractControlController
 {
     /**
      * @Route("/", name="btn_media_mediacontrol_media_index")
-     * @Route("/category/{category}", name="btn_media_mediacontrol_media_index_category")
+     * @Route("/category/{category}", name="btn_media_mediacontrol_media_index_category", requirements={"category" = "\d+"})
      * @Template()
      */
     public function indexAction(Request $request, $category = null)
@@ -29,7 +29,7 @@ class MediaControlController extends AbstractControlController
 
     /**
      * @Route("/new", name="btn_media_mediacontrol_media_new")
-     * @Route("/new/category/{category}", name="btn_media_mediacontrol_media_new_category")
+     * @Route("/new/category/{category}", name="btn_media_mediacontrol_media_new_category", requirements={"category" = "\d+"})
      * @Template("BtnMediaBundle:MediaControl:form.html.twig")
      */
     public function newAction(Request $request, $category = null)
@@ -40,7 +40,7 @@ class MediaControlController extends AbstractControlController
     }
 
     /**
-     * @Route("/edit/{id}", name="btn_media_mediacontrol_media_edit")
+     * @Route("/edit/{id}", name="btn_media_mediacontrol_media_edit", requirements={"id" = "\d+"})
      * @Template("BtnMediaBundle:MediaControl:form.html.twig")
      **/
     public function editAction(Request $request, $id)
@@ -52,7 +52,7 @@ class MediaControlController extends AbstractControlController
     }
 
     /**
-     * @Route("/upload/{id}", name="btn_media_mediacontrol_media_upload")
+     * @Route("/upload/{id}", name="btn_media_mediacontrol_media_upload", requirements={"id" = "\d+"})
      * @Template("BtnMediaBundle:MediaControl:form.html.twig")
      **/
     public function uploadAction(Request $request, $id = null)
@@ -93,7 +93,7 @@ class MediaControlController extends AbstractControlController
     }
 
     /**
-     * @Route("/delete/{id}", name="btn_media_mediacontrol_media_delete")
+     * @Route("/delete/{id}", name="btn_media_mediacontrol_media_delete", requirements={"id" = "\d+"})
      **/
     public function deleteAction(Request $request, $id)
     {

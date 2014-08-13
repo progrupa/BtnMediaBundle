@@ -16,8 +16,8 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets
-        '@BtnNodesBundle/Resources/public/css/jstree/style.min.css'
-        '@BtnNodesBundle/Resources/public/css/style.css'
+        '@BtnAdminBundle/Resources/public/css/jstree/style.min.css'
+        '@BtnAdminBundle/Resources/public/css/jstree/nodes.css'
     %}
         <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
@@ -26,9 +26,8 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts
-        '@BtnNodesBundle/Resources/public/js/jq.slugify.js'
-        '@BtnNodesBundle/Resources/public/js/jstree.min.js'
-        '@BtnNodesBundle/Resources/public/js/nodes.js'
+        '@BtnAdminBundle/Resources/public/js/jstree.min.js'
+        '@BtnAdminBundle/Resources/public/js/nodes.js'
     %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
