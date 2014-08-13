@@ -61,11 +61,12 @@ class MediaControlController extends AbstractControlController
         $entity = $id ? $this->get('btn_media.provider.media')->getRepository()->find($id) : null;
         /** @var Gaufrette/Filesystem $entity */
         $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
+        /** @var \Btn\MediaBundle\AdapterInterface $adapter */
+        $adapter = $this->get('btn_media.adapter');
+        $form    = $adapter->createForm($request, $entity);
         /** @var MediaUploader $uploader */
         $uploader = $this->get('btn_media.uploader');
         $uploader->setFilesystem($filesystem);
-        $adapter = $this->get('btn_media.adapter');
-        $form    = $adapter->createForm($request, $entity);
         $uploader->setAdapter($adapter);
 
         if ($request->isXmlHttpRequest()) {
@@ -114,13 +115,13 @@ class MediaControlController extends AbstractControlController
     }
 
     /**
-     * @Route("/list-modal", name="btn_media_mediacontrol_listmodal")
-     * @Template()
+     * @Route("/modal", name="btn_media_mediacontrol_modal")
+     * @Template("BtnMediaBundle:MediaModal:modal.html.twig")
      **/
-    public function listModalAction(Request $request)
+    public function modalAction(Request $request)
     {
-        $separated = $request->get('separated');
-        $data      = $this->getListData($request, true);
+        $separated = null; //$request->get('separated');
+        $data      = $this->getListData($request);
 
         $data['isModal']      = true;
         $data['isPagination'] = !$separated;
@@ -130,13 +131,13 @@ class MediaControlController extends AbstractControlController
     }
 
     /**
-     * @Route("/list-modal-content", name="btn_media_mediacontrol_listmodalcontent")
-     * @Template("BtnMediaBundle::_list.html.twig")
+     * @Route("/modal-content", name="btn_media_mediacontrol_modalcontent")
+     * @Route("/modal-content/{category}", name="btn_media_mediacontrol_modalcontent_category", requirements={"id" = "\d+"})
+     * @Template("BtnMediaBundle:MediaModal:_content.html.twig")
      **/
     public function listModalContentAction(Request $request)
     {
-        $category             = $request->get('category');
-        $data                 = $this->getListData($request, ($category == NULL));
+        $data                 = $this->getListData($request);
         $data['isModal']      = true;
         $data['isPagination'] = true;
         $data['separated']    = false;

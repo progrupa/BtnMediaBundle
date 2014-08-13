@@ -1,0 +1,10 @@
+liip_imagine:
+    driver: gd
+    web_root: %web_root%
+    cache_prefix:  uploads/media/cache
+    cache_clearer: false
+    filter_sets:
+        btn_media_thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: [166, 166], mode: outbound }

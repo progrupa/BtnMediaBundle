@@ -1,0 +1,44 @@
+/* Modal - media list */
+
+/* content list view */
+.modal-body .col-md-12,
+.modal-body .col-md-12 .col-md-4,
+.modal-body .col-md-12 .col-md-8
+{
+    padding: 0;
+}
+.modal-body #btn-media-list.col-md-12,
+.modal-body #btn-media-list .col-md-12,
+.modal-body #btn-media-list .col-md-12 .col-md-6{
+    padding: 0;
+}
+.modal-body #btn-media-list .col-md-12 .col-md-6{
+    word-wrap: break-word;
+}
+.modal-body #btn-media-list .item img {
+    cursor: pointer;
+    margin: 5px;
+    max-width: 100%;
+}
+
+.modal-body #btn-media-list .item img.selected {
+    opacity: 0.5;
+}
+
+/* on hover tooltip style */
+.modal-body #btn-media-list .media-tooltip {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 100px;
+    word-wrap: break-word;
+    background: black;
+    color: white;
+    opacity: 0.8;
+    font-size: 12px;
+    padding: 5px;
+}
+.modal-body #btn-media-list .item:hover .media-tooltip {
+    display: block;
+}
