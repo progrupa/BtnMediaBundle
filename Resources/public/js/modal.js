@@ -11,13 +11,13 @@ jQuery(function ($) {
 
     var modal,
         modalWrapper,
-        selectMediaBtnText     = 'Select media',
-        selectMediaBtnTemplate = '<div class="btn btn-primary">' + selectMediaBtnText + '</div>',
-        deleteMediaBtnTemplate = '<div class="btn btn-danger" style="margin:0 0 0 5px;">Delete</div>',
-        paginationUrl          = '',
-        modalUrl               = $('[data-btn-media]:first').attr('data-btn-media'),
-        mediaInputs            = $('[data-btn-media]'),
-        mediaInput;
+        mediaInput,
+        mediaInputs        = $('[data-btn-media]'),
+        modalUrl           = mediaInputs.first().attr('data-btn-media'),
+        selectMediaBtnText = mediaInputs.attr('data-btn-media-select'),
+        selectMediaBtn     = $('<div />').addClass('btn btn-primary').text(selectMediaBtnText),
+        deleteMediaBtn     = $('<div />').addClass('btn btn-danger').text(mediaInputs.attr('data-btn-media-delete')).attr('style', 'margin:0 0 0 5px;'),
+        paginationUrl      = '';
 
     if (typeof modalUrl === 'undefined') {
         console.error('BtnMediaBundle: No modal url specified');
@@ -32,9 +32,9 @@ jQuery(function ($) {
     };
     // update modal-body-content html by $.get response
     var updateModalBody = function (url) {
-        modal.find('.modal-body-content').fadeOut(function () {
+        modal.find('.modal-body-content').slideUp(function () {
             $.get(url, function (response) {
-                modal.find('.modal-body-content').html(response).fadeIn(function () {
+                modal.find('.modal-body-content').html(response).slideDown(function () {
                     bindModalBehaviors(true);
                 });
             });
@@ -42,7 +42,7 @@ jQuery(function ($) {
     };
 
     var bindPagination = function () {
-        modal.find('.modal-body .pagination').on('click', 'li', function (e) {
+        modal.on('click', '.modal-body .pagination li', function (e) {
             if (!$(this).hasClass('disabled') && !$(this).hasClass('active')) {
                 updateModalBody(paginationUrl + '?' + getPaginationSearchPart(this));
             }
@@ -235,8 +235,8 @@ jQuery(function ($) {
     mediaInputs.each(function () {
         var self = $(this).hide();
 
-        var selectBtn = $(selectMediaBtnTemplate).insertAfter(self);
-        var deleteBtn = $(deleteMediaBtnTemplate).hide().insertAfter(selectBtn);
+        var selectBtn = selectMediaBtn.insertAfter(self);
+        var deleteBtn = deleteMediaBtn.hide().insertAfter(selectBtn);
 
         self.data('select-button', selectBtn);
         self.data('delete-button', deleteBtn);

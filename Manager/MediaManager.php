@@ -2,9 +2,6 @@
 
 namespace Btn\MediaBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
-use Knp\Component\Pager\Paginator;
-use Symfony\Component\HttpFoundation\Request;
 use Btn\AdminBundle\Provider\EntityProviderInterface;
 
 class MediaManager
@@ -26,8 +23,8 @@ class MediaManager
     /**
      * Get images for node from hero repository
      *
-     * @return array
-     * @author
+     * @param int $id
+     * @return string
      **/
     public function getMedia($id)
     {
@@ -35,6 +32,7 @@ class MediaManager
 
         if (null != $file ) {
             if (false && 'dev' === $this->environment) {
+
                 return $file->getFile();
             } else {
                 $filesystem = $this->gaufretteMap->get('btn_media');

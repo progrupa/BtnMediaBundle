@@ -75,18 +75,9 @@ class MediaControlController extends AbstractControlController
             ));
         } else {
             $medias = $uploader->getUploadedMedias();
-            $params = array();
-            $media  = null;
-            //if there was a single upload, and file was added to the category, set GET category id param
-            if (is_array($medias) && count($medias) === 1) {
-                $media = array_pop($medias);
-                if ($media && $media->getCategory()) {
-                    $params = array('category' => $media->getCategory()->getId());
-                }
-            }
-            if (count($medias) > 0 || $media) {
+            if (count($medias) > 0) {
 
-                return $this->redirect($this->generateUrl('btn_media_mediacontrol_media_index_category', $params));
+                return $this->redirect($this->generateUrl('btn_media_mediacontrol_media_edit', array('id' => $id)));
             }
         }
 

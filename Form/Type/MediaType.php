@@ -7,6 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use Btn\AdminBundle\Provider\EntityProviderInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class MediaType extends AbstractType
 {
@@ -14,13 +15,16 @@ class MediaType extends AbstractType
     protected $provider;
     /** @var \Symfony\Component\Routing\RouterInterface $router */
     private $router;
+    /** @var \Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface $translator */
+    private $translator;
     /** @var string $modalRouteName */
     private $modalRouteName = 'btn_media_mediacontrol_modal';
 
-    public function __construct(EntityProviderInterface $provider, RouterInterface $router)
+    public function __construct(EntityProviderInterface $provider, RouterInterface $router, TranslatorInterface $translator)
     {
-        $this->provider = $provider;
-        $this->router   = $router;
+        $this->provider   = $provider;
+        $this->router     = $router;
+        $this->translator = $translator;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -31,7 +35,12 @@ class MediaType extends AbstractType
             'empty_value'   => 'btn_media.type.media.empty_value',
             'label'         => 'btn_media.type.media.label',
             'class'         => $this->provider->getClass(),
-            'attr'          => array('data-btn-media' => $this->router->generate($this->getModalRouteName())),
+            'attr'          => array(
+                'data-btn-media'        => $this->router->generate($this->getModalRouteName()),
+                'data-btn-media-select' => $this->translator->trans('btn_media.media.select'),
+                'data-btn-media-delete' => $this->translator->trans('btn_media.media.remove')
+
+                ),
             'query_builder' => function (EntityRepository $em) {
                 return $em
                     ->createQueryBuilder('mf')

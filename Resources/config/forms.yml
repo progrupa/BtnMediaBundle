@@ -18,8 +18,9 @@ services:
     btn_media.form.type.media:
         class: Btn\MediaBundle\Form\Type\MediaType
         arguments:
-            provider: @btn_media.provider.media
-            router:   @router
+            provider:   @btn_media.provider.media
+            router:     @router
+            translator: @translator
         tags:
             - { name: form.type, alias: btn_media }
 

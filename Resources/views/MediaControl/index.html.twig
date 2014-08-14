@@ -43,12 +43,12 @@
                 </td>
                 <td>
                     <a href="{{ path('btn_media_mediacontrol_media_edit', { 'id': entity.id }) }}" class="btn btn-primary">
-                        {{ 'btn_admin.media.edit'|trans }}</a>
+                        {{ 'btn_media.media.edit'|trans }}</a>
                     <a href="{{ path('btn_media_mediacontrol_media_delete', { 'id': entity.id }) }}"
                         class="btn btn-danger"
-                        data-confirm="{{ 'btn_admin.media.delete_confirm'|trans }}"
+                        data-confirm="{{ 'btn_media.media.delete_confirm'|trans }}"
                         >
-                        {{ 'btn_admin.media.delete'|trans }}</a>
+                        {{ 'btn_media.media.delete'|trans }}</a>
                 </td>
             </tr>
         {% endfor %}

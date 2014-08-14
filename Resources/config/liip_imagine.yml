@@ -7,4 +7,5 @@ liip_imagine:
         btn_media_thumb:
             quality: 75
             filters:
+                strip: ~
                 thumbnail: { size: [166, 166], mode: outbound }

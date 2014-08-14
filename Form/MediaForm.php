@@ -11,19 +11,13 @@ use Symfony\Component\Routing\RouterInterface;
 
 class MediaForm extends AbstractType
 {
-    /**
-     * @var string $actionRouteName
-     */
+    /** @var string $actionRouteName */
     private $actionRouteName = 'btn_media_mediacontrol_media_upload';
 
-    /**
-     * @var string $actionRouteParams
-     */
+    /** @var string $actionRouteParams */
     private $actionRouteParams = array();
 
-    /**
-     *  @var RouterInterface $router
-     */
+    /** @var RouterInterface $router */
     private $router;
 
     /**
@@ -41,9 +35,15 @@ class MediaForm extends AbstractType
     {
         $builder
             ->add('file', 'btn_media_type_file', array('mapped' => false))
-            ->add('category')
-            ->add('name')
-            ->add('description', 'textarea')
+            ->add('category', null, array(
+                'label' => 'btn_media.category.label'
+                ))
+            ->add('name', null, array(
+                'label' => 'btn_media.name.label'
+                ))
+            ->add('description', 'textarea', array(
+                'label' => 'btn_media.description.label'
+                ))
             ->add('save', $options['data']->getId() ? 'btn_update' : 'btn_create')
         ;
     }
