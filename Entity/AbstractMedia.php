@@ -145,22 +145,15 @@ abstract class AbstractMedia extends File implements MediaInterface
     /**
      *
      */
-    public function getDefaultFilePath()
-    {
-        return 'no_preview.jpeg';
-    }
-
-    /**
-     *
-     */
-    public function getPreviewFilePath()
+    public function isImaginable()
     {
         $extension = $this->getFileExt();
-        if (($extension && !in_array(strtolower($extension), $this->previewExtensions))) {
-            return $this->getDefaultFilePath();
+        if (($extension && in_array(strtolower($extension), $this->previewExtensions))) {
+
+            return true;
         }
 
-        return $this->getFile();
+        return false;
     }
 
     /**

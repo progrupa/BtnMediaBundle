@@ -1,4 +1,4 @@
-<div id="tree" class="top-offset">
+<div id="tree" class="top-offset" bind-jstree {{ not modal ? 'data-change-jstree="reload"' }}>
     <ul>
         <li class="{{ categories ? 'jstree-open' : 'jstree-closed' }}" data-jstree='{"icon":"glyphicon glyphicon-file"}'> {# {{ categories ? ',"opened":true' }} #}
             <a href="{{ url('btn_media_mediacontrol_media_index') }}"

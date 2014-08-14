@@ -30,7 +30,7 @@ class MediaCategoryControlController extends AbstractControlController
             $current = $repo->find($request->get('category'));
         }
 
-        return array('categories' => $repo->findAll(), 'currentNode' => $current);
+        return array('categories' => $repo->findAll(), 'currentNode' => $current, 'modal' => $request->get('modal'));
     }
 
     /**
