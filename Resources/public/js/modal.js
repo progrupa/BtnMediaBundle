@@ -1,200 +1,107 @@
 jQuery(function ($) {
-
-    if (typeof window.btnMedia === 'object') {
-        return false;
-    }
-
+    //script needs modal
     if (typeof $.fn.modal === 'undefined') {
 
         return;
     }
-
+    //set up base variables
     var modal,
-        modalWrapper,
         mediaInput,
         mediaInputs        = $('[data-btn-media]'),
         modalUrl           = mediaInputs.first().attr('data-btn-media'),
         selectMediaBtnText = mediaInputs.attr('data-btn-media-select'),
         selectMediaBtn     = $('<div />').addClass('btn btn-primary').text(selectMediaBtnText),
-        deleteMediaBtn     = $('<div />').addClass('btn btn-danger').text(mediaInputs.attr('data-btn-media-delete')).attr('style', 'margin:0 0 0 5px;'),
+        deleteMediaBtn     = $('<div />').addClass('btn btn-danger').text(mediaInputs.attr('data-btn-media-delete')),
         paginationUrl      = '';
-
+    //script needs to have url to $.get content
     if (typeof modalUrl === 'undefined') {
-        console.error('BtnMediaBundle: No modal url specified');
+        console.error('BtnMediaBundle: No modal url specified at data-btn-media attr.');
 
         return;
     }
-
+    //return GET params
     var getPaginationSearchPart = function (el) {
-        var page = $(el).find('a').attr('href').split('?')[1];
 
-        return page;
+        return $(el).find('a').attr('href').split('?')[1];
     };
-    // update modal-body-content html by $.get response
+    // update media-content html by $.get response
     var updateModalBody = function (url) {
-        modal.find('.modal-body-content').slideUp(function () {
+        modal.find('.media-content').slideUp(function () {
             $.get(url, function (response) {
-                modal.find('.modal-body-content').html(response).slideDown(function () {
-                    bindModalBehaviors(true);
-                });
+                modal.find('.media-content').html(response).slideDown();
             });
         });
     };
-
-    var bindPagination = function () {
-        modal.on('click', '.modal-body .pagination li', function (e) {
-            if (!$(this).hasClass('disabled') && !$(this).hasClass('active')) {
-                updateModalBody(paginationUrl + '?' + getPaginationSearchPart(this));
-            }
-
-            return false;
-        });
-    };
-
-    var bindCategoryFilter = function () {
-        modal.on('click', '#tree ul li a', function(event) {
-            event.stopPropagation();
-            var category = $(this).attr('data-btn-media-category');
-            updateModalBody(category ? (paginationUrl + '/' + category) : paginationUrl);
-
-            return false;
-        });
-    };
-
-    var bindModalNavigation = function () {
-        bindPagination();
-        bindCategoryFilter();
-
-        $('.close').bind('click', function(e) {
-            window.top.close();
-            window.top.opener.focus();
-        });
-    };
-
-    var bindModalBehaviors = function (update) {
-        update = typeof update === 'undefined' ? false : update;
+    //bind modal behaviors
+    var bindModalBehaviors = function () {
         //append additional modal styles
         modal.find('style, link').appendTo('head');
-
+        //set media-content
         paginationUrl = modal.find('#btn-media-list').attr('data-pagination-url');
-
-        //don't re-bind below behaviors only on modal-body-content update
-        if (!update) {
-
-            modal.modal({
+        //create real modal
+        modal
+            .modal({
                 show : false,
                 keyboard : true,
-                backdrop : !modalWrapper.hasClass('expanded')
-            });
-
-            modal.on('click', '#btn-media-list .item img', function (e) {
+                backdrop : true
+            })
+            //select image behavior
+            .on('click', '#btn-media-list .item img', function (e) {
                 $('#btn-media-list .item img').removeClass('selected');
                 $(this).addClass('selected');
-            });
-
-            modal.find('.submit').on('click', function () {
+            })
+            //submit choosen image to binded mediaInput
+            .on('click', '[btn-media-submit]', function () {
                 var images = $('#btn-media-list .item img.selected');
                 if (images.length) {
-                    if (!isCke) {
-                        updateMediaInput(mediaInput, images);
-                    } else {
-                        OpenFile(images.attr('data-original'));
-                    }
+                    updateMediaInput(mediaInput, images);
                     modal.modal('hide');
                 }
-            });
+            })
+            //reload content on pagination link click
+            .on('click', '.modal-body .pagination li', function (e) {
+                if (!$(this).hasClass('disabled') && !$(this).hasClass('active')) {
+                    updateModalBody(paginationUrl + '?' + getPaginationSearchPart(this));
+                }
 
-            $(document).on('hidden', '.modal', function () {
-                $(this).parent().remove();
-            });
+                return false;
+            })
+            //reload content on category link click
+            .on('click', '#tree ul li a', function(event) {
+                var category = $(this).attr('data-btn-media-category');
+                updateModalBody(category ? (paginationUrl + '/' + category) : paginationUrl);
 
-            bindModalNavigation();
-        };
+                return false;
+            });
     };
 
-    function GetUrlParam (paramName) {
-        var oRegex = new RegExp('[\?&]' + paramName + '=([^&]+)', 'i');
-        var oMatch = oRegex.exec(window.top.location.search);
-
-        if (oMatch && oMatch.length > 1) {
-            return decodeURIComponent(oMatch[1]);
-        }
-
-        return '';
-    }
-
-    function OpenFile (fileUrl) {
-        //PATCH: Using CKEditors API we set the file in preview window.
-
-        funcNum = GetUrlParam('CKEditorFuncNum');
-        //fixed the issue: images are not displayed in preview window when filename contain spaces due encodeURI encoding already encoded fileUrl
-        window.top.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
-
-        ///////////////////////////////////
-        window.top.close();
-        window.top.opener.focus();
-    }
-
+    //get modal contend and append it to the body
     var getModal = function () {
         var xhr = $.get(modalUrl, function (response) {
-            modalWrapper = $(response);
-            modalWrapper.appendTo('body');
-
-            modal = modalWrapper.find('.modal').show();
+            modal = $(response).appendTo('body').show();
         });
 
         return xhr;
     };
-
+    //if modal is ready show it and animate it
     var onModalReady = function () {
-        bindModalBehaviors();
-
         modal.modal('show');
-
         $('html, body').animate({
             scrollTop : modal.offset().top
         }, 400);
     };
-
+    //get modal if not exist else open it
     var openModal = function () {
         if (!modal) {
             getModal().done(function() {
                 onModalReady();
+                bindModalBehaviors();
             });
         } else {
             onModalReady();
         }
     };
-
-    var isCke       = false;
-    var searchParts = window.location.search.replace('?', '').split('&');
-
-    for (var i in searchParts) {
-        if (searchParts[i].split('=')[0] === 'CKEditor') {
-            isCke = true;
-            break;
-        }
-    }
-
-    if (isCke) {
-        modalWrapper = $('div').first();
-        modal = modalWrapper.find('.modal').show();
-
-        openModal();
-    }
-
-    var bindMediaModal = function (el, callback) {
-
-        el.click(openModal);
-
-        mediaInput = el;
-        mediaInput.callback = callback;
-    };
-
-    window.btnMedia = {
-        bind : bindMediaModal
-    }
-
+    //TODO: check if below 3 methods can better :)
     var updateMediaInput = function (input, image) {
         if (image == null) {
             input.val(null);
@@ -212,31 +119,31 @@ jQuery(function ($) {
     }
 
     var updateMediaButtons = function (input, filename) {
-        var selectBtn = input.data('select-button'),
-            deleteBtn = input.data('delete-button');
+        var selectBtn  = input.data('select-button'),
+            deleteBtn  = input.data('delete-button'),
+            hideDelete = false;
 
         if (filename == null) {
+            hideDelete = true;
             if (input.is('select')) {
                 filename = input.find('option:selected').text();
             } else {
                 filename = input.val();
             }
         }
-
-        if (filename) {
-            selectBtn.text(filename);
-            deleteBtn.show();
-        } else {
-            selectBtn.text(selectMediaBtnText);
+        selectBtn.text(filename ? filename : selectMediaBtnText);
+        if (hideDelete) {
             deleteBtn.hide();
+        } else {
+            deleteBtn.show();
         }
+
     }
-
+    //create btn select and delete buttons
     mediaInputs.each(function () {
-        var self = $(this).hide();
-
-        var selectBtn = selectMediaBtn.insertAfter(self);
-        var deleteBtn = deleteMediaBtn.hide().insertAfter(selectBtn);
+        var self      = $(this).hide(),
+            selectBtn = selectMediaBtn.insertAfter(self),
+            deleteBtn = deleteMediaBtn.hide().insertAfter(selectBtn);
 
         self.data('select-button', selectBtn);
         self.data('delete-button', deleteBtn);
@@ -247,6 +154,8 @@ jQuery(function ($) {
 
             return false;
         });
+
+        // console.log(deleteBtn);
 
         deleteBtn.on('click', function (e) {
             updateMediaInput(self);

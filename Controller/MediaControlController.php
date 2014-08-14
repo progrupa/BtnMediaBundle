@@ -70,6 +70,7 @@ class MediaControlController extends AbstractControlController
         $uploader->setAdapter($adapter);
 
         if ($request->isXmlHttpRequest()) {
+
             return $this->json(array(
                 'success' => $uploader->isSuccess()
             ));
@@ -111,12 +112,11 @@ class MediaControlController extends AbstractControlController
      **/
     public function modalAction(Request $request)
     {
-        $separated = null; //$request->get('separated');
-        $data      = $this->getListData($request);
+        $data = $this->getListData($request);
+        if ($request->get('CKEditor')) {
 
-        $data['isModal']      = true;
-        $data['isPagination'] = !$separated;
-        $data['separated']    = $separated;
+            return $this->render('BtnMediaBundle:MediaModal:cke.html.twig', $data);
+        }
 
         return $data;
     }
@@ -126,14 +126,9 @@ class MediaControlController extends AbstractControlController
      * @Route("/modal-content/{category}", name="btn_media_mediacontrol_modalcontent_category", requirements={"id" = "\d+"})
      * @Template("BtnMediaBundle:MediaModal:_content.html.twig")
      **/
-    public function listModalContentAction(Request $request)
+    public function modalContentAction(Request $request)
     {
-        $data                 = $this->getListData($request);
-        $data['isModal']      = true;
-        $data['isPagination'] = true;
-        $data['separated']    = false;
-
-        return $data;
+        return $this->getListData($request);
     }
 
     /**

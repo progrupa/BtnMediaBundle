@@ -1,7 +1,7 @@
 <li id="{{ category.id }}"
     class="jstree-open"
     data-jstree='{"icon":"glyphicon glyphicon-file"{{ currentNode and (category.id == currentNode.id) ? ',"selected":true' }}}'
->
+    >
     <a href="{{ url('btn_media_mediacontrol_media_index_category', {'category': category.id}) }}"
         data-remote="formContainer"
         data-btn-media-category="{{ category.id }}"

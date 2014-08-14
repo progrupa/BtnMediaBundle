@@ -1,0 +1,24 @@
+{% stylesheets '@btn_admin_base_css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+{% endstylesheets %}
+
+{% block cke %}
+<div class="btn-media-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">{{ 'btn_media.media.choose'|trans }}</h4>
+        </div>
+        {% include 'BtnMediaBundle:MediaModal:_body.html.twig' %}
+    </div>
+</div>
+{% endblock %}
+
+{% javascripts '@btn_admin_jquery_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{% include 'BtnMediaBundle:MediaModal:_partials.html.twig' %}
+
+{% javascripts '@BtnMediaBundle/Resources/public/js/cke.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
