@@ -77,6 +77,7 @@ class MediaControlController extends AbstractControlController
         } else {
             $medias = $uploader->getUploadedMedias();
             if (count($medias) > 0) {
+                $id = $id ? $id : array_pop($medias)->getId();
 
                 return $this->redirect($this->generateUrl('btn_media_mediacontrol_media_edit', array('id' => $id)));
             }

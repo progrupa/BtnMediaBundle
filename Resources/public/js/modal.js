@@ -36,7 +36,7 @@ jQuery(function ($) {
     var bindModalBehaviors = function () {
         //append additional modal styles
         modal.find('style, link').appendTo('head');
-        //set media-content
+        //set media-content URL
         paginationUrl = modal.find('#btn-media-list').attr('data-pagination-url');
         //create real modal
         modal
@@ -132,10 +132,10 @@ jQuery(function ($) {
             }
         }
         selectBtn.text(filename ? filename : selectMediaBtnText);
-        if (hideDelete) {
-            deleteBtn.hide();
-        } else {
+        if (filename) {
             deleteBtn.show();
+        } else {
+            deleteBtn.hide();
         }
 
     }
@@ -159,6 +159,7 @@ jQuery(function ($) {
 
         deleteBtn.on('click', function (e) {
             updateMediaInput(self);
+            $(this).hide();
 
             return false;
         });
