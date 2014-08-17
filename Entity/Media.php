@@ -3,6 +3,7 @@
 namespace Btn\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Btn\MediaBundle\Model\AbstractMedia;
 
 /**
  * @ORM\Table(name="btn_media")

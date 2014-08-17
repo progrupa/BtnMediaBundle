@@ -1,6 +1,6 @@
 <?php
 
-namespace Btn\MediaBundle\Entity;
+namespace Btn\MediaBundle\Model;
 
 interface MediaCategoryInterface
 {
