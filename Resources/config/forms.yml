@@ -1,22 +1,27 @@
-services:
+parameters:
+    btn_media.form.default.media.class: Btn\MediaBundle\Form\MediaForm
+    btn_media.form.mediacategory.class: Btn\MediaBundle\Form\MediaCategoryForm
+    btn_media.form.type.media.class: Btn\MediaBundle\Form\Type\MediaType
+    btn_media.form.type.file.class: Btn\MediaBundle\Form\Type\FileType
 
+services:
     #base Media form
     btn_media.form.default.media:
-        class: Btn\MediaBundle\Form\MediaForm
-        arguments: [ '@router' ]
+        class: %btn_media.form.default.media.class%
+        arguments: [ @router ]
         tags:
             - { name: form.type, alias: btn_media_form_media }
 
     btn_media.form.media: @btn_media.form.default.media
 
     btn_media.form.mediacategory:
-        class: Btn\MediaBundle\Form\MediaCategoryForm
-        arguments: [ '@router' ]
+        class: %btn_media.form.mediacategory.class%
+        arguments: [ @router ]
         tags:
             - { name: form.type, alias: btn_media_form_mediacategory }
 
     btn_media.form.type.media:
-        class: Btn\MediaBundle\Form\Type\MediaType
+        class: %btn_media.form.type.media.class%
         arguments:
             provider:   @btn_media.provider.media
             router:     @router
@@ -25,6 +30,6 @@ services:
             - { name: form.type, alias: btn_media }
 
     btn_media.form.type.file:
-        class: Btn\MediaBundle\Form\Type\FileType
+        class: %btn_media.form.type.file.class%
         tags:
             - { name: form.type, alias: btn_media_type_file }
