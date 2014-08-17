@@ -23,16 +23,15 @@ class MediaManager
     /**
      * Get images for node from hero repository
      *
-     * @param int $id
+     * @param  int    $id
      * @return string
      **/
     public function getMedia($id)
     {
         $file = $this->repo->findOneById($id);
 
-        if (null != $file ) {
+        if (null != $file) {
             if (false && 'dev' === $this->environment) {
-
                 return $file->getFile();
             } else {
                 $filesystem = $this->gaufretteMap->get('btn_media');

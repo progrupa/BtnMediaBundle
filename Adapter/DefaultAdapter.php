@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Btn\BaseBundle\Provider\EntityProviderInterface;
-use Btn\MediaBundle\Adapter\AdapterInterface;
 
 /**
 * DefaultAdapter
@@ -26,10 +25,10 @@ class DefaultAdapter implements AdapterInterface
     protected $file = null;
 
     /**
-     * @param EntityProviderInterface   $mediaProvider
-     * @param EntityProviderInterface   $mediaCategoryProvider
-     * @param FormFactory               $formFactory
-     * @param AbstractType              $form instance of form AbstractType
+     * @param EntityProviderInterface $mediaProvider
+     * @param EntityProviderInterface $mediaCategoryProvider
+     * @param FormFactory             $formFactory
+     * @param AbstractType            $form                  instance of form AbstractType
      */
     public function __construct(
         EntityProviderInterface $mediaProvider,
@@ -84,7 +83,7 @@ class DefaultAdapter implements AdapterInterface
     /**
      * Set UploadedFile object
      *
-     * @param UploadedFile $file
+     * @param  UploadedFile     $file
      * @return AdapterInterface
      */
     public function setUploadedFile(UploadedFile $file = null)

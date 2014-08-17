@@ -3,7 +3,6 @@
 namespace Btn\MediaBundle\Uploader;
 
 use Btn\MediaBundle\Entity\Media;
-use Btn\MediaBundle\Entity\MediaCategory;
 use Doctrine\ORM\EntityManager;
 use Gaufrette\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

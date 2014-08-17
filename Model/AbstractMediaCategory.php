@@ -52,7 +52,7 @@ abstract class AbstractMediaCategory implements MediaCategoryInterface
     /**
      * Set name
      *
-     * @param  string            $name
+     * @param  string        $name
      * @return MediaCategory
      */
     public function setName($name)

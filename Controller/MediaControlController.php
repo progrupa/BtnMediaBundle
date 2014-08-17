@@ -70,7 +70,6 @@ class MediaControlController extends AbstractControlController
         $uploader->setAdapter($adapter);
 
         if ($request->isXmlHttpRequest()) {
-
             return $this->json(array(
                 'success' => $uploader->isSuccess()
             ));
@@ -115,7 +114,6 @@ class MediaControlController extends AbstractControlController
     {
         $data = $this->getListData($request);
         if ($request->get('CKEditor')) {
-
             return $this->render('BtnMediaBundle:MediaModal:cke.html.twig', $data);
         }
 

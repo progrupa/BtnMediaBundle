@@ -3,7 +3,6 @@
 namespace Btn\MediaBundle\Model;
 
 use Doctrine\ORM\Mapping as ORM;
-use Btn\MediaBundle\Model\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -73,7 +72,7 @@ abstract class AbstractMedia extends File implements MediaInterface
     /**
      * Set name
      *
-     * @param  string    $name
+     * @param  string $name
      * @return Media
      */
     public function setName($name)
@@ -149,7 +148,6 @@ abstract class AbstractMedia extends File implements MediaInterface
     {
         $extension = $this->getFileExt();
         if (($extension && in_array(strtolower($extension), $this->previewExtensions))) {
-
             return true;
         }
 
@@ -159,7 +157,7 @@ abstract class AbstractMedia extends File implements MediaInterface
     /**
      * Set description
      *
-     * @param  string    $description
+     * @param  string $description
      * @return Media
      */
     public function setDescription($description)
@@ -182,7 +180,7 @@ abstract class AbstractMedia extends File implements MediaInterface
     /**
      * Set type
      *
-     * @param  string    $type
+     * @param  string $type
      * @return Media
      */
     public function setType($type)
@@ -205,7 +203,7 @@ abstract class AbstractMedia extends File implements MediaInterface
     /**
      * Set category
      *
-     * @param  string    $category
+     * @param  string $category
      * @return Media
      */
     public function setCategory(MediaCategoryInterface $category = null)

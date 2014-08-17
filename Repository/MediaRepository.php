@@ -3,7 +3,6 @@
 namespace Btn\MediaBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\EntityManager;
 
 class MediaRepository extends EntityRepository
 {
