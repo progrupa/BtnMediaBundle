@@ -2,7 +2,6 @@
 
 namespace Btn\MediaBundle\Uploader;
 
-use Btn\MediaBundle\Entity\Media;
 use Doctrine\ORM\EntityManager;
 use Gaufrette\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -10,54 +9,25 @@ use Btn\MediaBundle\Adapter\AdapterInterface;
 
 class Uploader
 {
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     private $em;
-
-    /**
-     * @var array
-     */
+    /** @var array */
     private $allowedExtensions;
-
-    /**
-     * @var int
-     */
+    /** @var int */
     private $sizeLimit;
-
-    /**
-     * @var bool
-     */
+    /** @var bool */
     private $replaceOldFiles;
-
-    /**
-     * @var Filesystem
-     */
+    /** @var Filesystem */
     private $filesystem;
-
-    /**
-     * @var array
-     */
+    /** @var array */
     private $errors;
-
-    /**
-     * @var array
-     */
+    /** @var array */
     private $uploadedFiles;
-
-    /**
-     * @var array
-     */
+    /** @var array */
     private $uploadedMedias;
-
-    /**
-     * @var string
-     */
+    /** @var string */
     private $cacheDirectory;
-
-    /**
-     * @var AdapterInterface
-     */
+    /** @var AdapterInterface */
     private $adapter;
 
     /**
@@ -71,6 +41,9 @@ class Uploader
         $this->reset();
     }
 
+    /**
+     *
+     */
     public function reset()
     {
         $this->allowedExtensions = array();
