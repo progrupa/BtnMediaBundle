@@ -15,20 +15,15 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets
-        '@BtnAdminBundle/Resources/public/css/jstree/style.min.css'
-        '@BtnAdminBundle/Resources/public/css/jstree/nodes.css'
-    %}
+    {% stylesheets '@btn_admin_jstree_css' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts
-        '@BtnAdminBundle/Resources/public/js/jstree.min.js'
-        '@BtnAdminBundle/Resources/public/js/nodes.js'
-    %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% javascripts '@btn_admin_jstree_css' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
+

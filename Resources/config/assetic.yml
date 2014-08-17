@@ -1,0 +1,22 @@
+assetic:
+    assets:
+
+        # CSS SECTION ##########################################################
+
+        btn_media_modal_css:
+            inputs:
+                - @BtnMediaBundle/Resources/public/css/modal.css
+            output: css/btn_media.modal.css
+
+        # JS SECTION ###########################################################
+
+        btn_media_modal_js:
+            inputs:
+                - @BtnMediaBundle/Resources/public/js/modal.js
+                - @BtnMediaBundle/Resources/public/js/modal.init.js
+            output: js/btn_media.modal.js
+
+        btn_media_cke_js:
+            inputs:
+                - @BtnMediaBundle/Resources/public/js/cke.js
+            output: js/btn_media.cke.js

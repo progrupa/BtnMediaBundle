@@ -14,11 +14,11 @@
 {% endblock %}
 
 {% javascripts '@btn_admin_jquery_js' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
+    <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
 
 {% include 'BtnMediaBundle:MediaModal:_partials.html.twig' %}
 
-{% javascripts '@BtnMediaBundle/Resources/public/js/cke.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+{% javascripts '@btn_media_cke_js' %}
+        <script src="{{ asset_url }}"></script>
 {% endjavascripts %}

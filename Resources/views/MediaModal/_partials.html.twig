@@ -1,14 +1,11 @@
-{% stylesheets
-    '@BtnAdminBundle/Resources/public/css/jstree/style.min.css'
-    '@BtnAdminBundle/Resources/public/css/jstree/nodes.css'
-    '@BtnMediaBundle/Resources/public/css/modal.css'
-%}
+{% stylesheets '@btn_admin_jstree_css' %}
     <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
 
-{% javascripts
-    '@BtnAdminBundle/Resources/public/js/jstree.min.js'
-    '@BtnAdminBundle/Resources/public/js/nodes.js'
-%}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% stylesheets '@btn_media_modal_css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}
+
+{% javascripts '@btn_admin_jstree_js' %}
+    <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
