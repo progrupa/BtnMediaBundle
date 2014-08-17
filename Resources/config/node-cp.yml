@@ -4,4 +4,4 @@ services:
         arguments:
             provider: @btn_media.provider.media_category
         tags:
-            - { name: btn_nodes.content_provider }
+            - { name: btn_node.content_provider }
