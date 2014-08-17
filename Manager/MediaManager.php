@@ -2,7 +2,7 @@
 
 namespace Btn\MediaBundle\Manager;
 
-use Btn\AdminBundle\Provider\EntityProviderInterface;
+use Btn\BaseBundle\Provider\EntityProviderInterface;
 
 class MediaManager
 {

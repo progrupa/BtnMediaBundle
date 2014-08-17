@@ -4,7 +4,7 @@ namespace Btn\MediaBundle\Service;
 
 use Btn\NodesBundle\Provider\NodeContentProviderInterface;
 use Btn\MediaBundle\Form\NodeContentType;
-use Btn\AdminBundle\Provider\EntityProviderInterface;
+use Btn\BaseBundle\Provider\EntityProviderInterface;
 
 class NodeContentProvider implements NodeContentProviderInterface
 {

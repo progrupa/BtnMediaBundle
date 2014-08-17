@@ -5,13 +5,13 @@ namespace Btn\MediaBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
-use Btn\AdminBundle\Provider\EntityProviderInterface;
+use Btn\BaseBundle\Provider\EntityProviderInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class MediaType extends AbstractType
 {
-    /** @var \Btn\AdminBundle\Provider\EntityProviderInterface */
+    /** @var \Btn\BaseBundle\Provider\EntityProviderInterface */
     protected $provider;
     /** @var \Symfony\Component\Routing\RouterInterface $router */
     private $router;

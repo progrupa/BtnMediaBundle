@@ -6,13 +6,13 @@ parameters:
 
 services:
     btn_media.provider.media:
-        class: %btn_admin.provider.entity.class%
-        parent: btn_admin.provider.abstract_entity
+        class: %btn_base.provider.entity.class%
+        parent: btn_base.provider.abstract_entity
         arguments: ['%btn_media.media.class%']
 
     btn_media.provider.media_category:
-        class: %btn_admin.provider.entity.class%
-        parent: btn_admin.provider.abstract_entity
+        class: %btn_base.provider.entity.class%
+        parent: btn_base.provider.abstract_entity
         arguments: ['%btn_media.media_category.class%']
 
     btn_media.liip_imagine.data.loader.stream:
