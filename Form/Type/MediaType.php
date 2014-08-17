@@ -2,31 +2,29 @@
 
 namespace Btn\MediaBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
+use Btn\AdminBundle\Form\Type\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
-use Btn\BaseBundle\Provider\EntityProviderInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class MediaType extends AbstractType
 {
-    /** @var \Btn\BaseBundle\Provider\EntityProviderInterface */
-    protected $provider;
-    /** @var \Symfony\Component\Routing\RouterInterface $router */
-    private $router;
-    /** @var \Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface $translator */
-    private $translator;
     /** @var string $modalRouteName */
     private $modalRouteName = 'btn_media_mediacontrol_modal';
 
-    public function __construct(EntityProviderInterface $provider, RouterInterface $router, TranslatorInterface $translator)
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->provider   = $provider;
-        $this->router     = $router;
-        $this->translator = $translator;
+        parent::buildForm($builder, $options);
+
+        $this->assetLoader->load('btn_media_modal_js');
     }
 
+    /**
+     *
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
@@ -34,7 +32,7 @@ class MediaType extends AbstractType
         $resolver->setDefaults(array(
             'empty_value'   => 'btn_media.type.media.empty_value',
             'label'         => 'btn_media.type.media.label',
-            'class'         => $this->provider->getClass(),
+            'class'         => $this->entityProvider->getClass(),
             'attr'          => array(
                 'data-btn-media'        => $this->router->generate($this->getModalRouteName()),
                 'data-btn-media-select' => $this->translator->trans('btn_media.media.select'),
@@ -44,7 +42,8 @@ class MediaType extends AbstractType
             'query_builder' => function (EntityRepository $em) {
                 return $em
                     ->createQueryBuilder('mf')
-                    ->orderBy('mf.name', 'ASC');
+                    ->orderBy('mf.name', 'ASC')
+                ;
             },
             'property' => 'name',
             'required' => true,

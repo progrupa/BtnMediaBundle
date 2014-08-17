@@ -22,10 +22,11 @@ services:
 
     btn_media.form.type.media:
         class: %btn_media.form.type.media.class%
-        arguments:
-            provider:   @btn_media.provider.media
-            router:     @router
-            translator: @translator
+        calls:
+            - [setEntityProvider, [@btn_media.provider.media]]
+            - [setTranslator, [@translator]]
+            - [setRouter, [@router]]
+            - [setAssetLoader, [@btn_base.asset_loader]]
         tags:
             - { name: form.type, alias: btn_media }
 
