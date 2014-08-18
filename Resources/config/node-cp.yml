@@ -1,6 +1,6 @@
 services:
     btn_media.provider.node_content_provider:
-        class: Btn\NodesBundle\Provider\NodeContentProvider
+        class: Btn\NodeBundle\Provider\NodeContentProvider
         arguments:
             provider: @btn_media.provider.media_category
         tags:
