@@ -1,6 +1,6 @@
 <?php
 
-namespace Btn\MediaBundle\Service;
+namespace Btn\MediaBundle\Provider;
 
 use Btn\NodeBundle\Provider\NodeContentProviderInterface;
 use Btn\MediaBundle\Form\NodeContentType;
@@ -45,5 +45,10 @@ class NodeContentProvider implements NodeContentProviderInterface
     public function resolveControlRouteParameters($formData = array())
     {
         return array('id' => $formData['category']);
+    }
+
+    public function getName()
+    {
+        return 'btn_media.node_content_provider';
     }
 }
