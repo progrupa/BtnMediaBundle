@@ -1,24 +1,31 @@
 parameters:
     btn_media.form.default.media.class: Btn\MediaBundle\Form\MediaForm
-    btn_media.form.mediacategory.class: Btn\MediaBundle\Form\MediaCategoryForm
+    btn_media.form.media_control.class: Btn\MediaBundle\Form\MediaControlForm
+    btn_media.form.media_category_control.class: Btn\MediaBundle\Form\MediaCategoryControlForm
     btn_media.form.type.media.class: Btn\MediaBundle\Form\Type\MediaType
     btn_media.form.type.file.class: Btn\MediaBundle\Form\Type\FileType
 
 services:
     #base Media form
-    btn_media.form.default.media:
-        class: %btn_media.form.default.media.class%
-        arguments: [ @router ]
+    btn_media.form.media_control:
+        class: %btn_media.form.media_control.class%
+        parent: btn_admin.form.abstract
+        calls:
+            - [setClass, [%btn_media.media.class%]]
+            - [setRouter, [@router]]
         tags:
-            - { name: form.type, alias: btn_media_form_media }
+            - { name: form.type, alias: btn_media_form_media_control }
 
-    btn_media.form.media: @btn_media.form.default.media
+    btn_media.form.media: @btn_media.form.media_control
 
-    btn_media.form.mediacategory:
-        class: %btn_media.form.mediacategory.class%
-        arguments: [ @router ]
+    btn_media.form.media_category_control:
+        class: %btn_media.form.media_category_control.class%
+        parent: btn_admin.form.abstract
+        calls:
+            - [setClass, [%btn_media.media_category.class%]]
+            - [setRouter, [@router]]
         tags:
-            - { name: form.type, alias: btn_media_form_mediacategory }
+            - { name: form.type, alias: btn_media_form_media_category_control }
 
     btn_media.form.type.media:
         class: %btn_media.form.type.media.class%

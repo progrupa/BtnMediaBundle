@@ -7,11 +7,11 @@ use Btn\AdminBundle\Controller\AbstractControlController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Btn\AdminBundle\Annotation\EntityProvider;
 
 /**
- * Media controller.
- *
  * @Route("/media/category")
+ * @EntityProvider("btn_media.provider.media_category")
  */
 class MediaCategoryControlController extends AbstractControlController
 {
@@ -23,7 +23,7 @@ class MediaCategoryControlController extends AbstractControlController
      */
     public function treeAction(Request $request)
     {
-        $provider = $this->get('btn_media.provider.media_category');
+        $provider = $this->getEntityProvider();
         $repo     = $provider->getRepository();
         $current  = null;
         if ($request->get('category') !== null) {
@@ -40,12 +40,12 @@ class MediaCategoryControlController extends AbstractControlController
     /**
      * @Route("/new", name="btn_media_mediacontrol_new_category")
      * @Template("BtnMediaBundle:MediaCategoryControl:form.html.twig")
-     **/
+     */
     public function newAction(Request $request)
     {
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $mediaCategoryProvider = $this->getEntityProvider();
         $entity = $mediaCategoryProvider->create();
-        $form   = $this->createForm('btn_media_form_mediacategory', $entity);
+        $form   = $this->createForm('btn_media_form_media_category_control', $entity);
 
         return array('form' => $form->createView());
     }
@@ -54,16 +54,18 @@ class MediaCategoryControlController extends AbstractControlController
      * @Route("/create", name="btn_media_mediacontrol_create_category")
      * @Method({"POST"})
      * @Template("BtnMediaBundle:MediaCategoryControl:form.html.twig")
-     **/
+     */
     public function createAction(Request $request)
     {
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $mediaCategoryProvider = $this->getEntityProvider();
         $entity = $mediaCategoryProvider->create();
-        $form   = $this->createForm('btn_media_form_mediacategory', $entity);
+        $form   = $this->createForm('btn_media_form_media_category_control', $entity);
         $form->handleRequest($request);
         $category = $form->getData();
         //save MediaCategory entity
         $mediaCategoryProvider->save($entity);
+
+        $this->setFlash('btn_admin.flash.created');
 
         return $this->redirect($this->generateUrl('btn_media_mediacontrol_edit_category', array('id' => $category->getId())));
     }
@@ -71,12 +73,12 @@ class MediaCategoryControlController extends AbstractControlController
     /**
      * @Route("/edit/{id}", name="btn_media_mediacontrol_edit_category")
      * @Template("BtnMediaBundle:MediaCategoryControl:form.html.twig")
-     **/
+     */
     public function editAction(Request $request, $id)
     {
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $mediaCategoryProvider = $this->getEntityProvider();
         $entity = $mediaCategoryProvider->getRepository()->find($id);
-        $form = $this->get('btn_media.form.mediacategory');
+        $form = $this->get('btn_media.form.media_category_control');
         $form->setActionRouteName('btn_media_mediacontrol_update_category');
         $form->setActionRouteParams(array('id' => $entity->getId()));
         $form = $this->createForm($form, $entity);
@@ -90,29 +92,34 @@ class MediaCategoryControlController extends AbstractControlController
      * @Route("/update/{id}", name="btn_media_mediacontrol_update_category")
      * @Method({"POST"})
      * @Template("BtnMediaBundle:MediaCategoryControl:form.html.twig")
-     **/
+     */
     public function updateAction(Request $request, $id)
     {
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $mediaCategoryProvider = $this->getEntityProvider();
         $entity = $mediaCategoryProvider->getRepository()->find($id);
-        $form = $this->createForm('btn_media_form_mediacategory', $entity);
+        $form = $this->createForm('btn_media_form_media_category_control', $entity);
         $form->handleRequest($request);
         //save MediaCategory entity
         $mediaCategoryProvider->save($entity);
+
+        $this->setFlash('btn_admin.flash.updated');
 
         return $this->redirect($this->generateUrl('btn_media_mediacontrol_edit_category', array('id' => $entity->getId())));
     }
 
     /**
-     * @Route("/delete/{id}", name="btn_media_mediacontrol_category_delete")
-     **/
-    public function deleteAction(Request $request, $id)
+     * @Route("/delete/{id}/{csrf_token}", name="btn_media_mediacontrol_category_delete")
+     */
+    public function deleteAction(Request $request, $id, $csrf_token)
     {
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $this->validateCsrfTokenOrThrowException('btn_media_mediacontrol_category_delete', $csrf_token);
+
+        $mediaCategoryProvider = $this->getEntityProvider();
         $category              = $mediaCategoryProvider->getRepository()->find($id);
 
         if ($category) {
             $mediaCategoryProvider->delete($category);
+            $this->setFlash('btn_admin.flash.deleted');
         }
 
         return $this->redirect($this->generateUrl('btn_media_mediacontrol_media_index'));
