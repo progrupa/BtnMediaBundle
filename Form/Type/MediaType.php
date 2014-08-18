@@ -30,13 +30,13 @@ class MediaType extends AbstractType
         parent::setDefaultOptions($resolver);
 
         $resolver->setDefaults(array(
-            'empty_value'   => 'btn_media.type.media.empty_value',
-            'label'         => 'btn_media.type.media.label',
+            'empty_value'   => 'btn_media.form.type.media.empty_value',
+            'label'         => 'btn_media.form.type.media.label',
             'class'         => $this->entityProvider->getClass(),
             'attr'          => array(
                 'data-btn-media'        => $this->router->generate($this->getModalRouteName()),
-                'data-btn-media-select' => $this->translator->trans('btn_media.media.select'),
-                'data-btn-media-delete' => $this->translator->trans('btn_media.media.remove')
+                'data-btn-media-select' => $this->trans('btn_media.form.type.media.select'),
+                'data-btn-media-delete' => $this->trans('btn_media.form.type.media.remove')
 
                 ),
             'query_builder' => function (EntityRepository $em) {
