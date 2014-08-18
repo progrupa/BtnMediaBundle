@@ -14,7 +14,7 @@
                 {{ 'btn_media.category.edit'|trans }}</a>
             <a href="{{ path('btn_media_mediacontrol_category_delete', {'id': app.request.get('category')})}}"
                 class="btn btn-danger"
-                data-confirm="{{ 'btn_admin.category.delete_confirm'|trans }}"
+                data-btn-confirm="{{ 'btn_admin.category.delete_confirm'|trans }}"
                 >
                 {{ 'btn_media.category.delete'|trans }}</a>
         {% else %}
@@ -49,7 +49,7 @@
                         {{ 'btn_media.media.edit'|trans }}</a>
                     <a href="{{ path('btn_media_mediacontrol_media_delete', { 'id': entity.id }) }}"
                         class="btn btn-danger"
-                        data-confirm="{{ 'btn_media.media.delete_confirm'|trans }}"
+                        data-btn-confirm="{{ 'btn_media.media.delete_confirm'|trans }}"
                         >
                         {{ 'btn_media.media.delete'|trans }}</a>
                 </td>
