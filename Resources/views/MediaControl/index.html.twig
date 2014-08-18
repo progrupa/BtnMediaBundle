@@ -39,13 +39,8 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('btn_media_mediacontrol_media_edit', { 'id': entity.id }) }}" class="btn btn-primary">
-                        {{ 'btn_media.media.edit'|trans }}</a>
-                    <a href="{{ path('btn_media_mediacontrol_media_delete', { 'id': entity.id }) }}"
-                        class="btn btn-danger"
-                        data-btn-confirm="{{ 'btn_media.media.delete_confirm'|trans }}"
-                        >
-                        {{ 'btn_media.media.delete'|trans }}</a>
+                    {{ lnk.edit('btn_media_mediacontrol_media_edit', {id: entity.id}, 'btn_media.media.edit') }}
+                    {{ lnk.delete('btn_media_mediacontrol_media_delete', {id: entity.id}, 'btn_media.media.delete') }}
                 </td>
             </tr>
         {% endfor %}

@@ -86,10 +86,12 @@ class MediaControlController extends AbstractControlController
     }
 
     /**
-     * @Route("/delete/{id}", name="btn_media_mediacontrol_media_delete", requirements={"id" = "\d+"})
+     * @Route("/delete/{id}/{csrf_token}", name="btn_media_mediacontrol_media_delete", requirements={"id" = "\d+"})
      **/
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, $id, $csrf_token)
     {
+        $this->validateCsrfTokenOrThrowException('btn_media_mediacontrol_media_delete', $csrf_token);
+
         $params = array();
         try {
             $provider = $this->get('btn_media.provider.media');
