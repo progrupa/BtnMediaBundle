@@ -5,7 +5,7 @@ namespace Btn\MediaBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use Btn\BaseBundle\Controller\BaseController;
+use Btn\BaseBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  *
  * @Route("/media")
  */
-class MediaController extends BaseController
+class MediaController extends AbstractController
 {
     /**
      * @Route("/category/{id}", name="btn_media_media_category")
