@@ -39,7 +39,7 @@ class NodeContentProvider implements NodeContentProviderInterface
 
     public function resolveControlRoute($formData = array())
     {
-        return 'btn_media_mediacontrol_category';
+        return 'btn_media_mediacontrol_media_index_category';
     }
 
     public function resolveControlRouteParameters($formData = array())
