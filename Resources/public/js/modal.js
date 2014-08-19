@@ -15,7 +15,7 @@
             modalUrl           = mediaInput.attr('data-btn-media'),
             selectMediaBtnText = mediaInput.attr('data-btn-media-select'),
             selectMediaBtn     = $('<div />').addClass('btn btn-primary').text(selectMediaBtnText),
-            deleteMediaBtn     = $('<div />').addClass('btn btn-danger').text(mediaInput.attr('data-btn-media-delete')),
+            deleteMediaBtn     = $('<div />').addClass('btn btn-danger').attr('data-btn-remove', true).text(mediaInput.attr('data-btn-media-delete')),
             paginationUrl      = '',
             laddaButton        = null;
 
