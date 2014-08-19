@@ -101,7 +101,7 @@ class MediaControlController extends AbstractControlController
             }
             $provider->delete($entity);
         } catch (\Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new \Exception($e->getMessage());
 
         }
 
