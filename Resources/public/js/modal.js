@@ -171,7 +171,7 @@
                 return false;
             });
 
-            deleteBtn.on('click', function (e) {
+            deleteBtn.on('click btnRemove', function (e) {
                 updateMediaInput(self);
                 $(this).hide();
 
@@ -183,6 +183,11 @@
 
         // do all the magic
         init();
+
+        if (BtnApp) {
+            // trigger refresh for form row to attach custom events
+            BtnApp.refresh(mediaInput.parent().get());
+        }
     }
 
 })(jQuery);
