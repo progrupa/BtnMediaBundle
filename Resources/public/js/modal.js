@@ -142,8 +142,8 @@ jQuery(function ($) {
     //create btn select and delete buttons
     mediaInputs.each(function () {
         var self      = $(this).hide(),
-            selectBtn = selectMediaBtn.insertAfter(self),
-            deleteBtn = deleteMediaBtn.hide().insertAfter(selectBtn);
+            selectBtn = selectMediaBtn.clone().insertAfter(self),
+            deleteBtn = deleteMediaBtn.clone().hide().insertAfter(selectBtn);
 
         self.data('select-button', selectBtn);
         self.data('delete-button', deleteBtn);
