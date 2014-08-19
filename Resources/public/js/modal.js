@@ -12,7 +12,9 @@ jQuery(function ($) {
         selectMediaBtnText = mediaInputs.attr('data-btn-media-select'),
         selectMediaBtn     = $('<div />').addClass('btn btn-primary').text(selectMediaBtnText),
         deleteMediaBtn     = $('<div />').addClass('btn btn-danger').text(mediaInputs.attr('data-btn-media-delete')),
-        paginationUrl      = '';
+        paginationUrl      = '',
+        laddaButton        = null;
+
     //script needs to have url to $.get content
     if (typeof modalUrl === 'undefined') {
         console.error('BtnMediaBundle: No modal url specified at data-btn-media attr.');
@@ -85,13 +87,20 @@ jQuery(function ($) {
     };
     //if modal is ready show it and animate it
     var onModalReady = function () {
+        if (laddaButton) {
+            laddaButton.stop();
+        }
         modal.modal('show');
         $('html, body').animate({
             scrollTop : modal.offset().top
         }, 400);
     };
+
     //get modal if not exist else open it
     var openModal = function () {
+        if (laddaButton) {
+            laddaButton.start();
+        }
         if (!modal) {
             getModal().done(function() {
                 onModalReady();
@@ -101,6 +110,7 @@ jQuery(function ($) {
             onModalReady();
         }
     };
+
     //TODO: check if below 3 methods can better :)
     var updateMediaInput = function (input, image) {
         if (image == null) {
@@ -137,8 +147,8 @@ jQuery(function ($) {
         } else {
             deleteBtn.hide();
         }
-
     }
+
     //create btn select and delete buttons
     mediaInputs.each(function () {
         var self      = $(this).hide(),
@@ -149,6 +159,9 @@ jQuery(function ($) {
         self.data('delete-button', deleteBtn);
 
         selectBtn.on('click', function (e) {
+            if (BtnApp && BtnApp.tools.loadingButton) {
+                laddaButton = BtnApp.tools.loadingButton(this);
+            }
             mediaInput = self;
             openModal();
 
