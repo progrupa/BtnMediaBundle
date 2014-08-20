@@ -16,12 +16,16 @@
     margin-bottom: 5px;
 }
 
+.modal-body #bitnoise-media-list .item {
+    cursor: pointer;
+}
+
 .modal-body #bitnoise-media-list .item img {
     cursor: pointer;
     margin: 5px;
 }
 
-#bitnoise-media-list .item img.selected {
+#bitnoise-media-list .item.selected img {
     border: 5px solid #006dcc;
     margin: 0;
 }

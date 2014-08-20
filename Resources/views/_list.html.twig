@@ -24,15 +24,9 @@
 
     <div class="col-md-12 {% if isCategory %}categories{% endif %}" id="bitnoise-media-list" data-remove-url="{{ url('cp_media_delete') }}" data-edit-url="{{ url('cp_media_edit') }}" data-pagination-url="{{url('cp_media_list_modal_content')}}">
         {% for entity in pagination %}
-            <div class="col-md-3 item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}" data-id="{{ entity.id }}">
-                <img src="{{ entity.previewFilePath|imagine_filter('btn_media_thumb') }}"
-                     class="img-polaroid"
-                     data-id="{{ entity.id }}"
-                     data-filename="{{ entity.name }}"
-                     data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}"
-                />
+            <div class="col-md-3 item{% if isModal %} add-tooltip{% endif %}" title="{{ entity.name }}" data-id="{{ entity.id }}" data-filename="{{ entity.name }}" data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}">
+                <img src="{{ entity.previewFilePath|imagine_filter('btn_media_thumb') }}" class="img-polaroid" />
                 {% if not (isModal) %}
-                <img class="hidden original" src="{{ asset(entity.path) }}" />
                 <a href="#" class="btn btn-small btn-danger delete">&#10008;</a>
                 <div class="input-group">
                     <input type="text" class="form-control" data-type="name" placeholder="Media name" value="{{ entity.name }}">
