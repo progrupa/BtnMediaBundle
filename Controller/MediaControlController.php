@@ -9,11 +9,11 @@ use Btn\AdminBundle\Controller\AbstractControlController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Btn\AdminBundle\Annotation\EntityProvider;
 
 /**
- * Media controller.
- *
  * @Route("/media")
+ * @EntityProvider()
  */
 class MediaControlController extends AbstractControlController
 {
@@ -45,7 +45,7 @@ class MediaControlController extends AbstractControlController
      **/
     public function editAction(Request $request, $id)
     {
-        $entity   = $this->get('btn_media.provider.media')->getRepository()->find($id);
+        $entity   = $this->getEntityProvider()->getRepository()->find($id);
         $form     = $this->get('btn_media.adapter')->createForm($request, $entity);
 
         return array('form' => $form->createView(), 'entity' => $entity);
@@ -58,7 +58,7 @@ class MediaControlController extends AbstractControlController
     public function uploadAction(Request $request, $id = null)
     {
         /** @var Media $entity */
-        $entity = $id ? $this->get('btn_media.provider.media')->getRepository()->find($id) : null;
+        $entity = $id ? $this->getEntityProvider()->getRepository()->find($id) : null;
         /** @var Gaufrette/Filesystem $entity */
         $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
         /** @var \Btn\MediaBundle\AdapterInterface $adapter */
@@ -94,7 +94,7 @@ class MediaControlController extends AbstractControlController
 
         $params = array();
         try {
-            $provider = $this->get('btn_media.provider.media');
+            $provider = $this->getEntityProvider();
             $entity   = $provider->getRepository()->find($id);
             if ($entity->getCategory()) {
                 $params['category'] = $entity->getCategory()->getId();
@@ -150,7 +150,7 @@ class MediaControlController extends AbstractControlController
     private function getListData(Request $request)
     {
         $category      = $request->get('category');
-        $mediaProvider = $this->get('btn_media.provider.media');
+        $mediaProvider = $this->getEntityProvider();
         $method        = $category ? 'findByCategory' : 'findAll';
         $entities      = $mediaProvider->getRepository()->$method($category);
 

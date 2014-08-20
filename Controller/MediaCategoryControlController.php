@@ -11,7 +11,7 @@ use Btn\AdminBundle\Annotation\EntityProvider;
 
 /**
  * @Route("/media/category")
- * @EntityProvider("btn_media.provider.media_category")
+ * @EntityProvider()
  */
 class MediaCategoryControlController extends AbstractControlController
 {
