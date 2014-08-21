@@ -4,7 +4,6 @@ namespace Btn\MediaBundle\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 class MediaCategoryControlForm extends AbstractForm
 {
