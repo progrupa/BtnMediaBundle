@@ -32,9 +32,19 @@
         };
         // update media-content html by $.get response
         var updateModalBody = function (url) {
+            var modalContent = modal.find('.modal-content');
             modal.find('.media-content').slideUp(function () {
+                // start spinner
+                if ($.fn.spin) {
+                    modalContent.spin();
+                }
                 $.get(url, function (response) {
                     modal.find('.media-content').html(response).slideDown();
+                }).always(function(){
+                    // stop spinner
+                    if ($.fn.spin) {
+                        modalContent.spin(false);
+                    }
                 });
             });
         };
