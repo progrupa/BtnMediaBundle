@@ -1,6 +1,6 @@
 (function ($) {
 
-    $.fn.btnMediaModal = function ( options) {
+    $.fn.btnMediaModal = function (options) {
         //script needs modal
         if (typeof $.fn.modal === 'undefined') {
 
