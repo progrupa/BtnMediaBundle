@@ -2,7 +2,7 @@
 
     // Add events
     var addEvents = function(context) {
-        app.tools.getOnce('btn-media', context).each(function() {
+        app.tools.findOnce('btn-media', context).each(function() {
             var element = $(this);
             element.btnMediaModal();
         });
