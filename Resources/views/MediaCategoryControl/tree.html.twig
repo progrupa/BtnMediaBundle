@@ -3,7 +3,7 @@
         <li class="{{ categories ? 'jstree-open' : 'jstree-closed' }}" data-jstree='{"icon":"glyphicon glyphicon-file"}'> {# {{ categories ? ',"opened":true' }} #}
             <a href="{{ url('btn_media_mediacontrol_media_index') }}"
                 data-remote="formContainer"
-                class="btn-admin-tree-title">{{ 'btn_media.media.all'|trans }}</a> |
+                class="btn-admin-tree-title">{{ 'btn_media.media.all'|trans }}</a>
             <ul>
                 {% for category in categories %}
                     {% include 'BtnMediaBundle:MediaCategoryControl:_tree.html.twig' %}
