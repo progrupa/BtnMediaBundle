@@ -24,8 +24,8 @@ jQuery(function ($) {
     };
     //bind events - reload content on pagination/category click
     btnMedia
-        .on('click', '#tree ul li a', function(event) {
-            var category = $(this).attr('data-btn-media-category');
+        .on('click', '#btn-media-tree ul li a', function(event) {
+            var category = $(this).attr('btn-media-category');
             updateMediaContent(category ? (baseUrl + '/' + category) : baseUrl);
 
             return false;

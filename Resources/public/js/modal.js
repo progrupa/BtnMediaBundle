@@ -12,16 +12,16 @@
         //set up base variables
         var modal,
             mediaInput         = $(this),
-            modalUrl           = mediaInput.attr('data-btn-media'),
-            selectMediaBtnText = mediaInput.attr('data-btn-media-select'),
+            modalUrl           = mediaInput.attr('btn-media'),
+            selectMediaBtnText = mediaInput.attr('btn-media-select'),
             selectMediaBtn     = $('<div />').addClass('btn btn-primary').text(selectMediaBtnText),
-            deleteMediaBtn     = $('<div />').addClass('btn btn-danger').attr('data-btn-remove', true).text(mediaInput.attr('data-btn-media-delete')),
+            deleteMediaBtn     = $('<div />').addClass('btn btn-danger').attr('btn-remove', true).text(mediaInput.attr('btn-media-delete')),
             paginationUrl      = '',
             laddaButton        = null;
 
         //script needs to have url to $.get content
         if (typeof modalUrl === 'undefined') {
-            BtnApp.tools.error('BtnMediaBundle: No modal url specified at data-btn-media attr.');
+            BtnApp.tools.error('BtnMediaBundle: No modal url specified at btn-media attr.');
 
             return;
         }
@@ -73,8 +73,8 @@
                     return false;
                 })
                 //reload content on category link click
-                .on('click', '#tree ul li a', function(event) {
-                    var category = $(this).attr('data-btn-media-category');
+                .on('click', '#btn-media-tree ul li a', function(event) {
+                    var category = $(this).attr('btn-media-category');
                     updateModalBody(category ? (paginationUrl + '/' + category) : paginationUrl);
 
                     return false;
