@@ -79,6 +79,11 @@
 
                     return false;
                 });
+
+                if (BtnApp) {
+                    // trigger refresh for nodal to attach custom events
+                    BtnApp.refresh(modal);
+                }
         };
 
         //get modal contend and append it to the body
