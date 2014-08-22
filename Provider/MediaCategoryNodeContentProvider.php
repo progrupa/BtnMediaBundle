@@ -6,15 +6,22 @@ use Btn\NodeBundle\Provider\NodeContentProviderInterface;
 use Btn\MediaBundle\Form\NodeContentType;
 use Btn\BaseBundle\Provider\EntityProviderInterface;
 
-class NodeContentProvider implements NodeContentProviderInterface
+class MediaCategoryNodeContentProvider implements NodeContentProviderInterface
 {
-    private $provider;
+    /** @var \Btn\BaseBundle\Provider\EntityProviderInterface */
+    protected $provider;
 
+    /**
+     *
+     */
     public function __construct(EntityProviderInterface $provider)
     {
         $this->provider = $provider;
     }
 
+    /**
+     *
+     */
     public function getForm()
     {
         $medias = $this->provider->getRepository()->findAll();
@@ -27,28 +34,43 @@ class NodeContentProvider implements NodeContentProviderInterface
         return new NodeContentType($data);
     }
 
+    /**
+     *
+     */
     public function resolveRoute($formData = array())
     {
         return 'btn_media_media_category';
     }
 
+    /**
+     *
+     */
     public function resolveRouteParameters($formData = array())
     {
         return array('id' => $formData['category']);
     }
 
+    /**
+     *
+     */
     public function resolveControlRoute($formData = array())
     {
         return 'btn_media_mediacontrol_media_index_category';
     }
 
+    /**
+     *
+     */
     public function resolveControlRouteParameters($formData = array())
     {
         return array('id' => $formData['category']);
     }
 
+    /**
+     *
+     */
     public function getName()
     {
-        return 'btn_media.node_content_provider';
+        return 'btn_media.media_category_node_content_provider.name';
     }
 }

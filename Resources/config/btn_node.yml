@@ -1,9 +1,9 @@
 parameters:
-    btn_media.provider.node_content_provider.class: Btn\MediaBundle\Provider\NodeContentProvider
+    btn_media.provider.media_category_node_content_provider.class: Btn\MediaBundle\Provider\MediaCategoryNodeContentProvider
 
 services:
-    btn_media.provider.node_content_provider:
-        class: %btn_media.provider.node_content_provider.class%
+    btn_media.provider.media_category_node_content_provider:
+        class: %btn_media.provider.media_category_node_content_provider.class%
         arguments:
             provider: @btn_media.provider.media_category
         tags:
