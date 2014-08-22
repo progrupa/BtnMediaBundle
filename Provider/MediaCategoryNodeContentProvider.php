@@ -22,6 +22,14 @@ class MediaCategoryNodeContentProvider implements NodeContentProviderInterface
     /**
      *
      */
+    public function isEnabled()
+    {
+        return true;
+    }
+
+    /**
+     *
+     */
     public function getForm()
     {
         $medias = $this->provider->getRepository()->findAll();
