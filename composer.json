@@ -6,6 +6,7 @@
     "homepage": "https://github.com/Bitnoise/BtnMediaBundle",
     "license": "MIT",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Bitnoise Team",
@@ -20,17 +21,16 @@
     },
     "repositories": [
         {
-            "type": "vcs",
-            "url":  "https://github.com/Bitnoise/BtnBaseBundle.git"
+            "type": "composer",
+            "url": "http://bitnoise.github.io/packages/"
         }
     ],
     "autoload": {
-        "psr-0": { "Btn\\MediaBundle": "" }
+        "psr-0": { "Btn\\MediaBundle\\": "src/" }
     },
-    "target-dir": "Btn/MediaBundle",
     "extra": {
         "branch-alias": {
-            "dev-2.0": "2.0-dev"
+            "dev-master": "2.0-dev"
         }
     }
 }
