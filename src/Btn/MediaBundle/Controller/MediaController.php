@@ -10,8 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
- * News controller.
- *
  * @Route("/media")
  */
 class MediaController extends AbstractController
