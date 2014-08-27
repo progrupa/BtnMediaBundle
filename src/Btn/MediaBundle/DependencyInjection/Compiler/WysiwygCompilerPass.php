@@ -19,6 +19,6 @@ class WysiwygCompilerPass implements CompilerPassInterface
         }
 
         $wysiwyg = $container->getDefinition($wysiwygId);
-        $wysiwyg->addMethodCall('setFilebrowserBrowseRoute', array('btn_media_mediacontrol_modal'));
+        $wysiwyg->addMethodCall('setFilebrowserRoute', array('btn_media_mediacontrol_modal'));
     }
 }
