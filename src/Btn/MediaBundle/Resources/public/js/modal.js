@@ -1,13 +1,11 @@
-(function ($) {
-
-    $.fn.btnMediaModal = function (options) {
+/* global BtnApp, jQuery */
+(function (app, $, undefined) {
+    'use strict';
+    $.fn.btnMediaModal = function () {
         //script needs modal
         if (typeof $.fn.modal === 'undefined') {
-
             return;
         }
-
-        var settings = $.extend({}, options);
 
         //set up base variables
         var modal,
@@ -21,7 +19,7 @@
 
         //script needs to have url to $.get content
         if (typeof modalUrl === 'undefined') {
-            BtnApp.tools.error('BtnMediaBundle: No modal url specified at btn-media attr.');
+            app.tools.error('BtnMediaBundle: No modal url specified at btn-media attr.');
 
             return;
         }
@@ -62,7 +60,7 @@
                     backdrop : true
                 })
                 //select image behavior
-                .on('click', '#btn-media-list .item img', function (e) {
+                .on('click', '#btn-media-list .item img', function () {
                     $('#btn-media-list .item img').removeClass('selected');
                     $(this).addClass('selected');
                 })
@@ -75,7 +73,7 @@
                     }
                 })
                 //reload content on pagination link click
-                .on('click', '.modal-body .pagination li', function (e) {
+                .on('click', '.modal-body .pagination li', function () {
                     if (!$(this).hasClass('disabled') && !$(this).hasClass('active')) {
                         updateModalBody(paginationUrl + '?' + getPaginationSearchPart(this));
                     }
@@ -83,7 +81,7 @@
                     return false;
                 })
                 //reload content on category link click
-                .on('click', '#btn-media-tree ul li a', function(event) {
+                .on('click', '#btn-media-tree ul li a', function () {
                     var category = $(this).attr('btn-media-category');
                     updateModalBody(category ? (paginationUrl + '/' + category) : paginationUrl);
 
@@ -145,7 +143,7 @@
             } else {
                 updateMediaButtons(input);
             }
-        }
+        };
 
         var updateMediaButtons = function (input, filename) {
             var selectBtn  = input.data('select-button'),
@@ -166,7 +164,8 @@
             } else {
                 deleteBtn.hide();
             }
-        }
+        };
+
         // main init function
         var init = function() {
             var self      = mediaInput.hide(),
@@ -176,7 +175,7 @@
             self.data('select-button', selectBtn);
             self.data('delete-button', deleteBtn);
 
-            selectBtn.on('click', function (e) {
+            selectBtn.on('click', function () {
                 if (BtnApp && BtnApp.tools.loadingButton) {
                     laddaButton = BtnApp.tools.loadingButton(this);
                 }
@@ -186,7 +185,7 @@
                 return false;
             });
 
-            deleteBtn.on('click btnRemove', function (e) {
+            deleteBtn.on('click btnRemove', function () {
                 updateMediaInput(self);
                 $(this).hide();
 
@@ -199,10 +198,7 @@
         // do all the magic
         init();
 
-        if (BtnApp) {
-            // trigger refresh for form row to attach custom events
-            BtnApp.refresh(mediaInput.parent().get());
-        }
-    }
-
-})(jQuery);
+        // trigger refresh for form row to attach custom events
+        app.refresh(mediaInput.parent().get());
+    };
+})(BtnApp, jQuery);

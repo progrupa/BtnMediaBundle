@@ -1,4 +1,6 @@
-jQuery(function ($) {
+/* global jQuery */
+(function($, undefined){
+    'use strict';
     //get base url for $.get content
     var baseUrl  = $('#btn-media-list').attr('data-pagination-url'),
         btnMedia = $('.btn-media-modal');
@@ -9,10 +11,10 @@ jQuery(function ($) {
     };
     //prepare url param for CKEDITOR
     var getUrlParam = function (paramName) {
-        var oRegex = new RegExp('[\?&]' + paramName + '=([^&]+)', 'i'),
-            oMatch = oRegex.exec(window.top.location.search);
+        var oRegex = new RegExp('[?|&]' + paramName + '=' + '([^&;]+?)(&|#|;|$)'),
+            oMatch = oRegex.exec(window.top.location.search||[,'']);
 
-        return oMatch && oMatch.length > 1 ? decodeURIComponent(oMatch[1]) : '';
+        return oMatch && oMatch.length > 1 ? decodeURIComponent(oMatch[1].replace(/\+/g, '%20')) : '';
     };
     // update media-content html by $.get response
     var updateMediaContent = function (url) {
@@ -24,13 +26,13 @@ jQuery(function ($) {
     };
     //bind events - reload content on pagination/category click
     btnMedia
-        .on('click', '#btn-media-tree ul li a', function(event) {
+        .on('click', '#btn-media-tree ul li a', function () {
             var category = $(this).attr('btn-media-category');
             updateMediaContent(category ? (baseUrl + '/' + category) : baseUrl);
 
             return false;
         })
-        .on('click', '.modal-body .pagination li', function (e) {
+        .on('click', '.modal-body .pagination li', function () {
             if (!$(this).hasClass('disabled') && !$(this).hasClass('active')) {
                 updateMediaContent(baseUrl + '?' + getPaginationSearchPart(this));
             }
@@ -47,11 +49,11 @@ jQuery(function ($) {
             var images = $('#btn-media-list .item img.selected');
             if (images.length) {
                 //PATCH: Using CKEditors API we set the file in preview window.
-                funcNum = getUrlParam('CKEditorFuncNum');
+                var funcNum = getUrlParam('CKEditorFuncNum');
                 //images are not displayed in preview window when filename contain spaces due encodeURI encoding already encoded fileUrl
                 window.top.opener.CKEDITOR.tools.callFunction(funcNum, images.attr('data-original'));
                 window.top.close();
                 window.top.opener.focus();
             }
         });
-});
+})(jQuery);

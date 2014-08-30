@@ -1,5 +1,6 @@
+/* global BtnApp, jQuery */
 (function(app, $, undefined){
-
+    'use strict';
     // Add events
     var addEvents = function(context) {
         app.tools.findOnce('btn-media', context).each(function() {
