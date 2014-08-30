@@ -41,7 +41,7 @@ class MediaManager
 
                 \Gaufrette\StreamWrapper::register();
 
-                return 'gaufrette://media/' . $file->getName();
+                return 'gaufrette://media/'.$file->getName();
             }
         }
     }

@@ -35,8 +35,7 @@ class DefaultAdapter implements AdapterInterface
         EntityProviderInterface $mediaCategoryProvider,
         FormFactoryInterface $formFactory,
         AbstractType $form
-        )
-    {
+    ) {
         $this->mediaProvider         = $mediaProvider;
         $this->mediaCategoryProvider = $mediaCategoryProvider;
         $this->formFactory           = $formFactory;

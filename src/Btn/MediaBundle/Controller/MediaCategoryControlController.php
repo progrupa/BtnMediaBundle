@@ -67,7 +67,10 @@ class MediaCategoryControlController extends AbstractControlController
 
         $this->setFlash('btn_admin.flash.created');
 
-        return $this->redirect($this->generateUrl('btn_media_mediacontrol_edit_category', array('id' => $category->getId())));
+        return $this->redirect($this->generateUrl(
+            'btn_media_mediacontrol_edit_category',
+            array('id' => $category->getId())
+        ));
     }
 
     /**
@@ -104,7 +107,10 @@ class MediaCategoryControlController extends AbstractControlController
 
         $this->setFlash('btn_admin.flash.updated');
 
-        return $this->redirect($this->generateUrl('btn_media_mediacontrol_edit_category', array('id' => $entity->getId())));
+        return $this->redirect($this->generateUrl(
+            'btn_media_mediacontrol_edit_category',
+            array('id' => $entity->getId())
+        ));
     }
 
     /**

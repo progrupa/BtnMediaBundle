@@ -5,11 +5,6 @@ namespace Btn\MediaBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * This is the class that validates and merges configuration from your app/config files
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
- */
 class Configuration implements ConfigurationInterface
 {
     /**
@@ -36,7 +31,10 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('media_category')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('class')->cannotBeEmpty()->defaultValue('Btn\\MediaBundle\\Entity\\MediaCategory')->end()
+                        ->scalarNode('class')
+                            ->cannotBeEmpty()
+                            ->defaultValue('Btn\\MediaBundle\\Entity\\MediaCategory')
+                        ->end()
                         ->scalarNode('template')->defaultValue('BtnMediaBundle:Media:category.html.twig')->end()
                     ->end()
                 ->end()

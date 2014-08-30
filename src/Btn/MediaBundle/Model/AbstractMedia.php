@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\MappedSuperclass()
  * @ORM\HasLifecycleCallbacks()
  */
-abstract class AbstractMedia extends File implements MediaInterface
+abstract class AbstractMedia extends AbstractFile implements MediaInterface
 {
     /**
      * @var integer
@@ -95,7 +95,7 @@ abstract class AbstractMedia extends File implements MediaInterface
      */
     public function getMediaPath()
     {
-        return $this->getUploadRootDir() . '/' . $this->file;
+        return $this->getUploadRootDir().'/'.$this->file;
     }
 
     /**
@@ -248,7 +248,7 @@ abstract class AbstractMedia extends File implements MediaInterface
      */
     public function getPath()
     {
-        return $path = $this->getUploadDir() . DIRECTORY_SEPARATOR . $this->file;
+        return $this->getUploadDir().DIRECTORY_SEPARATOR.$this->file;
     }
 
     /**

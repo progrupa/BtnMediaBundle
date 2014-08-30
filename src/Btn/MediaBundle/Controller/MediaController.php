@@ -34,20 +34,6 @@ class MediaController extends AbstractController
         return $this->render($template, $data);
     }
 
-    protected function getListData($request, $all = false, $category = null)
-    {
-        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
-        $mediaProvider         = $this->get('btn_media.provider.media');
-
-        $method     = ($all) ? 'findAll' : 'findByCategory';
-        $categories = $mediaCategoryProvider->getRepository()->findAll();
-        $entities   = $mediaProvider->getRepository()->$method($category);
-
-        $params = $this->container->getParameter('btn_media');
-
-        return array('categories' => $categories, 'entities' => $entities);
-    }
-
     /**
      * @Route("/download/{id}", name="btn_media_media_download")
      * @Template()
@@ -63,13 +49,13 @@ class MediaController extends AbstractController
             $filename = $entity->getMediaPath();
 
             if (!file_exists($filename)) {
-                throw $this->createNotFoundException('The file ' . $entity->getName() . ' does not exist.');
+                throw $this->createNotFoundException('The file '.$entity->getName().' does not exist.');
             }
 
             // Set headers
             $response->headers->set('Cache-Control', 'private');
             $response->headers->set('Content-type', mime_content_type($filename));
-            $response->headers->set('Content-Disposition', 'attachment; filename="' . basename($entity->getName()) . '"');
+            $response->headers->set('Content-Disposition', 'attachment; filename="'.basename($entity->getName()).'"');
             $response->headers->set('Content-length', filesize($filename));
 
             // Send headers before outputting anything
@@ -81,5 +67,23 @@ class MediaController extends AbstractController
         }
 
         throw $this->createNotFoundException('The entity does not exist');
+    }
+
+    /**
+     *
+     */
+    protected function getListData($request, $all = false, $category = null)
+    {
+        $mediaCategoryProvider = $this->get('btn_media.provider.media_category');
+        $mediaProvider         = $this->get('btn_media.provider.media');
+
+        $method     = ($all) ? 'findAll' : 'findByCategory';
+        $categories = $mediaCategoryProvider->getRepository()->findAll();
+        $entities   = $mediaProvider->getRepository()->$method($category);
+
+        return array(
+            'categories' => $categories,
+            'entities' => $entities,
+        );
     }
 }

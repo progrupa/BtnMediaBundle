@@ -19,7 +19,10 @@ class MediaControlController extends AbstractControlController
 {
     /**
      * @Route("/", name="btn_media_mediacontrol_media_index")
-     * @Route("/category/{category}", name="btn_media_mediacontrol_media_index_category", requirements={"category" = "\d+"})
+     * @Route("/category/{category}",
+     *    name="btn_media_mediacontrol_media_index_category",
+     *    requirements={"category" = "\d+"},
+     * )
      * @Template()
      */
     public function indexAction(Request $request, $category = null)
@@ -29,7 +32,10 @@ class MediaControlController extends AbstractControlController
 
     /**
      * @Route("/new", name="btn_media_mediacontrol_media_new")
-     * @Route("/new/category/{category}", name="btn_media_mediacontrol_media_new_category", requirements={"category" = "\d+"})
+     * @Route("/new/category/{category}",
+     *     name="btn_media_mediacontrol_media_new_category",
+     *     requirements={"category" = "\d+"},
+     * )
      * @Template("BtnMediaBundle:MediaControl:form.html.twig")
      */
     public function newAction(Request $request, $category = null)
@@ -57,8 +63,9 @@ class MediaControlController extends AbstractControlController
      **/
     public function uploadAction(Request $request, $id = null)
     {
+        $ep = $this->getEntityProvider();
         /** @var Media $entity */
-        $entity = $id ? $this->getEntityProvider()->getRepository()->find($id) : null;
+        $entity = $id ? $ep->getRepository()->find($id) : null;
         /** @var Gaufrette/Filesystem $entity */
         $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
         /** @var \Btn\MediaBundle\AdapterInterface $adapter */
@@ -68,6 +75,9 @@ class MediaControlController extends AbstractControlController
         $uploader = $this->get('btn_media.uploader');
         $uploader->setFilesystem($filesystem);
         $uploader->setAdapter($adapter);
+        $uploader->handleUpload();
+
+        $ep->save($entity);
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(array(
@@ -105,7 +115,10 @@ class MediaControlController extends AbstractControlController
 
         }
 
-        return $this->redirect($this->generateUrl(empty($params) ? 'btn_media_mediacontrol_media_index' : 'btn_media_mediacontrol_media_index_category', $params));
+        return $this->redirect($this->generateUrl(
+            empty($params) ? 'btn_media_mediacontrol_media_index' : 'btn_media_mediacontrol_media_index_category',
+            $params
+        ));
     }
 
     /**
@@ -124,7 +137,10 @@ class MediaControlController extends AbstractControlController
 
     /**
      * @Route("/modal-content", name="btn_media_mediacontrol_modalcontent")
-     * @Route("/modal-content/{category}", name="btn_media_mediacontrol_modalcontent_category", requirements={"id" = "\d+"})
+     * @Route("/modal-content/{category}",
+     *     name="btn_media_mediacontrol_modalcontent_category",
+     *     requirements={"id" = "\d+"}
+     * )
      * @Template("BtnMediaBundle:MediaModal:_content.html.twig")
      **/
     public function modalContentAction(Request $request)
@@ -133,21 +149,9 @@ class MediaControlController extends AbstractControlController
     }
 
     /**
-     * @Route("/dummy-upload", name="btn_media_mediacontrol_dummyupload")
-     **/
-    public function dummyUploadAction()
-    {
-        $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
-
-        $file = new \Gaufrette\File('text.txt', $filesystem);
-        $file->setContent('Hello World');
-        die();
-    }
-
-    /**
      * Get paginated media list
      */
-    private function getListData(Request $request)
+    private function getListData(Request $request, $perPage = 6)
     {
         $category      = $request->get('category');
         $mediaProvider = $this->getEntityProvider();
@@ -155,7 +159,7 @@ class MediaControlController extends AbstractControlController
         $entities      = $mediaProvider->getRepository()->$method($category);
 
         /* @todo: number of mediafiles per page - to bundle config */
-        $pagination = $this->get('knp_paginator')->paginate($entities, $request->get('page', 1), 6);
+        $pagination = $this->paginate($entities, null, $perPage);
 
         return array('pagination' => $pagination);
     }

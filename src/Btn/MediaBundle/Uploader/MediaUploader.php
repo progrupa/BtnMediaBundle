@@ -2,40 +2,36 @@
 
 namespace Btn\MediaBundle\Uploader;
 
-use Doctrine\ORM\EntityManager;
 use Gaufrette\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Btn\MediaBundle\Adapter\AdapterInterface;
 
-class Uploader
+class MediaUploader
 {
-    /** @var EntityManager */
-    private $em;
-    /** @var array */
+    /** @var array $allowedExtensions */
     private $allowedExtensions;
-    /** @var int */
+    /** @var int $sizeLimit */
     private $sizeLimit;
-    /** @var bool */
+    /** @var bool $replaceOldFiles */
     private $replaceOldFiles;
-    /** @var Filesystem */
+    /** @var \Gaufrette\Filesystem $filesystem */
     private $filesystem;
-    /** @var array */
+    /** @var array $errors */
     private $errors;
-    /** @var array */
+    /** @var array $uploadedFiles */
     private $uploadedFiles;
-    /** @var array */
+    /** @var array $uploadedMedias */
     private $uploadedMedias;
-    /** @var string */
+    /** @var string $cacheDirectory */
     private $cacheDirectory;
-    /** @var AdapterInterface */
+    /** @var Btn\MediaBundle\Adapter\AdapterInterface\ $adapter */
     private $adapter;
 
     /**
-     * @param EntityManager $em
+     *
      */
-    public function __construct(EntityManager $em, $cacheDirectory)
+    public function __construct($cacheDirectory)
     {
-        $this->em             = $em;
         $this->cacheDirectory = $cacheDirectory;
 
         $this->reset();
@@ -159,7 +155,7 @@ class Uploader
     }
 
     /**
-     * @return bool
+     *
      */
     public function getReplaceOldFiles()
     {
@@ -192,8 +188,8 @@ class Uploader
         $uploadSize = $this->toBytes(ini_get('upload_max_filesize'));
 
         if ($postSize < $this->sizeLimit || $uploadSize < $this->sizeLimit) {
-            $size = max(1, $this->sizeLimit / 1024 / 1024) . 'M';
-            throw new \Exception('Increase post_max_size and upload_max_filesize to ' . $size);
+            $size = max(1, $this->sizeLimit / 1024 / 1024).'M';
+            throw new \Exception('Increase post_max_size and upload_max_filesize to '.$size);
         }
     }
 
@@ -209,10 +205,13 @@ class Uploader
         switch ($last) {
             case 'g':
                 $val *= 1024;
+                // no break
             case 'm':
                 $val *= 1024;
+                // no break
             case 'k':
                 $val *= 1024;
+                // no break
         }
 
         return $val;
@@ -227,23 +226,27 @@ class Uploader
         $media = $this->adapter->getFormData();
         if ($file) {
             $extension = $file->guessExtension();
-            $filename  = $basename = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+            $filename  = $basename = preg_replace(
+                array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'),
+                array('_', '.', ''),
+                pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)
+            );
 
-            if ($this->getReplaceOldFiles() == false) {
+            if (false == $this->getReplaceOldFiles()) {
                 $counter = 0;
                 if ($this->filesystem) {
-                    while ($this->filesystem->has($filename . '.' . $extension)) {
-                        $filename = $basename . $counter++;
+                    while ($this->filesystem->has($filename.'.'.$extension)) {
+                        $filename = $basename.$counter++;
                     }
                 } else {
                     $directory = $media->getUploadRootDir();
-                    while (file_exists($directory . DIRECTORY_SEPARATOR . $filename . '.' . $extension)) {
-                        $filename = $basename . $counter++;
+                    while (file_exists($directory.DIRECTORY_SEPARATOR.$filename.'.'.$extension)) {
+                        $filename = $basename.$counter++;
                     }
                 }
             }
 
-            $filename .= '.' . $extension;
+            $filename .= '.'.$extension;
 
             $media->setName($media->getName() ? $media->getName() : $filename);
             $media->setFile($filename);
@@ -259,8 +262,6 @@ class Uploader
             $this->uploadedFiles[] = $filename;
         }
         $this->uploadedMedias[] = $media;
-
-        $this->em->persist($media);
     }
 
     /**
@@ -270,7 +271,7 @@ class Uploader
     {
         $zip = new \ZipArchive();
         if ($zip->open($file->getRealPath()) === true) {
-            $cacheDirectory = $this->cacheDirectory . '/' . md5(time());
+            $cacheDirectory = $this->cacheDirectory.'/'.md5(time());
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $filename = $zip->getNameIndex($i);
 
@@ -278,8 +279,8 @@ class Uploader
                     continue;
                 }
 
-                if ($zip->extractTo($cacheDirectory, array($filename)) && is_file($cacheDirectory . '/' . $filename)) {
-                    $file = new UploadedFile($cacheDirectory . '/' . $filename, basename($filename));
+                if ($zip->extractTo($cacheDirectory, array($filename)) && is_file($cacheDirectory.'/'.$filename)) {
+                    $file = new UploadedFile($cacheDirectory.'/'.$filename, basename($filename));
                     $this->handleFile($file);
                 }
             }
@@ -316,7 +317,9 @@ class Uploader
         }
 
         if ($this->allowedExtensions && !in_array($extension, $this->allowedExtensions)) {
-            return $this->addError('File has an invalid extension, it should be one of ' . implode(', ', $this->allowedExtensions) . '.');
+            return $this->addError(
+                'File has an invalid extension, it should be one of '.implode(', ', $this->allowedExtensions).'.'
+            );
         }
 
         $this->saveUpload($file);
@@ -330,7 +333,7 @@ class Uploader
         if (is_file($path)) {
             @unlink($path);
         } else {
-            array_map(array(__CLASS__, __FUNCTION__), glob($path . '/*'));
+            array_map(array(__CLASS__, __FUNCTION__), glob($path.'/*'));
         }
 
         @rmdir($path);
@@ -343,13 +346,20 @@ class Uploader
      */
     public function handleUpload(UploadedFile $file = null)
     {
-        $handleMethod = 'saveUpload';
-        if ($file && $file->guessExtension() == 'zip') {
-            $handleMethod = 'handleZip';
+        if (null === $file) {
+            if (!$this->adapter) {
+                throw new \Exception(sprintf('Adapter is missing in "%s". set it via setAdapter()', __CLASS__));
+            }
+            $file = $this->adapter->getUploadedFile();
         }
-        $this->$handleMethod($file);
 
-        $this->em->flush();
+        if ($file) {
+            if ('zip' === $file->guessExtension()) {
+                $this->handleZip($file);
+            } else {
+                $this->saveUpload($file);
+            }
+        }
 
         return $this;
     }
@@ -360,7 +370,8 @@ class Uploader
     public function setAdapter(AdapterInterface $adapter)
     {
         $this->adapter = $adapter;
-        $this->handleUpload($adapter->getUploadedFile());
+
+        return $this;
     }
 
     /**

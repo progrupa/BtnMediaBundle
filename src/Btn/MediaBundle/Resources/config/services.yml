@@ -1,6 +1,6 @@
 parameters:
     btn_media.manager.media.class: Btn\MediaBundle\Manager\MediaManager
-    btn_media.uploader.class: Btn\MediaBundle\Uploader\Uploader
+    btn_media.uploader.media.class: Btn\MediaBundle\Uploader\MediaUploader
     btn_media.adapter.default.class: Btn\MediaBundle\Adapter\DefaultAdapter
     btn_media.extension.media.class: Btn\MediaBundle\Twig\MediaExtension
 
@@ -8,15 +8,15 @@ services:
     btn_media.provider.media:
         class: %btn_base.provider.entity.class%
         parent: btn_base.provider.abstract_entity
-        arguments: ['%btn_media.media.class%']
+        arguments: [%btn_media.media.class%]
 
     btn_media.provider.media_category:
         class: %btn_base.provider.entity.class%
         parent: btn_base.provider.abstract_entity
-        arguments: ['%btn_media.media_category.class%']
+        arguments: [%btn_media.media_category.class%]
 
     btn_media.liip_imagine.data.loader.stream:
-        class: "%liip_imagine.data.loader.stream.class%"
+        class: %liip_imagine.data.loader.stream.class%
         arguments:
             - 'gaufrette://btn_media/'
         tags:
@@ -25,29 +25,31 @@ services:
     btn_media.manager.media:
         class: %btn_media.manager.media.class%
         arguments:
-            provider:    '@btn_media.provider.media'
-            environment: '%kernel.environment%'
-            gaufrette:   '@knp_gaufrette.filesystem_map'
+            provider:    @btn_media.provider.media
+            environment: %kernel.environment%
+            gaufrette:   @knp_gaufrette.filesystem_map
 
     btn_media.extension.media:
         class: %btn_media.extension.media.class%
-        arguments: [ '@btn_media.manager.media' ]
+        arguments: [@btn_media.manager.media]
         tags:
             - { name: twig.extension }
 
-    btn_media.uploader:
-        class: %btn_media.uploader.class%
-        arguments: [ '@doctrine.orm.entity_manager', '%kernel.cache_dir%']
+    btn_media.uploader.media:
+        class: %btn_media.uploader.media.class%
+        arguments: [%kernel.cache_dir%]
         calls:
-            - [setAllowedExtensions, ['%btn_media.media.allowed_extensions%']]
+            - [setAllowedExtensions, [%btn_media.media.allowed_extensions%]]
+
+    btn_media.uploader: @btn_media.uploader.media
 
     #upload adapter service
     btn_media.adapter.default:
         class: %btn_media.adapter.default.class%
         arguments:
-            mediaProvider:         '@btn_media.provider.media'
-            mediaCategoryProvider: '@btn_media.provider.media_category'
-            formFactory:           '@form.factory'
-            formName:              '@btn_media.form.media'
+            mediaProvider:         @btn_media.provider.media
+            mediaCategoryProvider: @btn_media.provider.media_category
+            formFactory:           @form.factory
+            formName:              @btn_media.form.media
 
     btn_media.adapter: @btn_media.adapter.default
