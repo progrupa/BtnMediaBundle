@@ -4,7 +4,7 @@ services:
         class: %btn_admin.menu_item.class%
         factory_service: btn_admin.menu_builder
         factory_method: createMenu
-        arguments: ["@request", "btn_media.route.index", "btn_media_mediacontrol_media_index", [], []]
+        arguments: [@request, 'btn_media.menu_navbar.media_item.label', 'btn_media_mediacontrol_media_index', [], []]
         scope: request
         tags:
             - { name: btn_admin.menu_item , parent: btn_admin.menu_navbar }
