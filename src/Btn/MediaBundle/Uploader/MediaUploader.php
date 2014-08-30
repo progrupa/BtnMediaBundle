@@ -5,6 +5,7 @@ namespace Btn\MediaBundle\Uploader;
 use Gaufrette\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Btn\MediaBundle\Adapter\AdapterInterface;
+use Btn\BaseBundle\Helper\FileHelper;
 
 class MediaUploader
 {
@@ -43,7 +44,7 @@ class MediaUploader
     public function reset()
     {
         $this->allowedExtensions = array();
-        $this->sizeLimit         = $this->toBytes(ini_get('upload_max_filesize'));
+        $this->sizeLimit         = FileHelper::toBytes(ini_get('upload_max_filesize'));
         $this->filesystem        = null;
         $this->replaceOldFiles   = false;
         $this->file              = null;
@@ -107,9 +108,9 @@ class MediaUploader
      */
     public function setSizeLimit($sizeLimit)
     {
-        $this->sizeLimit = $sizeLimit;
+        FileHelper::checkServerSizeLimit($sizeLimit);
 
-        $this->checkServerSettings();
+        $this->sizeLimit = $sizeLimit;
 
         return $this;
     }
@@ -176,45 +177,6 @@ class MediaUploader
     public function isSuccess()
     {
         return !empty($this->uploadedFiles);
-    }
-
-    /**
-     * Internal function that checks if server's may sizes match the
-     * object's maximum size for uploads
-     */
-    private function checkServerSettings()
-    {
-        $postSize   = $this->toBytes(ini_get('post_max_size'));
-        $uploadSize = $this->toBytes(ini_get('upload_max_filesize'));
-
-        if ($postSize < $this->sizeLimit || $uploadSize < $this->sizeLimit) {
-            $size = max(1, $this->sizeLimit / 1024 / 1024).'M';
-            throw new \Exception('Increase post_max_size and upload_max_filesize to '.$size);
-        }
-    }
-
-    /**
-     * Convert a given size with units to bytes
-     *
-     * @param string $str
-     */
-    private function toBytes($str)
-    {
-        $val  = trim($str);
-        $last = strtolower($str[strlen($str) - 1]);
-        switch ($last) {
-            case 'g':
-                $val *= 1024;
-                // no break
-            case 'm':
-                $val *= 1024;
-                // no break
-            case 'k':
-                $val *= 1024;
-                // no break
-        }
-
-        return $val;
     }
 
     /**
