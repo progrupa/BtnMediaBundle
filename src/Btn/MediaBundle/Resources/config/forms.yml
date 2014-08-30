@@ -3,6 +3,7 @@ parameters:
     btn_media.form.media_control.class: Btn\MediaBundle\Form\MediaControlForm
     btn_media.form.media_category_control.class: Btn\MediaBundle\Form\MediaCategoryControlForm
     btn_media.form.type.media.class: Btn\MediaBundle\Form\Type\MediaType
+    btn_media.form.type.media_category.class: Btn\MediaBundle\Form\Type\MediaCategoryType
     btn_media.form.type.file.class: Btn\MediaBundle\Form\Type\FileType
 
 services:
@@ -36,6 +37,14 @@ services:
             - [setAssetLoader, [@btn_base.asset_loader]]
         tags:
             - { name: form.type, alias: btn_media }
+
+    btn_media.form.type.media_category:
+        class: %btn_media.form.type.media_category.class%
+        calls:
+            - [setEntityProvider, [@btn_media.provider.media_category]]
+        tags:
+            - { name: form.type, alias: btn_media_category }
+
 
     btn_media.form.type.file:
         class: %btn_media.form.type.file.class%

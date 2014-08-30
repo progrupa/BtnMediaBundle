@@ -2,6 +2,7 @@
 
 namespace Btn\MediaBundle\Form;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -18,9 +19,13 @@ class MediaControlForm extends AbstractForm
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('file', 'btn_media_type_file', array('mapped' => false))
-            ->add('category', null, array(
-                'label' => 'btn_media.category.label',
+            ->add('file', 'btn_media_type_file', array(
+                'mapped' => false,
+                // 'constraints' => array(
+                //     new Assert\NotBlank(),
+                // ),
+            ))
+            ->add('category', 'btn_media_category', array(
             ))
             ->add('name', null, array(
                 'label' => 'btn_media.name.label',
@@ -28,7 +33,6 @@ class MediaControlForm extends AbstractForm
             ->add('description', 'textarea', array(
                 'label' => 'btn_media.description.label',
             ))
-            ->add('save', $options['data']->getId() ? 'btn_update' : 'btn_create')
         ;
     }
 

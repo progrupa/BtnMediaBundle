@@ -22,6 +22,8 @@ btn_media.form.type.media.empty_value: Select media
 btn_media.form.type.media.remove: Remove selected media
 btn_media.form.type.media.select: Select media
 btn_media.form.type.media.remove: Remove selected media
+btn_media.form.type.media_category.empty_value: Select category
+btn_media.form.type.media_category.label: Category
 
 btn_media.media_category_node_content_provider.name: Media category provider
 btn_media.menu_navbar.media_item.label: Media

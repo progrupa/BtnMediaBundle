@@ -8,7 +8,7 @@
     <div class="col-md-6 no-right-padding">
         <div class="btn-group pull-right top-offset">
         {% if app.request.get('category') %}
-            {{ lnk.add('btn_media_mediacontrol_media_new_category', {id: app.request.get('category')}, 'btn_media.media.add') }}
+            {{ lnk.add('btn_media_mediacontrol_media_new_category', {category: app.request.get('category')}, 'btn_media.media.add') }}
             {{ lnk.edit('btn_media_mediacontrol_edit_category', {id: app.request.get('category')}, 'btn_media.category.edit') }}
             {{ lnk.delete('btn_media_mediacontrol_category_delete', {id: app.request.get('category')}, 'btn_media.category.delete') }}
         {% else %}

@@ -1,10 +1,21 @@
+{% from 'BtnMediaBundle::macros.html.twig' import img %}
 {% extends 'BtnMediaBundle::layout.html.twig' %}
 
 {% block main %}
-    <h2>{{ entity ? 'btn_media.media.edit'|trans : 'btn_media.media.add'|trans }} {{ entity ? entity.name }}</h2>
-{% if entity %}
-    <p>Current image (preview):</p>
-    <p><img src="{{ entity.path|imagine_filter('btn_media_thumb') }}" /></p>
-{% endif %}
-    {{ form(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <h2>
+                {{ entity ? 'btn_media.media.edit'|trans : 'btn_media.media.add'|trans }} {{ entity ? entity.name }}
+            </h2>
+            {{ form(form) }}
+        </div>
+        <div class="col-md-6">
+            {% if entity %}
+                <p>Current image (preview):</p>
+                <p>{{ img(entity, {class: 'full-width'}, 'btn_media_preview') }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+
 {% endblock %}

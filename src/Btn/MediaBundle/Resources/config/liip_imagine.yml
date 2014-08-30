@@ -9,3 +9,8 @@ liip_imagine:
             filters:
                 strip: ~
                 thumbnail: { size: [166, 166], mode: outbound }
+        btn_media_preview:
+            quality: 75
+            filters:
+                strip: ~
+                thumbnail: { size: [500, 500], mode: inset }

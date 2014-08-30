@@ -35,6 +35,7 @@ class MediaControlController extends AbstractControlController
      * @Route("/new/category/{category}",
      *     name="btn_media_mediacontrol_media_new_category",
      *     requirements={"category" = "\d+"},
+     *     methods={"GET"},
      * )
      * @Template("BtnMediaBundle:MediaControl:form.html.twig")
      */
@@ -42,11 +43,18 @@ class MediaControlController extends AbstractControlController
     {
         $form = $this->get('btn_media.adapter')->createForm($request);
 
-        return array('form' => $form->createView(), 'entity' => null);
+        return array(
+            'form' => $form->createView(),
+            'entity' => null,
+        );
     }
 
     /**
-     * @Route("/edit/{id}", name="btn_media_mediacontrol_media_edit", requirements={"id" = "\d+"})
+     * @Route("/edit/{id}",
+     *     name="btn_media_mediacontrol_media_edit",
+     *     requirements={"id" = "\d+"},
+     *     methods={"GET"},
+     * )
      * @Template("BtnMediaBundle:MediaControl:form.html.twig")
      **/
     public function editAction(Request $request, $id)
@@ -54,49 +62,69 @@ class MediaControlController extends AbstractControlController
         $entity   = $this->getEntityProvider()->getRepository()->find($id);
         $form     = $this->get('btn_media.adapter')->createForm($request, $entity);
 
-        return array('form' => $form->createView(), 'entity' => $entity);
+        return array(
+            'form' => $form->createView(),
+            'entity' => $entity,
+        );
     }
 
     /**
-     * @Route("/upload/{id}", name="btn_media_mediacontrol_media_upload", requirements={"id" = "\d+"})
+     * @Route("/upload/{id}",
+     *     name="btn_media_mediacontrol_media_upload",
+     *     requirements={"id" = "\d+"},
+     *     methods={"POST"},
+     * )
      * @Template("BtnMediaBundle:MediaControl:form.html.twig")
      **/
     public function uploadAction(Request $request, $id = null)
     {
         $ep = $this->getEntityProvider();
         /** @var Media $entity */
-        $entity = $id ? $ep->getRepository()->find($id) : null;
+        $entity = $id ? $ep->getRepository()->find($id) : $ep->create();
         /** @var Gaufrette/Filesystem $entity */
         $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('btn_media');
         /** @var \Btn\MediaBundle\AdapterInterface $adapter */
         $adapter = $this->get('btn_media.adapter');
         $form    = $adapter->createForm($request, $entity);
-        /** @var MediaUploader $uploader */
-        $uploader = $this->get('btn_media.uploader');
-        $uploader->setFilesystem($filesystem);
-        $uploader->setAdapter($adapter);
-        $uploader->handleUpload();
 
-        $ep->save($entity);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var MediaUploader $uploader */
+            $uploader = $this->get('btn_media.uploader');
+            $uploader->setFilesystem($filesystem);
+            $uploader->setAdapter($adapter);
+            $uploader->handleUpload();
 
-        if ($request->isXmlHttpRequest()) {
-            return $this->json(array(
-                'success' => $uploader->isSuccess()
-            ));
-        } else {
-            $medias = $uploader->getUploadedMedias();
-            if (count($medias) > 0) {
-                $id = $id ? $id : array_pop($medias)->getId();
+            $ep->save($entity);
 
-                return $this->redirect($this->generateUrl('btn_media_mediacontrol_media_edit', array('id' => $id)));
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'success' => $uploader->isSuccess(),
+                ));
+            } else {
+                $medias = $uploader->getUploadedMedias();
+                if (count($medias) > 0) {
+                    $id = $id ? $id : array_pop($medias)->getId();
+
+                    return $this->redirect($this->generateUrl(
+                        'btn_media_mediacontrol_media_edit',
+                        array('id' => $id)
+                    ));
+                }
             }
         }
 
-        return array('form' => $form->createView(), 'entity' => null);
+        return array(
+            'form' => $form->createView(),
+            'entity' => null,
+        );
     }
 
     /**
-     * @Route("/delete/{id}/{csrf_token}", name="btn_media_mediacontrol_media_delete", requirements={"id" = "\d+"})
+     * @Route("/delete/{id}/{csrf_token}",
+     *     name="btn_media_mediacontrol_media_delete",
+     *     requirements={"id" = "\d+"},
+     *     methods={"GET"},
+     * )
      **/
     public function deleteAction(Request $request, $id, $csrf_token)
     {
@@ -112,7 +140,6 @@ class MediaControlController extends AbstractControlController
             $provider->delete($entity);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
-
         }
 
         return $this->redirect($this->generateUrl(

@@ -15,7 +15,7 @@ abstract class AbstractMedia extends AbstractFile implements MediaInterface
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;

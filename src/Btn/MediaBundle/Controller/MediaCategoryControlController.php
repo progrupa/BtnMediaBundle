@@ -16,28 +16,6 @@ use Btn\AdminBundle\Annotation\EntityProvider;
 class MediaCategoryControlController extends AbstractControlController
 {
     /**
-     * Lists all Nodes.
-     *
-     * @Route("/tree", name="btn_media_mediacontrol_tree_category")
-     * @Template()
-     */
-    public function treeAction(Request $request)
-    {
-        $provider = $this->getEntityProvider();
-        $repo     = $provider->getRepository();
-        $current  = null;
-        if ($request->get('category') !== null) {
-            $current = $repo->find($request->get('category'));
-        }
-
-        return array(
-            'categories'  => $repo->findAll(),
-            'currentNode' => $current,
-            'modal'       => $request->get('modal')
-            );
-    }
-
-    /**
      * @Route("/new", name="btn_media_mediacontrol_new_category")
      * @Template("BtnMediaBundle:MediaCategoryControl:form.html.twig")
      */
@@ -129,5 +107,29 @@ class MediaCategoryControlController extends AbstractControlController
         }
 
         return $this->redirect($this->generateUrl('btn_media_mediacontrol_media_index'));
+    }
+
+    /**
+     * Lists all Nodes.
+     *
+     * @Route("/tree", name="btn_media_mediacontrol_tree_category")
+     * @Template()
+     */
+    public function treeAction(Request $request)
+    {
+        $provider = $this->getEntityProvider();
+        $repo     = $provider->getRepository();
+        $current  = null;
+        if ($request->get('category') !== null) {
+            $current = $repo->find($request->get('category'));
+        }
+
+        $this->get('btn_base.asset_loader')->load('btn_admin_jstree');
+
+        return array(
+            'categories'  => $repo->findAll(),
+            'currentNode' => $current,
+            'modal'       => $request->get('modal'),
+        );
     }
 }

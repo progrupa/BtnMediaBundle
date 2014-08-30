@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Btn\BaseBundle\Provider\EntityProviderInterface;
+use Btn\MediaBundle\Model\MediaInterface;
 
 /**
 * DefaultAdapter
@@ -42,7 +43,7 @@ class DefaultAdapter implements AdapterInterface
         $this->form                  = $form;
     }
 
-    public function createForm(Request $request = null, $mediaFile = null)
+    public function createForm(Request $request = null, MediaInterface $mediaFile = null)
     {
         $entity = $mediaFile ? $mediaFile : $this->mediaProvider->create();
         //bind entity with category, if category is set as GET param
