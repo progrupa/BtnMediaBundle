@@ -33,7 +33,7 @@
         }
     ],
     "autoload": {
-        "psr-4": { "Btn\\MediaBundle\\": "src/Btn/MediaBundle" }
+        "psr-4": { "Btn\\MediaBundle\\": "src/Btn/MediaBundle/" }
     },
     "extra": {
         "branch-alias": {
