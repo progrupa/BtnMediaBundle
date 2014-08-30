@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class MediaCategoryControlForm extends AbstractForm
 {
     /** @var string $actionRouteName */
-    protected $actionRouteName = 'btn_media_mediacontrol_create_category';
+    protected $actionRouteName = 'btn_media_mediacategorycontrol_create';
 
     /**
      * {@inheritdoc}
@@ -18,8 +18,9 @@ class MediaCategoryControlForm extends AbstractForm
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('name')
-            ->add('save', $options['data']->getId() ? 'btn_update' : 'btn_create');
+            ->add('name', null, array(
+                'label' => 'btn_media.category.name',
+            ))
         ;
     }
 

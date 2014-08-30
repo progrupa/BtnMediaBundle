@@ -4,6 +4,7 @@ btn_media.category.create: Create category
 btn_media.category.label: Category
 btn_media.category.edit: Edit category
 btn_media.category.delete: Delete category
+btn_media.category.name: Name
 btn_media.name.label: Name
 btn_media.description.label: Description
 btn_media.media.add: Add new media
@@ -15,6 +16,11 @@ btn_media.media.delete: Delete
 btn_media.media.delete_confirm: Do you want to delete this media ?
 btn_media.media.remove: Remove selected media
 btn_media.media.list: Media list
+
+btn_media.mediacategorycontrol_new: Media category new
+btn_media.mediacategorycontrol_create: Media category create
+btn_media.mediacategorycontrol_edit: Media category edit
+btn_media.mediacategorycontrol_update: Media category update
 
 # Form type
 btn_media.form.type.media.label: Media

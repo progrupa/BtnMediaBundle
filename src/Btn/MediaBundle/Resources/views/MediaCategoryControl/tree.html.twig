@@ -1,3 +1,4 @@
+{% import 'BtnAdminBundle:Macros:link.html.twig' as lnk %}
 <div id="btn-media-tree" class="top-offset" btn-jstree {{ not modal ? 'btn-jstree-change="reload"' }}>
     <ul>
         <li class="{{ categories ? 'jstree-open' : 'jstree-closed' }}" data-jstree='{"icon":"glyphicon glyphicon-file"}'> {# {{ categories ? ',"opened":true' }} #}
@@ -12,6 +13,6 @@
         </li>
     </ul>
 </div>
-<div class="top-offset">
-    <a href="{{ url('btn_media_mediacontrol_new_category') }}" class="btn btn-primary btn-sm">{{ 'btn_media.category.create'|trans }}</a>
+<div class="top-offset btn-group btn-group-sm">
+    {{ lnk.add('btn_media_mediacategorycontrol_new', {}, 'btn_media.category.create') }}
 </div>
