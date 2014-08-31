@@ -1,6 +1,6 @@
-{% stylesheets '@btn_admin_base_css' %}
+{% btn_asset 'btn_admin_base_css' %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
-{% endstylesheets %}
+{% endbtn_asset %}
 
 {% block cke %}
 <div class="btn-media-modal">
@@ -13,12 +13,12 @@
 </div>
 {% endblock %}
 
-{% javascripts '@btn_admin_jquery_js' %}
+{% btn_asset 'btn_admin_jquery_js' %}
     <script src="{{ asset_url }}"></script>
-{% endjavascripts %}
+{% endbtn_asset %}
 
 {% include 'BtnMediaBundle:MediaModal:_partials.html.twig' %}
 
-{% javascripts '@btn_media_cke_js' %}
+{% btn_asset 'btn_media_cke_js' %}
         <script src="{{ asset_url }}"></script>
-{% endjavascripts %}
+{% endbtn_asset %}
