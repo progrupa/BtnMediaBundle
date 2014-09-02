@@ -60,15 +60,15 @@
                     backdrop : true
                 })
                 //select image behavior
-                .on('click', '#btn-media-list .item img', function () {
-                    $('#btn-media-list .item img').removeClass('selected');
+                .on('click', '#btn-media-list .item [data-id]', function () {
+                    $('#btn-media-list .item [data-id]').removeClass('selected');
                     $(this).addClass('selected');
                 })
                 //submit choosen image to binded mediaInput
                 .on('click', '[btn-media-submit]', function () {
-                    var images = $('#btn-media-list .item img.selected');
-                    if (images.length) {
-                        updateMediaInput(mediaInput, images);
+                    var media = $('#btn-media-list .item .selected');
+                    if (media.length) {
+                        updateMediaInput(mediaInput, media);
                         modal.modal('hide');
                     }
                 })

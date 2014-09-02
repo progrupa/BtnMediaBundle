@@ -17,7 +17,7 @@
                              data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}"
                         />
                     {% else %}
-                        {{ gi('ban-circle') }}
+                        <span data-id="{{ entity.id }}" data-filename="{{ entity.name }}">{{ gi('ban-circle') }}</span>
                     {% endif %}
                     <p class="media-tooltip {{ entity.fileExt }}">{{ entity.file }}</p>
                 </div>
