@@ -55,7 +55,7 @@ class MediaCategoryNodeContentProvider implements NodeContentProviderInterface
      */
     public function resolveRouteParameters($formData = array())
     {
-        return array('id' => $formData['category']);
+        return isset($formData['category']) ? array('id' => $formData['category']) : array();
     }
 
     /**
@@ -71,7 +71,7 @@ class MediaCategoryNodeContentProvider implements NodeContentProviderInterface
      */
     public function resolveControlRouteParameters($formData = array())
     {
-        return array('id' => $formData['category']);
+        return isset($formData['category']) ? array('id' => $formData['category']) : array();
     }
 
     /**
