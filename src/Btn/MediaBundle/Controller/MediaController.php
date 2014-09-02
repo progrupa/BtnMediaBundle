@@ -29,9 +29,7 @@ class MediaController extends AbstractController
         $data['isCategory']   = true;
         $data['category']     = $category;
 
-        $template = $this->container->getParameter('btn_media.media_category.template');
-
-        return $this->render($template, $data);
+        return $data;
     }
 
     /**

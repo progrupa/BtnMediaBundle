@@ -35,7 +35,6 @@ class Configuration implements ConfigurationInterface
                             ->cannotBeEmpty()
                             ->defaultValue('Btn\\MediaBundle\\Entity\\MediaCategory')
                         ->end()
-                        ->scalarNode('template')->defaultValue('BtnMediaBundle:Media:category.html.twig')->end()
                     ->end()
                 ->end()
             ->end()
