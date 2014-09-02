@@ -15,7 +15,8 @@
 .modal-body .btn-media-list .col-md-12 .col-md-6{
     word-wrap: break-word;
 }
-.modal-body .btn-media-list .item > * {
+.modal-body .btn-media-list .item > img,
+.modal-body .btn-media-list .item > span {
     cursor: pointer;
     margin: 5px;
     max-width: 100%;
