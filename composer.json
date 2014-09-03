@@ -18,7 +18,7 @@
         "php": ">=5.3.3",
         "symfony/symfony": "2.*",
         "bitnoise/base-bundle": "dev-sf23-bs3",
-        "liip/imagine-bundle": "dev-master",
+        "liip/imagine-bundle": "~1.0.0",
         "knplabs/knp-gaufrette-bundle" : "0.2.*@dev"
     },
     "repositories": [
