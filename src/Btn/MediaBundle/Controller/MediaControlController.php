@@ -114,8 +114,8 @@ class MediaControlController extends AbstractControlController
         }
 
         return array(
-            'form' => $form->createView(),
-            'entity' => null,
+            'form'   => $form->createView(),
+            'entity' => $entity,
         );
     }
 

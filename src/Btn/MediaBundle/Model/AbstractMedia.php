@@ -51,6 +51,7 @@ abstract class AbstractMedia extends AbstractFile implements MediaInterface
      * @var string
      *
      * @ORM\Column(name="file", type="string", length=255)
+     * @Assert\NotBlank(groups={"fileValidation"})
      */
     protected $file;
 
@@ -265,6 +266,14 @@ abstract class AbstractMedia extends AbstractFile implements MediaInterface
     public function getPreviewExtensions()
     {
         return $this->previewExtensions;
+    }
+
+    /**
+     *
+     */
+    public function isFileInEntity()
+    {
+        return $this->getFile() ? true : false;
     }
 
     /**

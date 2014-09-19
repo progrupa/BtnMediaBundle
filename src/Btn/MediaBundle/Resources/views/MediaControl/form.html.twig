@@ -10,7 +10,7 @@
             {{ form(form) }}
         </div>
         <div class="col-md-6">
-            {% if entity %}
+            {% if entity.isFileInEntity|default(false) %}
                 <p>Current image (preview):</p>
                 <p>{{ img(entity, {class: 'full-width'}, 'btn_media_preview') }}</p>
             {% endif %}

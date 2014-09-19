@@ -2,9 +2,11 @@
 
 namespace Btn\MediaBundle\Form;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormError;
 
 class MediaControlForm extends AbstractForm
 {
@@ -21,9 +23,6 @@ class MediaControlForm extends AbstractForm
         $builder
             ->add('file', 'btn_media_type_file', array(
                 'mapped' => false,
-                // 'constraints' => array(
-                //     new Assert\NotBlank(),
-                // ),
             ))
             ->add('category', 'btn_media_category', array(
             ))
@@ -45,6 +44,13 @@ class MediaControlForm extends AbstractForm
 
         $resolver->setDefaults(array(
             'action' => $this->router->generate($this->getActionRouteName(), $this->getActionRouteParams()),
+            'validation_groups' => function (FormInterface $form) {
+                $bool = $form->get('file')->getData() == null ? null : $form->get('file')->getData()->isFile();
+                if (!$bool) {
+                    return array(Constraint::DEFAULT_GROUP, 'fileValidation');
+                }
+                return array(Constraint::DEFAULT_GROUP);
+            },
         ));
     }
 
