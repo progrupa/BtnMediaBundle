@@ -47,7 +47,7 @@
         </tbody>
     </table>
 
-    {{ knp_pagination_render(pagination) }}
+    {{ knp_pagination_render(pagination, null, {}, {'alignment': 'center', 'first_label': '<<', 'last_label': '>>'}) }}
 
 {% endblock %}
 
