@@ -25,7 +25,7 @@ class MediaControlController extends AbstractControlController
      * )
      * @Template()
      */
-    public function indexAction(Request $request, $category = null)
+    public function indexAction(Request $request)
     {
         return $this->getListData($request);
     }
@@ -39,12 +39,12 @@ class MediaControlController extends AbstractControlController
      * )
      * @Template("BtnMediaBundle:MediaControl:form.html.twig")
      */
-    public function newAction(Request $request, $category = null)
+    public function newAction(Request $request)
     {
         $form = $this->get('btn_media.adapter')->createForm($request);
 
         return array(
-            'form' => $form->createView(),
+            'form'   => $form->createView(),
             'entity' => null,
         );
     }
@@ -63,7 +63,7 @@ class MediaControlController extends AbstractControlController
         $form     = $this->get('btn_media.adapter')->createForm($request, $entity);
 
         return array(
-            'form' => $form->createView(),
+            'form'   => $form->createView(),
             'entity' => $entity,
         );
     }
@@ -166,7 +166,7 @@ class MediaControlController extends AbstractControlController
      * @Route("/modal-content", name="btn_media_mediacontrol_modalcontent")
      * @Route("/modal-content/{category}",
      *     name="btn_media_mediacontrol_modalcontent_category",
-     *     requirements={"id" = "\d+"}
+     *     requirements={"category" = "\d+"}
      * )
      * @Template("BtnMediaBundle:MediaModal:_content.html.twig")
      **/
