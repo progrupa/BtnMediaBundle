@@ -73,10 +73,9 @@
                     }
                 })
                 //reload content on pagination link click
-                .on('click', '.modal-body .pagination li', function () {
-                    if (!$(this).hasClass('disabled') && !$(this).hasClass('active')) {
-                        updateModalBody(paginationUrl + '?' + getPaginationSearchPart(this));
-                    }
+                .on('click', '.modal-body .pagination li a', function (event) {
+                    event.preventDefault();
+                    updateModalBody($(this).attr('href'));
 
                     return false;
                 })
