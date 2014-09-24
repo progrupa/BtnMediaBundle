@@ -23,11 +23,6 @@
 
             return;
         }
-        //return GET params
-        var getPaginationSearchPart = function (el) {
-
-            return $(el).find('a').attr('href').split('?')[1];
-        };
         // update media-content html by $.get response
         var updateModalBody = function (url) {
             var modalContent = modal.find('.modal-content');
