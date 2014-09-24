@@ -25,7 +25,7 @@
         {% endfor %}
     </div>
 
-    {{ knp_pagination_render(pagination, 'BtnMediaBundle::pagination.html.twig') }}
+    {{ knp_pagination_render(pagination, null, [], {show_edges: true}) }}
 
     <div class="clearfix"></div>
 
