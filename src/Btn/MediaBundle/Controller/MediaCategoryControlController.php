@@ -31,7 +31,7 @@ class MediaCategoryControlController extends CrudController
             $current = $repo->find($request->get('category'));
         }
 
-        $this->get('btn_base.asset_loader')->load('btn_admin_jstree');
+        $this->get('btn_base.asset_loader')->load(array('btn_admin_loading', 'btn_admin_jstree'));
 
         return array(
             'categories'  => $repo->findAll(),
