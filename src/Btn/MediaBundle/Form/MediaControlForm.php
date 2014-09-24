@@ -6,7 +6,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormError;
 
 class MediaControlForm extends AbstractForm
 {
@@ -49,6 +48,7 @@ class MediaControlForm extends AbstractForm
                 if (!$bool) {
                     return array(Constraint::DEFAULT_GROUP, 'fileValidation');
                 }
+
                 return array(Constraint::DEFAULT_GROUP);
             },
         ));
