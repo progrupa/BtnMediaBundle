@@ -34,6 +34,8 @@
                 <td>
                     {% if entity.isImaginable %}
                         <img src="{{ entity.path|imagine_filter('btn_media_thumb') }}" />
+                    {% elseif entity.getType == 'application/pdf' %}
+                        <img src="{{ asset('bundles/btnmedia/images/pdf.png') }}" />
                     {% else %}
                         {{ gi('ban-circle') }}
                     {% endif %}
