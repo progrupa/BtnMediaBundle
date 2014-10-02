@@ -70,7 +70,7 @@
                 //reload content on pagination link click
                 .on('click', '.modal-body .pagination li a', function (event) {
                     event.preventDefault();
-                    updateModalBody($(this).attr('href'));
+                    updateModalBody($(this).attr('href').replace('modal?', 'modal-content?'));
 
                     return false;
                 })
