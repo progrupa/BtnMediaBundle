@@ -1,4 +1,5 @@
 {% from 'BtnMediaBundle::macros.html.twig' import img %}
+{% import 'BtnAdminBundle:Macros:link.html.twig' as lnk %}
 {% extends 'BtnMediaBundle::layout.html.twig' %}
 
 {% block main %}
@@ -8,6 +9,10 @@
                 {{ entity ? 'btn_media.media.edit'|trans : 'btn_media.media.add'|trans }} {{ entity ? entity.name }}
             </h2>
             {{ form(form) }}
+            {% if entity %}
+                {{ lnk.add('btn_media_mediacontrol_media_new', {}, 'btn_media.media.add') }}
+                {{ lnk.delete('btn_media_mediacontrol_media_delete', {id: entity.id}, 'btn_media.media.delete') }}
+            {% endif %}
         </div>
         <div class="col-md-6">
             {% if entity.isFileInEntity|default(false) %}
