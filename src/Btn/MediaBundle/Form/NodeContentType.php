@@ -17,7 +17,10 @@ class NodeContentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('category', 'choice', array('choices' => $this->data))
+            ->add('category', 'choice', array(
+                'empty_value' => 'Select media category',
+                'choices'     => $this->data,
+            ))
         ;
     }
 
