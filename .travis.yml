@@ -10,7 +10,7 @@ before_install:
     - composer self-update
   
 install:
-    - composer install
+    - composer install --prefer-dist --no-progress
     - npm install -g grunt-cli
     - npm install
 
