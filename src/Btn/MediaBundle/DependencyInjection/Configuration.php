@@ -26,6 +26,7 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')
                             ->end()
                         ->end()
+                        ->scalarNode('max_size')->defaultValue(null)->example('10M')->end()
                     ->end()
                 ->end()
                 ->arrayNode('media_category')

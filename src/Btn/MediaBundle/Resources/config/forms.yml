@@ -12,6 +12,8 @@ services:
         class: %btn_media.form.media_control.class%
         parent: btn_admin.form.abstract
         calls:
+            - [setAllowedExtensions, [%btn_media.media.allowed_extensions%]]
+            - [setMaxSize, [%btn_media.media.max_size%]]
             - [setClass, [%btn_media.media.class%]]
             - [setRouter, [@router]]
         tags:

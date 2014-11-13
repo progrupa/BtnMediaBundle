@@ -18,6 +18,7 @@ class BtnMediaExtension extends AbstractExtension
 
         $container->setParameter('btn_media.media.class', $config['media']['class']);
         $container->setParameter('btn_media.media.allowed_extensions', $config['media']['allowed_extensions']);
+        $container->setParameter('btn_media.media.max_size', $config['media']['max_size']);
         $container->setParameter('btn_media.media_category.class', $config['media_category']['class']);
     }
 

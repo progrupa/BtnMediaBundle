@@ -51,7 +51,7 @@ abstract class AbstractMedia extends AbstractFile implements MediaInterface
      * @var string
      *
      * @ORM\Column(name="file", type="string", length=255)
-     * @Assert\NotBlank(groups={"fileValidation"})
+     * @Assert\NotBlank(groups={"fileMissing"})
      */
     protected $file;
 
