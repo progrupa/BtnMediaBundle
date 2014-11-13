@@ -7,10 +7,10 @@ php:
     - 5.3
 
 before_install:
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.3" ]; then phpenv config-add travis.php.5.3.ini; fi;'
     - composer self-update
 
 install:
-    - phpenv config-add travis.php.ini
     - composer install --prefer-dist --no-progress
     - npm install -g grunt-cli
     - npm install
