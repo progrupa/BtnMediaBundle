@@ -16,8 +16,8 @@
                              data-filename="{{ entity.name }}"
                              data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}"
                         />
-                    {% elseif entity.getType == 'application/pdf' %}
-                        <span data-id="{{ entity.id }}" data-filename="{{ entity.name }}"><img src="{{ asset('bundles/btnmedia/images/pdf.png') }}" /></span>
+                    {% elseif entity.isPreviewable %}
+                        <span data-id="{{ entity.id }}" data-filename="{{ entity.name }}"><img src="{{ entity.previewPath|imagine_filter('btn_media_thumb') }}" /></span>
                     {% else %}
                         <span data-id="{{ entity.id }}" data-filename="{{ entity.name }}">{{ gi('ban-circle') }}</span>
                     {% endif %}

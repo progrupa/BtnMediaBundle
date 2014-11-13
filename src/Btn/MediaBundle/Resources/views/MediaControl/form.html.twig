@@ -1,4 +1,5 @@
 {% from 'BtnMediaBundle::macros.html.twig' import img %}
+{% from 'BtnAdminBundle:Macros:icon.html.twig' import glyphicon as gi %}
 {% import 'BtnAdminBundle:Macros:link.html.twig' as lnk %}
 {% extends 'BtnMediaBundle::layout.html.twig' %}
 
@@ -17,7 +18,13 @@
         <div class="col-md-6">
             {% if entity.isFileInEntity|default(false) %}
                 <p>Current image (preview):</p>
-                <p>{{ img(entity, {class: 'full-width'}, 'btn_media_preview') }}</p>
+                {% if entity.isImaginable %}
+                    <p>{{ img(entity, {class: 'full-width'}, 'btn_media_preview') }}</p>
+                {% elseif entity.isPreviewable %}
+                    <img src="{{ entity.previewPath|imagine_filter('btn_media_thumb') }}" />
+                {% else %}
+                    {{ gi('ban-circle') }}
+                {% endif %}
             {% endif %}
         </div>
     </div>

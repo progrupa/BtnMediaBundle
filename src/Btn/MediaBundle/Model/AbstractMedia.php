@@ -61,6 +61,13 @@ abstract class AbstractMedia extends AbstractFile implements MediaInterface
     protected $previewExtensions = array('jpeg', 'jpg', 'png', 'gif');
 
     /**
+     *
+     */
+    protected $previewIcons = array(
+        'application/pdf' => 'bundles/btnmedia/images/pdf.png',
+    );
+
+    /**
      * Get id
      *
      * @return integer
@@ -150,6 +157,31 @@ abstract class AbstractMedia extends AbstractFile implements MediaInterface
         $extension = $this->getFileExt();
         if (($extension && in_array(strtolower($extension), $this->previewExtensions))) {
             return true;
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     */
+    public function isPreviewable()
+    {
+        return $this->getPreviewPath() ? true : false;
+    }
+
+    /**
+     *
+     */
+    public function getPreviewPath()
+    {
+        if ($this->isImaginable()) {
+            return $this->getPath();
+        }
+
+        $type = $this->getType();
+        if ($type && !empty($this->previewIcons[$type])) {
+            return $this->previewIcons[$type];
         }
 
         return false;
