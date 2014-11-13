@@ -10,12 +10,10 @@ before_install:
     - composer self-update
 
 install:
+    - phpenv config-add travis.php.ini
     - composer install --prefer-dist --no-progress
     - npm install -g grunt-cli
     - npm install
-
-before_script:
-  - phpenv config-add travis.php.ini
 
 script: grunt test
 
