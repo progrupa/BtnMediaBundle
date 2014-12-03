@@ -17,7 +17,11 @@
                              data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}"
                         />
                     {% elseif entity.isPreviewable %}
-                        <span data-id="{{ entity.id }}" data-filename="{{ entity.name }}"><img src="{{ entity.previewPath|imagine_filter('btn_media_thumb') }}" /></span>
+                        <img src="{{ entity.previewPath|imagine_filter('btn_media_thumb') }}"
+                             data-id="{{ entity.id }}"
+                             data-filename="{{ entity.name }}"
+                             data-original="{{ media_host is defined ? media_host ~ entity.file : asset(entity.path) }}"
+                        />
                     {% else %}
                         <span data-id="{{ entity.id }}" data-filename="{{ entity.name }}">{{ gi('ban-circle') }}</span>
                     {% endif %}
