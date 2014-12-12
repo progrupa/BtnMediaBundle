@@ -10,7 +10,7 @@
                 {{ entity ? 'btn_media.media.edit'|trans : 'btn_media.media.add'|trans }} {{ entity ? entity.name }}
             </h2>
             {{ form(form) }}
-            {% if entity %}
+            {% if entity and entity.id %}
                 {{ lnk.add('btn_media_mediacontrol_media_new', {}, 'btn_media.media.add') }}
                 {{ lnk.delete('btn_media_mediacontrol_media_delete', {id: entity.id}, 'btn_media.media.delete') }}
             {% endif %}
